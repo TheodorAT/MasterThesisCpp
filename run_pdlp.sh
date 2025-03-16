@@ -3,41 +3,65 @@
 # - chrom1024-7
 # - nug08-3rd
 # - datt256
+# - savsched1
 # - neos3
-instance="self"
+# POSSIBLE ERROR: On "savsched1" we get -nan in relative duality gap, but still solve it for some reason...
+# Maybe we have made an error, or maybe this will be fixed by introducing some curve-breaking?
+# Dual objective becomes: -inf very quickly, possibly due to the large dual objective coefficients?
+instance="savsched1"
 instance_path="${HOME}/lp_benchmark/${instance}.mps" # We need to have already extracted it from mps.gz
 
-# Select between "STEERING_VECTOR_UNSPECIFIED" and "RESIDUAL_MOMENTUM"
-steering_vector_option="RESIDUAL_MOMENTUM" 
 accuracy="1.0e-4"
+
+iteration_limit=10000
+major_iteration_frequency=40
+verbosity=2
+
+steering_vector_option="RESIDUAL_MOMENTUM"        # Select between: "NO_STEERING_VECTORS", "RESIDUAL_MOMENTUM"
+steering_vector_restart_option="STEERING_VECTOR_EVERY_MAJOR_ITERATION"    # Select between: "STEERING_VECTOR_NO_RESTARTS",  
+                                                                # "STEERING_VECTOR_EVERY_MAJOR_ITERATION", "STEERING_VECTOR_EVERY_PDLP_RESTART"
+
 use_feasibility_polishing="false"
+restart_policy="ADAPTIVE_HEURISTIC"                        # Select between: "NO_RESTARTS", "ADAPTIVE_HEURISTIC" 
+step_size_rule="ADAPTIVE_LINESEARCH_RULE"            # Select between: "CONSTANT_STEP_SIZE_RULE", "ADAPTIVE_LINESEARCH_RULE"
+
+# Suitable experiment name:  
+if [ $steering_vector_option == "NO_STEERING_VECTORS" ]; then
+    experiment_name="${instance}_${accuracy}_PDHG+PrimalWeight"
+else 
+    experiment_name="${instance}_${steering_vector_restart_option}"
+fi
+
+# No settings after this point:
+solve_log_file="results/log_files/solve_log_${experiment_name}.textproto"
 # The params passed to the solver:
 params="
-    verbosity_level: 1, 
+    verbosity_level: ${verbosity}, 
     handle_some_primal_gradients_on_finite_bounds_as_residuals: false,
     presolve_options {
         use_glop: false
     },
+    termination_check_frequency: ${major_iteration_frequency},
+    major_iteration_frequency: ${major_iteration_frequency},
     termination_criteria {
-        iteration_limit: 10000,
+        iteration_limit: ${iteration_limit},
+        eps_primal_infeasible: ${accuracy},
+        eps_dual_infeasible: ${accuracy},
         simple_optimality_criteria {
             eps_optimal_absolute: ${accuracy},
             eps_optimal_relative: ${accuracy},
         },
-        eps_primal_infeasible: ${accuracy},
-        eps_dual_infeasible: ${accuracy},
     },
-    num_threads: 1
-    termination_check_frequency: 40,
-    major_iteration_frequency: 40,
     l_inf_ruiz_iterations: 10,
+    linesearch_rule: ${step_size_rule},
+    restart_strategy: ${restart_policy}
     use_feasibility_polishing: ${use_feasibility_polishing},
-    linesearch_rule: CONSTANT_STEP_SIZE_RULE,
     steering_vector_option: ${steering_vector_option},
+    steering_vector_restart_option: ${steering_vector_restart_option}
 "
 
 # Running the algorithm:
-./temp_cpp/pdlp_solve/build/bin/pdlp_solve --input $instance_path --params "$params"
+./temp_cpp/pdlp_solve/build/bin/pdlp_solve --input $instance_path --params "$params" # --solve_log_file $solve_log_file
  
 # For instance: 
 # - ./temp_cpp/pdlp_solve/build/bin/pdlp_solve --input $HOME/lp_benchmark/self.mps --params "verbosity_level: 2" 

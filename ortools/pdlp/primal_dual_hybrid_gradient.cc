@@ -656,6 +656,8 @@ class Solver {
 
   void ResetAverageToCurrent();
 
+  void ResetSteeringVectors();
+
   void LogNumericalTermination(const Eigen::VectorXd& primal_delta,
                                const Eigen::VectorXd& dual_delta) const;
 
@@ -680,6 +682,10 @@ class Solver {
   // Takes a constant-size step with steering vectors in the residual momentum
   // direction.
   InnerStepOutcome TakeConstantSizeStepSteeringResidual();
+
+  // Takes a adaptive step with steering vectors in the residual momentum
+  // direction.
+  InnerStepOutcome TakeAdaptiveStepSteeringResidual();
 
   const PrimalDualHybridGradientParams params_;
 
@@ -1801,7 +1807,11 @@ Solver::Solver(const PrimalDualHybridGradientParams& params,
       step_size_(initial_step_size),
       primal_weight_(initial_primal_weight),
       preprocess_solver_(preprocess_solver) {
-  // Initializing the steering vectors:
+  ResetSteeringVectors();
+}
+
+void Solver::ResetSteeringVectors() {
+  // Setting the steering vector related fields to 0:
   current_primal_steering_ = ZeroVector(ShardedWorkingQp().PrimalSharder());
   current_dual_steering_ = ZeroVector(ShardedWorkingQp().DualSharder());
   current_dual_steering_product_ =
@@ -2307,10 +2317,12 @@ void Solver::ApplyRestartChoice(const RestartChoice restart_to_apply) {
       current_dual_product_ = TransposedMatrixVectorProduct(
           WorkingQp().constraint_matrix, current_dual_solution_,
           ShardedWorkingQp().ConstraintMatrixSharder());
+      if (params_.steering_vector_restart_option() ==
+          PrimalDualHybridGradientParams::STEERING_VECTOR_EVERY_PDLP_RESTART) {
+        ResetSteeringVectors();
+      }
       break;
   }
-  // TODO: Maybe include restarts here, but first we need to know that the other
-  // code works.
   primal_weight_ = ComputeNewPrimalWeight();
   ratio_last_two_step_sizes_ = 1;
   if (params_.restart_strategy() ==
@@ -2338,6 +2350,10 @@ void Solver::ApplyRestartChoice(const RestartChoice restart_to_apply) {
                /*dest=*/last_primal_start_point_);
   AssignVector(current_dual_solution_, ShardedWorkingQp().DualSharder(),
                /*dest=*/last_dual_start_point_);
+  if (params_.steering_vector_restart_option() ==
+      PrimalDualHybridGradientParams::STEERING_VECTOR_EVERY_MAJOR_ITERATION) {
+    ResetSteeringVectors();
+  }
 }
 
 // Adds the work (`iteration_number`, `cumulative_kkt_matrix_passes`,
@@ -2668,14 +2684,14 @@ InnerStepOutcome Solver::TakeConstantSizeStep() {
 InnerStepOutcome Solver::TakeConstantSizeStepSteeringResidual() {
   const double primal_step_size = step_size_ / primal_weight_;
   const double dual_step_size = step_size_ * primal_weight_;
-  const int64_t dual_size = ShardedWorkingQp().DualSize();
   const int64_t primal_size = ShardedWorkingQp().PrimalSize();
+  const int64_t dual_size = ShardedWorkingQp().DualSize();
   const int64_t dual_product_size = WorkingQp().constraint_matrix.cols();
   const double lambda = params_.steering_vector_lambda();
 
   VectorXd x_hat_k(primal_size);
   VectorXd y_hat_k(dual_size);
-  VectorXd y_hat_product_k(dual_product_size);
+  VectorXd y_hat_product_k(primal_size);
 
   ShardedWorkingQp().PrimalSharder().ParallelForEachShard(
       [&](const Sharder::Shard& shard) {
@@ -2689,7 +2705,6 @@ InnerStepOutcome Solver::TakeConstantSizeStepSteeringResidual() {
         shard(y_hat_k) =
             shard(current_dual_solution_) + shard(current_dual_steering_);
       });
-
   // Calculating the gradient information (p_k):
   NextSolutionAndDelta p_x_k = ComputeNextPrimalSolutionFromInput(
       primal_step_size, x_hat_k, y_hat_product_k);
@@ -2752,8 +2767,8 @@ InnerStepOutcome Solver::TakeConstantSizeStepSteeringResidual() {
       WorkingQp().constraint_matrix, p_y_k.value,
       ShardedWorkingQp().ConstraintMatrixSharder());
 
-  VectorXd next_dual_product(dual_product_size);
-  VectorXd next_dual_steering_product(dual_product_size);
+  VectorXd next_dual_product(primal_size);
+  VectorXd next_dual_steering_product(primal_size);
   ShardedWorkingQp().PrimalSharder().ParallelForEachShard(
       [&](const Sharder::Shard& shard) {
         shard(next_dual_product) =
@@ -2785,6 +2800,9 @@ InnerStepOutcome Solver::TakeConstantSizeStepSteeringResidual() {
   current_dual_delta_ = std::move(next_dual_solution.delta);
   primal_average_.Add(current_primal_solution_, /*weight=*/step_size_);
   dual_average_.Add(current_dual_solution_, /*weight=*/step_size_);
+  // std::cout << "Current dual iterate norm: "
+  //           << current_dual_solution_.transpose() * current_dual_solution_
+  //           << "\n";
 
   // Saving the terms from the steering vectors:
   current_primal_steering_ = std::move(next_primal_steering);
@@ -2792,6 +2810,187 @@ InnerStepOutcome Solver::TakeConstantSizeStepSteeringResidual() {
   current_dual_steering_product_ = std::move(next_dual_steering_product);
 
   return InnerStepOutcome::kSuccessful;
+}
+
+InnerStepOutcome Solver::TakeAdaptiveStepSteeringResidual() {
+  InnerStepOutcome outcome = InnerStepOutcome::kSuccessful;
+  int inner_iterations = 0;
+  for (bool accepted_step = false; !accepted_step; ++inner_iterations) {
+    if (inner_iterations >= 60) {
+      LogInnerIterationLimitHit();
+      ResetAverageToCurrent();
+      outcome = InnerStepOutcome::kForceNumericalTermination;
+      break;
+    }
+    const double primal_step_size = step_size_ / primal_weight_;
+    const double dual_step_size = step_size_ * primal_weight_;
+    const int64_t primal_size = ShardedWorkingQp().PrimalSize();
+    const int64_t dual_size = ShardedWorkingQp().DualSize();
+    const double lambda = params_.steering_vector_lambda();
+
+    VectorXd x_hat_k(primal_size);
+    VectorXd y_hat_k(dual_size);
+    VectorXd y_hat_product_k(primal_size);
+
+    ShardedWorkingQp().PrimalSharder().ParallelForEachShard(
+        [&](const Sharder::Shard& shard) {
+          shard(x_hat_k) =
+              shard(current_primal_solution_) + shard(current_primal_steering_);
+          shard(y_hat_product_k) = shard(current_dual_product_) +
+                                   shard(current_dual_steering_product_);
+        });
+    ShardedWorkingQp().DualSharder().ParallelForEachShard(
+        [&](const Sharder::Shard& shard) {
+          shard(y_hat_k) =
+              shard(current_dual_solution_) + shard(current_dual_steering_);
+        });
+    // Calculating the gradient information (p_k):
+    NextSolutionAndDelta p_x_k = ComputeNextPrimalSolutionFromInput(
+        primal_step_size, x_hat_k, y_hat_product_k);
+
+    NextSolutionAndDelta p_y_k = ComputeNextDualSolutionFromInput(
+        dual_step_size, /*extrapolation_factor=*/1.0, p_x_k, y_hat_k);
+
+    NextSolutionAndDelta next_primal_solution = {
+        .value = VectorXd(primal_size),
+        .delta = VectorXd(primal_size),
+    };
+    NextSolutionAndDelta next_dual_solution = {
+        .value = VectorXd(dual_size),
+        .delta = VectorXd(dual_size),
+    };
+
+    // Calculating the next iterates:
+    ShardedWorkingQp().PrimalSharder().ParallelForEachShard(
+        [&](const Sharder::Shard& shard) {
+          shard(next_primal_solution.value) =
+              shard(current_primal_solution_) +
+              lambda * (shard(p_x_k.value) - shard(x_hat_k));
+          shard(next_primal_solution.delta) =
+              shard(next_primal_solution.value) -
+              shard(current_primal_solution_);
+        });
+    ShardedWorkingQp().DualSharder().ParallelForEachShard(
+        [&](const Sharder::Shard& shard) {
+          shard(next_dual_solution.value) =
+              shard(current_dual_solution_) +
+              lambda * (shard(p_y_k.value) - shard(y_hat_k));
+          shard(next_dual_solution.delta) =
+              shard(next_dual_solution.value) - shard(current_dual_solution_);
+        });
+
+    const double movement =
+        ComputeMovement(next_primal_solution.delta, next_dual_solution.delta);
+    if (movement == 0.0) {
+      LogNumericalTermination(next_primal_solution.delta,
+                              next_dual_solution.delta);
+      ResetAverageToCurrent();
+      outcome = InnerStepOutcome::kForceNumericalTermination;
+      break;
+    } else if (movement > kDivergentMovement) {
+      LogNumericalTermination(next_primal_solution.delta,
+                              next_dual_solution.delta);
+      outcome = InnerStepOutcome::kForceNumericalTermination;
+      break;
+    }
+
+    // Calculating the next dual product:
+    VectorXd p_y_product_k = TransposedMatrixVectorProduct(
+        WorkingQp().constraint_matrix, p_y_k.value,
+        ShardedWorkingQp().ConstraintMatrixSharder());
+
+    VectorXd next_dual_product(primal_size);
+    ShardedWorkingQp().PrimalSharder().ParallelForEachShard(
+        [&](const Sharder::Shard& shard) {
+          shard(next_dual_product) =
+              shard(current_dual_product_) +
+              lambda * (shard(p_y_product_k) - shard(y_hat_product_k));
+        });
+
+    const double nonlinearity =
+        ComputeNonlinearity(next_primal_solution.delta, next_dual_product);
+
+    // See equation (5) in https://arxiv.org/pdf/2106.04756.pdf.
+    const double step_size_limit =
+        nonlinearity > 0 ? movement / nonlinearity
+                         : std::numeric_limits<double>::infinity();
+
+    if (step_size_ <= step_size_limit) {
+      const double multiplicative_factor =
+          params_.steering_vector_kappa() * (4 - 2 * lambda) / (4 - 2 * lambda);
+      const double memory_factor = (2 - 2 * lambda) / (4 - 2 * lambda);
+
+      // Calculating the next steering vectors, and the corresponding dual
+      // product
+      VectorXd next_primal_steering(primal_size);
+      VectorXd next_dual_steering(dual_size);
+      VectorXd next_dual_steering_product(primal_size);
+      ShardedWorkingQp().PrimalSharder().ParallelForEachShard(
+          [&](const Sharder::Shard& shard) {
+            shard(next_primal_steering) =
+                multiplicative_factor *
+                ((shard(p_x_k.value) - shard(current_primal_solution_)) -
+                 memory_factor * shard(current_primal_steering_));
+
+            shard(next_dual_steering_product) =
+                multiplicative_factor *
+                ((shard(p_y_product_k) - shard(current_dual_product_)) -
+                 memory_factor * shard(current_dual_steering_product_));
+          });
+      ShardedWorkingQp().DualSharder().ParallelForEachShard(
+          [&](const Sharder::Shard& shard) {
+            shard(next_dual_steering) =
+                multiplicative_factor *
+                ((shard(p_y_k.value) - shard(current_dual_solution_)) -
+                 memory_factor * shard(current_dual_steering_));
+          });
+
+      current_primal_solution_ = std::move(next_primal_solution.value);
+      current_dual_solution_ = std::move(next_dual_solution.value);
+      current_dual_product_ = std::move(next_dual_product);
+      current_primal_delta_ = std::move(next_primal_solution.delta);
+      current_dual_delta_ = std::move(next_dual_solution.delta);
+      primal_average_.Add(current_primal_solution_, /*weight=*/step_size_);
+      dual_average_.Add(current_dual_solution_, /*weight=*/step_size_);
+      accepted_step = true;
+
+      // Saving the terms from the steering vectors:
+      current_primal_steering_ = std::move(next_primal_steering);
+      current_dual_steering_ = std::move(next_dual_steering);
+      current_dual_steering_product_ = std::move(next_dual_steering_product);
+    }
+    const double total_steps_attempted =
+        num_rejected_steps_ + inner_iterations + iterations_completed_ + 1;
+    // Our step sizes are a factor 1 - (`total_steps_attempted` + 1)^(-
+    // `step_size_reduction_exponent`) smaller than they could be as a margin
+    // to reduce rejected steps. The std::isinf() test protects against NAN if
+    // std::pow() == 1.0.
+    const double first_term =
+        std::isinf(step_size_limit)
+            ? step_size_limit
+            : (1 - std::pow(total_steps_attempted + 1.0,
+                            -params_.adaptive_linesearch_parameters()
+                                 .step_size_reduction_exponent())) *
+                  step_size_limit;
+    const double second_term =
+        (1 + std::pow(total_steps_attempted + 1.0,
+                      -params_.adaptive_linesearch_parameters()
+                           .step_size_growth_exponent())) *
+        step_size_;
+    // From the first term when we have to reject a step, `step_size_`
+    // decreases by a factor of at least 1 - (`total_steps_attempted` + 1)^(-
+    // `step_size_reduction_exponent`). From the second term we increase
+    // `step_size_` by a factor of at most 1 + (`total_steps_attempted` +
+    // 1)^(-`step_size_growth_exponent`) Therefore if more than order
+    // (`total_steps_attempted` + 1)^(`step_size_reduction_exponent`
+    // - `step_size_growth_exponent`) fraction of the time we have a rejected
+    // step, we overall decrease `step_size_`. When `step_size_` is
+    // sufficiently small we stop having rejected steps.
+    step_size_ = std::min(first_term, second_term);
+  }
+  // `inner_iterations` is incremented for the accepted step.
+  num_rejected_steps_ += inner_iterations - 1;
+  return outcome;
 }
 
 IterationStats Solver::TotalWorkSoFar(const SolveLog& solve_log) const {
@@ -2873,8 +3072,8 @@ std::optional<SolverResult> Solver::TryFeasibilityPolishing(
   } else if (primal_result.solve_log.termination_reason() !=
              TERMINATION_REASON_OPTIMAL) {
     // Note: `TERMINATION_REASON_PRIMAL_INFEASIBLE` could happen normally, but
-    // we haven't ensured that the correct solution is returned in that case, so
-    // we ignore the polishing result indicating infeasibility.
+    // we haven't ensured that the correct solution is returned in that case,
+    // so we ignore the polishing result indicating infeasibility.
     // `TERMINATION_REASON_NUMERICAL_ERROR` can occur, but would be surprising
     // and interesting. Other termination reasons are probably bugs.
     SOLVER_LOG(&preprocess_solver_->Logger(),
@@ -2944,9 +3143,9 @@ std::optional<SolverResult> Solver::TryFeasibilityPolishing(
   }
   // Note: A typical termination check would now call
   // `CheckSimpleTerminationCriteria`. However, there is no obvious iterate to
-  // use for a `SolverResult`. Instead, allow the main iteration loop to notice
-  // if the termination criteria checking has caused us to meet the simple
-  // termination criteria. This would be a rare case anyway, since dual
+  // use for a `SolverResult`. Instead, allow the main iteration loop to
+  // notice if the termination criteria checking has caused us to meet the
+  // simple termination criteria. This would be a rare case anyway, since dual
   // feasibility polishing didn't terminate because of a work limit, and
   // `full_stats` is created shortly after `TryDualPolishing` returned.
   return std::nullopt;
@@ -3116,8 +3315,8 @@ SolverResult Solver::Solve(const IterationType iteration_type,
       WorkFromFeasibilityPolishing(solve_log);
   for (iterations_completed_ = 0;; ++iterations_completed_) {
     // This code performs the logic of the major iterations and termination
-    // checks. It may modify the current solution and primal weight (e.g., when
-    // performing a restart).
+    // checks. It may modify the current solution and primal weight (e.g.,
+    // when performing a restart).
     const std::optional<SolverResult> maybe_result =
         MajorIterationAndTerminationCheck(
             iteration_type, force_numerical_termination, interrupt_solve,
@@ -3131,11 +3330,11 @@ SolverResult Solver::Solve(const IterationType iteration_type,
         iterations_completed_ >= next_feasibility_polishing_iteration) {
       // The total number of iterations in feasibility polishing is at most
       // `4 * iterations_completed_ / kFeasibilityIterationFraction`.
-      // One factor of two is because there are both primal and dual feasibility
-      // polishing phases, and the other factor of two is because
-      // `next_feasibility_polishing_iteration` increases by a factor of 2 each
-      // feasibility polishing phase, so the sum of iteration limits is at most
-      // twice the last value.
+      // One factor of two is because there are both primal and dual
+      // feasibility polishing phases, and the other factor of two is because
+      // `next_feasibility_polishing_iteration` increases by a factor of 2
+      // each feasibility polishing phase, so the sum of iteration limits is
+      // at most twice the last value.
       const int kFeasibilityIterationFraction = 8;
       const std::optional<SolverResult> feasibility_result =
           TryFeasibilityPolishing(
@@ -3159,14 +3358,25 @@ SolverResult Solver::Solve(const IterationType iteration_type,
         outcome = TakeMalitskyPockStep();
         break;
       case PrimalDualHybridGradientParams::ADAPTIVE_LINESEARCH_RULE:
-        outcome = TakeAdaptiveStep();
+        switch (params_.steering_vector_option()) {
+          case PrimalDualHybridGradientParams::RESIDUAL_MOMENTUM:
+            outcome = TakeAdaptiveStepSteeringResidual();
+            break;
+          case PrimalDualHybridGradientParams::NO_STEERING_VECTORS:
+            outcome = TakeAdaptiveStep();
+            break;
+          default:
+            LOG(FATAL) << "Unrecognized steering vector option "
+                       << params_.steering_vector_option();
+            break;
+        }
         break;
       case PrimalDualHybridGradientParams::CONSTANT_STEP_SIZE_RULE:
         switch (params_.steering_vector_option()) {
           case PrimalDualHybridGradientParams::RESIDUAL_MOMENTUM:
             outcome = TakeConstantSizeStepSteeringResidual();
             break;
-          case PrimalDualHybridGradientParams::STEERING_VECTOR_UNSPECIFIED:
+          case PrimalDualHybridGradientParams::NO_STEERING_VECTORS:
             outcome = TakeConstantSizeStep();
             break;
           default:

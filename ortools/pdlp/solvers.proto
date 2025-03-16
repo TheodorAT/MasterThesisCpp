@@ -278,9 +278,20 @@ message PrimalDualHybridGradientParams {
 
   enum SteeringVectorOption {
     // No steering vectors applied.
-    STEERING_VECTOR_UNSPECIFIED = 0;
+    NO_STEERING_VECTORS = 0;
     // Applies residual momentum steering vectors: 
     RESIDUAL_MOMENTUM = 1;
+  }
+
+  enum SteeringVectorRestartOption {
+    // No restarting of the steering vectors.
+    STEERING_VECTOR_NO_RESTARTS = 0;
+    // Resets the steering vectors to 0 every major iteration:  
+    STEERING_VECTOR_EVERY_MAJOR_ITERATION = 1;
+    // Resets the steering vectors to 0 every time PDLP resets the iterates to the average:
+    STEERING_VECTOR_EVERY_PDLP_RESTART = 2;
+    
+    // TODO(Theo): Maybe we want an option for more flexibility in this? Every n:th iteration?
   }
 
   optional TerminationCriteria termination_criteria = 1;
@@ -488,10 +499,12 @@ message PrimalDualHybridGradientParams {
   optional bool use_feasibility_polishing = 30 [default = false];
 
   // Steering vector parameters:
-  optional SteeringVectorOption steering_vector_option = 33 [default = STEERING_VECTOR_UNSPECIFIED];
+  optional SteeringVectorOption steering_vector_option = 33 [default = NO_STEERING_VECTORS];
   optional double steering_vector_kappa = 34 [default = 0.8];
   optional double steering_vector_lambda = 35 [default = 1.0];
   optional double similariy_threshold = 36 [default = 0.9];
+  optional SteeringVectorRestartOption steering_vector_restart_option = 37 [default = STEERING_VECTOR_NO_RESTARTS];
+  // End of steering vector parameters.
 
   reserved 13, 14, 15, 20, 21;
 }
