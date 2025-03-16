@@ -585,6 +585,15 @@ class Solver {
       double dual_step_size, double extrapolation_factor,
       const NextSolutionAndDelta& next_primal) const;
 
+  NextSolutionAndDelta ComputeNextPrimalSolutionFromInput(
+      double primal_step_size, const VectorXd& primal_input,
+      const VectorXd& dual_product_input) const;
+
+  NextSolutionAndDelta ComputeNextDualSolutionFromInput(
+      double dual_step_size, double extrapolation_factor,
+      const NextSolutionAndDelta& next_primal_solution,
+      const VectorXd& dual_input) const;
+
   std::pair<double, double> ComputeMovementTerms(
       const VectorXd& delta_primal, const VectorXd& delta_dual) const;
 
@@ -668,6 +677,10 @@ class Solver {
   // Takes a constant-size step.
   InnerStepOutcome TakeConstantSizeStep();
 
+  // Takes a constant-size step with steering vectors in the residual momentum
+  // direction.
+  InnerStepOutcome TakeConstantSizeStepSteeringResidual();
+
   const PrimalDualHybridGradientParams params_;
 
   VectorXd current_primal_solution_;
@@ -683,6 +696,11 @@ class Solver {
 
   PreprocessSolver* preprocess_solver_;
 
+  // The following are for the steering vectors only:
+  VectorXd current_primal_steering_;
+  VectorXd current_dual_steering_;
+  VectorXd current_dual_steering_product_;
+
   // For Malitsky-Pock linesearch only: `step_size_` / previous_step_size
   double ratio_last_two_step_sizes_;
   // For adaptive restarts only.
@@ -692,8 +710,8 @@ class Solver {
   double normalized_gap_at_last_restart_ =
       std::numeric_limits<double>::infinity();
 
-  // `preprocessing_time_sec_` is added to the current value of `timer_` when
-  // computing `cumulative_time_sec` in iteration stats.
+  // `preprocessing_time_sec_` is added to the current value of `timer_`
+  // when computing `cumulative_time_sec` in iteration stats.
   double preprocessing_time_sec_;
   WallTimer timer_;
   int iterations_completed_;
@@ -1782,7 +1800,13 @@ Solver::Solver(const PrimalDualHybridGradientParams& params,
       dual_average_(&preprocess_solver->ShardedWorkingQp().DualSharder()),
       step_size_(initial_step_size),
       primal_weight_(initial_primal_weight),
-      preprocess_solver_(preprocess_solver) {}
+      preprocess_solver_(preprocess_solver) {
+  // Initializing the steering vectors:
+  current_primal_steering_ = ZeroVector(ShardedWorkingQp().PrimalSharder());
+  current_dual_steering_ = ZeroVector(ShardedWorkingQp().DualSharder());
+  current_dual_steering_product_ =
+      ZeroVector(ShardedWorkingQp().PrimalSharder());
+}
 
 Solver::NextSolutionAndDelta Solver::ComputeNextPrimalSolution(
     double primal_step_size) const {
@@ -1871,6 +1895,97 @@ Solver::NextSolutionAndDelta Solver::ComputeNextDualSolution(
                           dual_step_size * shard(qp.constraint_lower_bounds));
         shard(result.delta) =
             (shard(result.value) - shard(current_dual_solution_));
+      });
+  return result;
+}
+
+Solver::NextSolutionAndDelta Solver::ComputeNextPrimalSolutionFromInput(
+    double primal_step_size, const VectorXd& primal_input,
+    const VectorXd& dual_product_input) const {
+  const int64_t primal_size = ShardedWorkingQp().PrimalSize();
+  NextSolutionAndDelta result = {
+      .value = VectorXd(primal_size),
+      .delta = VectorXd(primal_size),
+  };
+  const QuadraticProgram& qp = WorkingQp();
+  // This computes the primal portion of the PDHG algorithm:
+  // argmin_x[gradient(f)(`primal_input`)^T x + g(x)
+  //   + `current_dual_solution_`^T K x
+  //   + (0.5 / `primal_step_size`) * norm(x - `primal_input`)^2]
+  // See Sections 2 - 3 of Chambolle and Pock and the comment in the header.
+  // We omitted the constant terms from Chambolle and Pock's (7).
+  // This minimization is easy to do in closed form since it can be separated
+  // into independent problems for each of the primal variables.
+  ShardedWorkingQp().PrimalSharder().ParallelForEachShard(
+      [&](const Sharder::Shard& shard) {
+        if (!IsLinearProgram(qp)) {
+          // TODO(user): Does changing this to auto (so it becomes an
+          // Eigen deferred result), or inlining it below, change performance?
+          const VectorXd diagonal_scaling =
+              primal_step_size *
+                  shard(qp.objective_matrix->diagonal()).array() +
+              1.0;
+          shard(result.value) =
+              (shard(primal_input) -
+               primal_step_size *
+                   (shard(qp.objective_vector) - shard(dual_product_input)))
+                  // Scale i-th element by 1 / (1 + `primal_step_size` * Q_{ii})
+                  .cwiseQuotient(diagonal_scaling)
+                  .cwiseMin(shard(qp.variable_upper_bounds))
+                  .cwiseMax(shard(qp.variable_lower_bounds));
+        } else {
+          // The formula in the LP case is simplified for better performance.
+          shard(result.value) =
+              (shard(primal_input) -
+               primal_step_size *
+                   (shard(qp.objective_vector) - shard(dual_product_input)))
+                  .cwiseMin(shard(qp.variable_upper_bounds))
+                  .cwiseMax(shard(qp.variable_lower_bounds));
+        }
+        shard(result.delta) = shard(result.value) - shard(primal_input);
+      });
+  return result;
+}
+
+Solver::NextSolutionAndDelta Solver::ComputeNextDualSolutionFromInput(
+    double dual_step_size, double extrapolation_factor,
+    const NextSolutionAndDelta& next_primal_solution,
+    const VectorXd& dual_input) const {
+  const int64_t dual_size = ShardedWorkingQp().DualSize();
+  NextSolutionAndDelta result = {
+      .value = VectorXd(dual_size),
+      .delta = VectorXd(dual_size),
+  };
+  const QuadraticProgram& qp = WorkingQp();
+  VectorXd extrapolated_primal(ShardedWorkingQp().PrimalSize());
+  ShardedWorkingQp().PrimalSharder().ParallelForEachShard(
+      [&](const Sharder::Shard& shard) {
+        shard(extrapolated_primal) =
+            (shard(next_primal_solution.value) +
+             extrapolation_factor * shard(next_primal_solution.delta));
+      });
+  // TODO(user): Refactor this multiplication so that we only do one matrix
+  // vector multiply for the primal variable. This only applies to Malitsky and
+  // Pock and not to the adaptive step size rule.
+  ShardedWorkingQp().TransposedConstraintMatrixSharder().ParallelForEachShard(
+      [&](const Sharder::Shard& shard) {
+        VectorXd temp =
+            shard(dual_input) -
+            dual_step_size *
+                shard(ShardedWorkingQp().TransposedConstraintMatrix())
+                    .transpose() *
+                extrapolated_primal;
+        // Each element of the argument of `.cwiseMin()` is the critical point
+        // of the respective 1D minimization problem if it's negative.
+        // Likewise the argument to the `.cwiseMax()` is the critical point if
+        // positive.
+        shard(result.value) =
+            VectorXd::Zero(temp.size())
+                .cwiseMin(temp +
+                          dual_step_size * shard(qp.constraint_upper_bounds))
+                .cwiseMax(temp +
+                          dual_step_size * shard(qp.constraint_lower_bounds));
+        shard(result.delta) = (shard(result.value) - shard(dual_input));
       });
   return result;
 }
@@ -2194,6 +2309,8 @@ void Solver::ApplyRestartChoice(const RestartChoice restart_to_apply) {
           ShardedWorkingQp().ConstraintMatrixSharder());
       break;
   }
+  // TODO: Maybe include restarts here, but first we need to know that the other
+  // code works.
   primal_weight_ = ComputeNewPrimalWeight();
   ratio_last_two_step_sizes_ = 1;
   if (params_.restart_strategy() ==
@@ -2545,6 +2662,135 @@ InnerStepOutcome Solver::TakeConstantSizeStep() {
   current_dual_delta_ = std::move(next_dual_solution.delta);
   primal_average_.Add(current_primal_solution_, /*weight=*/step_size_);
   dual_average_.Add(current_dual_solution_, /*weight=*/step_size_);
+  return InnerStepOutcome::kSuccessful;
+}
+
+InnerStepOutcome Solver::TakeConstantSizeStepSteeringResidual() {
+  const double primal_step_size = step_size_ / primal_weight_;
+  const double dual_step_size = step_size_ * primal_weight_;
+  const int64_t dual_size = ShardedWorkingQp().DualSize();
+  const int64_t primal_size = ShardedWorkingQp().PrimalSize();
+  const int64_t dual_product_size = WorkingQp().constraint_matrix.cols();
+  const double lambda = params_.steering_vector_lambda();
+
+  VectorXd x_hat_k(primal_size);
+  VectorXd y_hat_k(dual_size);
+  VectorXd y_hat_product_k(dual_product_size);
+
+  ShardedWorkingQp().PrimalSharder().ParallelForEachShard(
+      [&](const Sharder::Shard& shard) {
+        shard(x_hat_k) =
+            shard(current_primal_solution_) + shard(current_primal_steering_);
+        shard(y_hat_product_k) = shard(current_dual_product_) +
+                                 shard(current_dual_steering_product_);
+      });
+  ShardedWorkingQp().DualSharder().ParallelForEachShard(
+      [&](const Sharder::Shard& shard) {
+        shard(y_hat_k) =
+            shard(current_dual_solution_) + shard(current_dual_steering_);
+      });
+
+  // Calculating the gradient information (p_k):
+  NextSolutionAndDelta p_x_k = ComputeNextPrimalSolutionFromInput(
+      primal_step_size, x_hat_k, y_hat_product_k);
+
+  NextSolutionAndDelta p_y_k = ComputeNextDualSolutionFromInput(
+      dual_step_size, /*extrapolation_factor=*/1.0, p_x_k, y_hat_k);
+
+  NextSolutionAndDelta next_primal_solution = {
+      .value = VectorXd(primal_size),
+      .delta = VectorXd(primal_size),
+  };
+  NextSolutionAndDelta next_dual_solution = {
+      .value = VectorXd(dual_size),
+      .delta = VectorXd(dual_size),
+  };
+  VectorXd next_primal_steering(primal_size);
+  VectorXd next_dual_steering(dual_size);
+
+  // Calculating the next iterates:
+  ShardedWorkingQp().PrimalSharder().ParallelForEachShard(
+      [&](const Sharder::Shard& shard) {
+        shard(next_primal_solution.value) =
+            shard(current_primal_solution_) +
+            lambda * (shard(p_x_k.value) - shard(x_hat_k));
+        shard(next_primal_solution.delta) =
+            shard(next_primal_solution.value) - shard(current_primal_solution_);
+      });
+  ShardedWorkingQp().DualSharder().ParallelForEachShard(
+      [&](const Sharder::Shard& shard) {
+        shard(next_dual_solution.value) =
+            shard(current_dual_solution_) +
+            lambda * (shard(p_y_k.value) - shard(y_hat_k));
+        shard(next_dual_solution.delta) =
+            shard(next_dual_solution.value) - shard(current_dual_solution_);
+      });
+
+  // Calculating the next steering vectors:
+  const double multiplicative_factor =
+      params_.steering_vector_kappa() * (4 - 2 * lambda) / (4 - 2 * lambda);
+  const double memory_factor = (2 - 2 * lambda) / (4 - 2 * lambda);
+
+  ShardedWorkingQp().PrimalSharder().ParallelForEachShard(
+      [&](const Sharder::Shard& shard) {
+        shard(next_primal_steering) =
+            multiplicative_factor *
+            ((shard(p_x_k.value) - shard(current_primal_solution_)) -
+             memory_factor * shard(current_primal_steering_));
+      });
+  ShardedWorkingQp().DualSharder().ParallelForEachShard(
+      [&](const Sharder::Shard& shard) {
+        shard(next_dual_steering) =
+            multiplicative_factor *
+            ((shard(p_y_k.value) - shard(current_dual_solution_)) -
+             memory_factor * shard(current_dual_steering_));
+      });
+
+  // Calculating the next matrix products efficiently (without using more than
+  // one explicit matrix multiplication):
+  VectorXd p_y_product_k = TransposedMatrixVectorProduct(
+      WorkingQp().constraint_matrix, p_y_k.value,
+      ShardedWorkingQp().ConstraintMatrixSharder());
+
+  VectorXd next_dual_product(dual_product_size);
+  VectorXd next_dual_steering_product(dual_product_size);
+  ShardedWorkingQp().PrimalSharder().ParallelForEachShard(
+      [&](const Sharder::Shard& shard) {
+        shard(next_dual_product) =
+            shard(current_dual_product_) +
+            lambda * (shard(p_y_product_k) - shard(y_hat_product_k));
+
+        shard(next_dual_steering_product) =
+            multiplicative_factor *
+            ((shard(p_y_product_k) - shard(current_dual_product_)) -
+             memory_factor * shard(current_dual_steering_product_));
+      });
+
+  const double movement =
+      ComputeMovement(next_primal_solution.delta, next_dual_solution.delta);
+  if (movement == 0.0) {
+    LogNumericalTermination(next_primal_solution.delta,
+                            next_dual_solution.delta);
+    ResetAverageToCurrent();
+    return InnerStepOutcome::kForceNumericalTermination;
+  } else if (movement > kDivergentMovement) {
+    LogNumericalTermination(next_primal_solution.delta,
+                            next_dual_solution.delta);
+    return InnerStepOutcome::kForceNumericalTermination;
+  }
+  current_primal_solution_ = std::move(next_primal_solution.value);
+  current_dual_solution_ = std::move(next_dual_solution.value);
+  current_dual_product_ = std::move(next_dual_product);
+  current_primal_delta_ = std::move(next_primal_solution.delta);
+  current_dual_delta_ = std::move(next_dual_solution.delta);
+  primal_average_.Add(current_primal_solution_, /*weight=*/step_size_);
+  dual_average_.Add(current_dual_solution_, /*weight=*/step_size_);
+
+  // Saving the terms from the steering vectors:
+  current_primal_steering_ = std::move(next_primal_steering);
+  current_dual_steering_ = std::move(next_dual_steering);
+  current_dual_steering_product_ = std::move(next_dual_steering_product);
+
   return InnerStepOutcome::kSuccessful;
 }
 
@@ -2916,7 +3162,18 @@ SolverResult Solver::Solve(const IterationType iteration_type,
         outcome = TakeAdaptiveStep();
         break;
       case PrimalDualHybridGradientParams::CONSTANT_STEP_SIZE_RULE:
-        outcome = TakeConstantSizeStep();
+        switch (params_.steering_vector_option()) {
+          case PrimalDualHybridGradientParams::RESIDUAL_MOMENTUM:
+            outcome = TakeConstantSizeStepSteeringResidual();
+            break;
+          case PrimalDualHybridGradientParams::STEERING_VECTOR_UNSPECIFIED:
+            outcome = TakeConstantSizeStep();
+            break;
+          default:
+            LOG(FATAL) << "Unrecognized steering vector option "
+                       << params_.steering_vector_option();
+            break;
+        }
         break;
       default:
         LOG(FATAL) << "Unrecognized linesearch rule "

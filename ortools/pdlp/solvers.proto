@@ -276,6 +276,13 @@ message PrimalDualHybridGradientParams {
     CONSTANT_STEP_SIZE_RULE = 3;
   }
 
+  enum SteeringVectorOption {
+    // No steering vectors applied.
+    STEERING_VECTOR_UNSPECIFIED = 0;
+    // Applies residual momentum steering vectors: 
+    RESIDUAL_MOMENTUM = 1;
+  }
+
   optional TerminationCriteria termination_criteria = 1;
 
   // The number of threads to use. Must be positive.
@@ -479,6 +486,12 @@ message PrimalDualHybridGradientParams {
   // termination criteria.
   //
   optional bool use_feasibility_polishing = 30 [default = false];
+
+  // Steering vector parameters:
+  optional SteeringVectorOption steering_vector_option = 33 [default = STEERING_VECTOR_UNSPECIFIED];
+  optional double steering_vector_kappa = 34 [default = 0.8];
+  optional double steering_vector_lambda = 35 [default = 1.0];
+  optional double similariy_threshold = 36 [default = 0.9];
 
   reserved 13, 14, 15, 20, 21;
 }

@@ -22,9 +22,9 @@
 namespace operations_research {
 void LinearProgrammingExample() {
   // [START solver]
-  std::unique_ptr<MPSolver> solver(MPSolver::CreateSolver("SCIP"));
+  std::unique_ptr<MPSolver> solver(MPSolver::CreateSolver("PDLP"));
   if (!solver) {
-    LOG(WARNING) << "SCIP solver unavailable.";
+    LOG(WARNING) << "PDLP solver unavailable.";
     return;
   }
   // [END solver]
