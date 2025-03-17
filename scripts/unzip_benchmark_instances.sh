@@ -5,7 +5,7 @@ while IFS= read -r line; do
   if [[ $line != \#* ]]; then # Ignore commented lines starting with #.
     instances+=("${line//[$'\t\r\n ']}") # Here we remove the newlines and blank characters from the variable
   fi
-done < "${HOME}/MasterThesisCpp/benchmarking_scripts/netlib_benchmark_instance_list"
+done < "${HOME}/MasterThesisCpp/scripts/netlib_benchmark_instance_list"
 
 for instance in "${instances[@]}" 
 do

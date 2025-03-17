@@ -52,7 +52,7 @@ params="
 
 # Extract all relevant instances:
 instance_path_base="${HOME}/${benchmark}"
-instance_list_path="${HOME}/MasterThesisCpp/benchmarking_scripts/${benchmark}_instance_list"
+instance_list_path="${HOME}/MasterThesisCpp/scripts/${benchmark}_instance_list"
 
 declare -a instances=() 
 while IFS= read -r line; do
@@ -82,7 +82,7 @@ done
 
 echo "All runs complete, creating summary file..."
 
-cd "$HOME/MasterThesisCpp/benchmarking_scripts"
+cd "$HOME/MasterThesisCpp/scripts"
 summary_file="${HOME}/MasterThesisCpp/benchmarking_results/csv_results/${solve_folder_name}.csv"
 python3 parse_log_files.py $base_solve_log_dir $summary_file
 

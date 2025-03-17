@@ -9,9 +9,9 @@
 # POSSIBLE ERROR: On "savsched1" we get -nan in relative duality gap, but still solve it for some reason...
 # Maybe we have made an error, or maybe this will be fixed by introducing some curve-breaking?
 # Dual objective becomes: -inf very quickly, possibly due to the large dual objective coefficients?
-instance="self"
+instance="qap15"
 instance_path="${HOME}/lp_benchmark/${instance}.mps" # We need to have already extracted it from mps.gz
-
+${HOME}/lp_benchmark/qap15.mps
 accuracy="1.0e-4"
 
 iteration_limit=10000
@@ -63,5 +63,5 @@ solve_log_file="${HOME}/MasterThesisCpp/benchmarking_results/solve_logs/log_${ex
 cd "$HOME/MasterThesisCpp"
 echo "Solving $instance..."
 # ./temp_cpp/pdlp_solve/build/bin/pdlp_solve --input $instance_path --params "$params" --solve_log_file $solve_log_file
-./temp_cpp/pdlp_solve/build/bin/pdlp_solve --input $instance_path --params "$params"
+./temp_cpp/pdlp_solve/build/bin/pdlp_solve --input $instance_path # --params "$params"
 
