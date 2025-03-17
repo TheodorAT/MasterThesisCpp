@@ -5,6 +5,7 @@
 # - datt256
 # - savsched1
 # - neos3
+# - karted
 # POSSIBLE ERROR: On "savsched1" we get -nan in relative duality gap, but still solve it for some reason...
 # Maybe we have made an error, or maybe this will be fixed by introducing some curve-breaking?
 # Dual objective becomes: -inf very quickly, possibly due to the large dual objective coefficients?
@@ -44,8 +45,6 @@ params="
     major_iteration_frequency: ${major_iteration_frequency},
     termination_criteria {
         iteration_limit: ${iteration_limit},
-        eps_primal_infeasible: ${accuracy},
-        eps_dual_infeasible: ${accuracy},
         simple_optimality_criteria {
             eps_optimal_absolute: ${accuracy},
             eps_optimal_relative: ${accuracy},
@@ -62,11 +61,7 @@ params="
 solve_log_file="${HOME}/MasterThesisCpp/benchmarking_results/solve_logs/log_${experiment_name}.json"
 # Running the algorithm:
 cd "$HOME/MasterThesisCpp"
-./temp_cpp/pdlp_solve/build/bin/pdlp_solve --input $instance_path --params "$params" --solve_log_file $solve_log_file
- 
-# For instance: 
-# - ./temp_cpp/pdlp_solve/build/bin/pdlp_solve --input $HOME/lp_benchmark/self.mps --params "verbosity_level: 2" 
+echo "Solving $instance..."
+# ./temp_cpp/pdlp_solve/build/bin/pdlp_solve --input $instance_path --params "$params" --solve_log_file $solve_log_file
+./temp_cpp/pdlp_solve/build/bin/pdlp_solve --input $instance_path --params "$params"
 
-
-# Additional option, for logging in different file, future: :
-# --solve_log_file
