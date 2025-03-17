@@ -8,7 +8,7 @@
 # POSSIBLE ERROR: On "savsched1" we get -nan in relative duality gap, but still solve it for some reason...
 # Maybe we have made an error, or maybe this will be fixed by introducing some curve-breaking?
 # Dual objective becomes: -inf very quickly, possibly due to the large dual objective coefficients?
-instance="savsched1"
+instance="self"
 instance_path="${HOME}/lp_benchmark/${instance}.mps" # We need to have already extracted it from mps.gz
 
 accuracy="1.0e-4"
@@ -17,7 +17,7 @@ iteration_limit=10000
 major_iteration_frequency=40
 verbosity=2
 
-steering_vector_option="RESIDUAL_MOMENTUM"        # Select between: "NO_STEERING_VECTORS", "RESIDUAL_MOMENTUM"
+steering_vector_option="NO_STEERING_VECTORS"        # Select between: "NO_STEERING_VECTORS", "RESIDUAL_MOMENTUM"
 steering_vector_restart_option="STEERING_VECTOR_EVERY_MAJOR_ITERATION"    # Select between: "STEERING_VECTOR_NO_RESTARTS",  
                                                                 # "STEERING_VECTOR_EVERY_MAJOR_ITERATION", "STEERING_VECTOR_EVERY_PDLP_RESTART"
 
@@ -27,13 +27,12 @@ step_size_rule="ADAPTIVE_LINESEARCH_RULE"            # Select between: "CONSTANT
 
 # Suitable experiment name:  
 if [ $steering_vector_option == "NO_STEERING_VECTORS" ]; then
-    experiment_name="${instance}_${accuracy}_PDHG+PrimalWeight"
+    experiment_name="${instance}_${accuracy}_PDLP"
 else 
-    experiment_name="${instance}_${steering_vector_restart_option}"
+    experiment_name="${instance}_${accuracy}_PDLP+Steering_R=${steering_vector_restart_option}"
 fi
 
 # No settings after this point:
-solve_log_file="results/log_files/solve_log_${experiment_name}.textproto"
 # The params passed to the solver:
 params="
     verbosity_level: ${verbosity}, 
@@ -60,8 +59,10 @@ params="
     steering_vector_restart_option: ${steering_vector_restart_option}
 "
 
+solve_log_file="${HOME}/MasterThesisCpp/benchmarking_results/solve_logs/log_${experiment_name}.json"
 # Running the algorithm:
-./temp_cpp/pdlp_solve/build/bin/pdlp_solve --input $instance_path --params "$params" # --solve_log_file $solve_log_file
+cd "$HOME/MasterThesisCpp"
+./temp_cpp/pdlp_solve/build/bin/pdlp_solve --input $instance_path --params "$params" --solve_log_file $solve_log_file
  
 # For instance: 
 # - ./temp_cpp/pdlp_solve/build/bin/pdlp_solve --input $HOME/lp_benchmark/self.mps --params "verbosity_level: 2" 
