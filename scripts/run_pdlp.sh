@@ -6,6 +6,7 @@
 # - savsched1
 # - neos3
 # - karted
+# - qap15 <--- This one should take about 5 seconds. Not more 
 # POSSIBLE ERROR: On "savsched1" we get -nan in relative duality gap, but still solve it for some reason...
 # Maybe we have made an error, or maybe this will be fixed by introducing some curve-breaking?
 # Dual objective becomes: -inf very quickly, possibly due to the large dual objective coefficients?
