@@ -1,0 +1,11 @@
+instance   , termination_reason                , iteration_count, solve_time_sec    , cumulative_kkt_matrix_passes, preprocessing_time_sec, cumulative_rejected_steps
+ts-palko   , TERMINATION_REASON_ITERATION_LIMIT,           10000, 39.62581372900001 ,                        10002,  0.043015244          ,                         2
+neos3      , TERMINATION_REASON_OPTIMAL        ,             600, 13.142073170000002,                          601,  0.12563432600000002  ,                         1
+qap15      , TERMINATION_REASON_OPTIMAL        ,            2400,  1.765239651      ,                         2402,  0.0058996230000000005,                         2
+ex10       , TERMINATION_REASON_OPTIMAL        ,             280,  1.322652436      ,                          286,  0.047407918          ,                         6
+karted     , TERMINATION_REASON_OPTIMAL        ,            6000, 56.115423792      ,                         6004,  0.083782835          ,                         4
+savsched1  , TERMINATION_REASON_OPTIMAL        ,            1080, 25.627609248000002,                         1090,  0.156777366          ,                        10
+datt256    , TERMINATION_REASON_OPTIMAL        ,             640,  8.041248219      ,                          643,  0.092038252          ,                         3
+chrom1024-7, TERMINATION_REASON_OPTIMAL        ,             160,  0.885550224      ,                          163,  0.034654571          ,                         3
+self       , TERMINATION_REASON_OPTIMAL        ,            1200,  3.082505014      ,                         1242,  0.033523383000000004 ,                        42
+nug08-3rd  , TERMINATION_REASON_OPTIMAL        ,             760,  0.788908107      ,                          761,  0.008567699          ,                         1

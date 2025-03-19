@@ -10,19 +10,19 @@
 # POSSIBLE ERROR: On "savsched1" we get -nan in relative duality gap, but still solve it for some reason...
 # Maybe we have made an error, or maybe this will be fixed by introducing some curve-breaking?
 # Dual objective becomes: -inf very quickly, possibly due to the large dual objective coefficients?
-instance="qap15"
+instance="chrom1024-7"
 instance_path="${HOME}/lp_benchmark/${instance}.mps" # We need to have already extracted it from mps.gz
-${HOME}/lp_benchmark/qap15.mps
+
 accuracy="1.0e-4"
 
 iteration_limit=10000
 major_iteration_frequency=40
 verbosity=2
 
-steering_vector_option="NO_STEERING_VECTORS"        # Select between: "NO_STEERING_VECTORS", "RESIDUAL_MOMENTUM"
+steering_vector_option="RESIDUAL_MOMENTUM"        # Select between: "NO_STEERING_VECTORS", "RESIDUAL_MOMENTUM"
 steering_vector_restart_option="STEERING_VECTOR_EVERY_MAJOR_ITERATION"    # Select between: "STEERING_VECTOR_NO_RESTARTS",  
                                                                 # "STEERING_VECTOR_EVERY_MAJOR_ITERATION", "STEERING_VECTOR_EVERY_PDLP_RESTART"
-
+similarity_threshold="0.9"
 use_feasibility_polishing="false"
 restart_policy="ADAPTIVE_HEURISTIC"                        # Select between: "NO_RESTARTS", "ADAPTIVE_HEURISTIC" 
 step_size_rule="ADAPTIVE_LINESEARCH_RULE"            # Select between: "CONSTANT_STEP_SIZE_RULE", "ADAPTIVE_LINESEARCH_RULE"
@@ -56,13 +56,13 @@ params="
     restart_strategy: ${restart_policy}
     use_feasibility_polishing: ${use_feasibility_polishing},
     steering_vector_option: ${steering_vector_option},
-    steering_vector_restart_option: ${steering_vector_restart_option}
+    steering_vector_restart_option: ${steering_vector_restart_option},
+    similarity_threshold: ${similarity_threshold}
 "
 
 solve_log_file="${HOME}/MasterThesisCpp/benchmarking_results/solve_logs/log_${experiment_name}.json"
 # Running the algorithm:
 cd "$HOME/MasterThesisCpp"
 echo "Solving $instance..."
-# ./temp_cpp/pdlp_solve/build/bin/pdlp_solve --input $instance_path --params "$params" --solve_log_file $solve_log_file
-./temp_cpp/pdlp_solve/build/bin/pdlp_solve --input $instance_path # --params "$params"
+./temp_cpp/pdlp_solve/build/bin/pdlp_solve --input $instance_path --params "$params"
 

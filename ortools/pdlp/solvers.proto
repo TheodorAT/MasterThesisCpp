@@ -500,10 +500,11 @@ message PrimalDualHybridGradientParams {
 
   // Steering vector parameters:
   optional SteeringVectorOption steering_vector_option = 33 [default = NO_STEERING_VECTORS];
-  optional double steering_vector_kappa = 34 [default = 0.8];
-  optional double steering_vector_lambda = 35 [default = 1.0];
-  optional double similariy_threshold = 36 [default = 0.9];
-  optional SteeringVectorRestartOption steering_vector_restart_option = 37 [default = STEERING_VECTOR_NO_RESTARTS];
+  optional SteeringVectorRestartOption steering_vector_restart_option = 34 [default = STEERING_VECTOR_NO_RESTARTS];
+  optional double steering_vector_kappa = 35 [default = 0.8];
+  optional double steering_vector_lambda = 36 [default = 1.0];
+  optional double similarity_threshold = 37 [default = 0.9];
+  optional bool absolute_similarity_condition = 38 [default = false];
   // End of steering vector parameters.
 
   reserved 13, 14, 15, 20, 21;

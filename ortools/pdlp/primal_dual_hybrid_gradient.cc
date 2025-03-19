@@ -603,6 +603,8 @@ class Solver {
   double ComputeNonlinearity(const VectorXd& delta_primal,
                              const VectorXd& next_dual_product) const;
 
+  double ComputeSimilarity(const VectorXd& vec1, const VectorXd& vec2) const;
+
   // Creates all the simple-to-compute statistics in stats.
   IterationStats CreateSimpleIterationStats(RestartChoice restart_used) const;
 
@@ -2026,6 +2028,14 @@ double Solver::ComputeNonlinearity(const VectorXd& delta_primal,
       });
 }
 
+// For now, we let this be single-threaded. Maybe make it parallellized later
+double Solver::ComputeSimilarity(const VectorXd& vec1,
+                                 const VectorXd& vec2) const {
+  const double norm_1 = vec1.norm();
+  const double norm_2 = vec2.norm();
+  return vec1.dot(vec2) / (norm_1 * norm_2);
+}
+
 IterationStats Solver::CreateSimpleIterationStats(
     RestartChoice restart_used) const {
   IterationStats stats;
@@ -2693,6 +2703,7 @@ InnerStepOutcome Solver::TakeConstantSizeStepSteeringResidual() {
   VectorXd y_hat_k(dual_size);
   VectorXd y_hat_product_k(primal_size);
 
+  // Calculating the hat iterates:
   ShardedWorkingQp().PrimalSharder().ParallelForEachShard(
       [&](const Sharder::Shard& shard) {
         shard(x_hat_k) =
@@ -2720,8 +2731,6 @@ InnerStepOutcome Solver::TakeConstantSizeStepSteeringResidual() {
       .value = VectorXd(dual_size),
       .delta = VectorXd(dual_size),
   };
-  VectorXd next_primal_steering(primal_size);
-  VectorXd next_dual_steering(dual_size);
 
   // Calculating the next iterates:
   ShardedWorkingQp().PrimalSharder().ParallelForEachShard(
@@ -2742,43 +2751,61 @@ InnerStepOutcome Solver::TakeConstantSizeStepSteeringResidual() {
       });
 
   // Calculating the next steering vectors:
+  VectorXd next_primal_steering(primal_size);
+  VectorXd next_dual_steering(dual_size);
+  VectorXd next_dual_steering_product(primal_size);
+
   const double multiplicative_factor =
       params_.steering_vector_kappa() * (4 - 2 * lambda) / (4 - 2 * lambda);
   const double memory_factor = (2 - 2 * lambda) / (4 - 2 * lambda);
 
-  ShardedWorkingQp().PrimalSharder().ParallelForEachShard(
-      [&](const Sharder::Shard& shard) {
-        shard(next_primal_steering) =
-            multiplicative_factor *
-            ((shard(p_x_k.value) - shard(current_primal_solution_)) -
-             memory_factor * shard(current_primal_steering_));
-      });
-  ShardedWorkingQp().DualSharder().ParallelForEachShard(
-      [&](const Sharder::Shard& shard) {
-        shard(next_dual_steering) =
-            multiplicative_factor *
-            ((shard(p_y_k.value) - shard(current_dual_solution_)) -
-             memory_factor * shard(current_dual_steering_));
-      });
+  VectorXd p_y_product_k = TransposedMatrixVectorProduct(
+    WorkingQp().constraint_matrix, p_y_k.value,
+    ShardedWorkingQp().ConstraintMatrixSharder());
+
+  VectorXd prev_movement(primal_size + dual_size);
+  VectorXd cur_movement(primal_size + dual_size);
+  prev_movement << current_primal_delta_, current_dual_delta_;
+  cur_movement << next_primal_solution.delta, next_dual_solution.delta;
+
+  double similarity = ComputeSimilarity(prev_movement, cur_movement);
+  if (params_.absolute_similarity_condition()) {
+    similarity = fabs(similarity);
+  }
+  if (similarity >= params_.similarity_threshold()) {
+    ShardedWorkingQp().PrimalSharder().ParallelForEachShard(
+        [&](const Sharder::Shard& shard) {
+          shard(next_primal_steering) =
+              multiplicative_factor *
+              ((shard(p_x_k.value) - shard(current_primal_solution_)) -
+               memory_factor * shard(current_primal_steering_));
+
+          shard(next_dual_steering_product) =
+              multiplicative_factor *
+              ((shard(p_y_product_k) - shard(current_dual_product_)) -
+               memory_factor * shard(current_dual_steering_product_));
+        });
+    ShardedWorkingQp().DualSharder().ParallelForEachShard(
+        [&](const Sharder::Shard& shard) {
+          shard(next_dual_steering) =
+              multiplicative_factor *
+              ((shard(p_y_k.value) - shard(current_dual_solution_)) -
+               memory_factor * shard(current_dual_steering_));
+        });
+  } else {
+    next_primal_steering = ZeroVector(ShardedWorkingQp().PrimalSharder());
+    next_dual_steering = ZeroVector(ShardedWorkingQp().DualSharder());
+    next_dual_steering_product = ZeroVector(ShardedWorkingQp().PrimalSharder());
+  }
 
   // Calculating the next matrix products efficiently (without using more than
   // one explicit matrix multiplication):
-  VectorXd p_y_product_k = TransposedMatrixVectorProduct(
-      WorkingQp().constraint_matrix, p_y_k.value,
-      ShardedWorkingQp().ConstraintMatrixSharder());
-
   VectorXd next_dual_product(primal_size);
-  VectorXd next_dual_steering_product(primal_size);
   ShardedWorkingQp().PrimalSharder().ParallelForEachShard(
       [&](const Sharder::Shard& shard) {
         shard(next_dual_product) =
             shard(current_dual_product_) +
             lambda * (shard(p_y_product_k) - shard(y_hat_product_k));
-
-        shard(next_dual_steering_product) =
-            multiplicative_factor *
-            ((shard(p_y_product_k) - shard(current_dual_product_)) -
-             memory_factor * shard(current_dual_steering_product_));
       });
 
   const double movement =
@@ -2800,9 +2827,6 @@ InnerStepOutcome Solver::TakeConstantSizeStepSteeringResidual() {
   current_dual_delta_ = std::move(next_dual_solution.delta);
   primal_average_.Add(current_primal_solution_, /*weight=*/step_size_);
   dual_average_.Add(current_dual_solution_, /*weight=*/step_size_);
-  // std::cout << "Current dual iterate norm: "
-  //           << current_dual_solution_.transpose() * current_dual_solution_
-  //           << "\n";
 
   // Saving the terms from the steering vectors:
   current_primal_steering_ = std::move(next_primal_steering);
@@ -2925,26 +2949,42 @@ InnerStepOutcome Solver::TakeAdaptiveStepSteeringResidual() {
       VectorXd next_primal_steering(primal_size);
       VectorXd next_dual_steering(dual_size);
       VectorXd next_dual_steering_product(primal_size);
-      ShardedWorkingQp().PrimalSharder().ParallelForEachShard(
-          [&](const Sharder::Shard& shard) {
-            shard(next_primal_steering) =
-                multiplicative_factor *
-                ((shard(p_x_k.value) - shard(current_primal_solution_)) -
-                 memory_factor * shard(current_primal_steering_));
 
-            shard(next_dual_steering_product) =
-                multiplicative_factor *
-                ((shard(p_y_product_k) - shard(current_dual_product_)) -
-                 memory_factor * shard(current_dual_steering_product_));
-          });
-      ShardedWorkingQp().DualSharder().ParallelForEachShard(
-          [&](const Sharder::Shard& shard) {
-            shard(next_dual_steering) =
-                multiplicative_factor *
-                ((shard(p_y_k.value) - shard(current_dual_solution_)) -
-                 memory_factor * shard(current_dual_steering_));
-          });
+      VectorXd prev_movement(primal_size + dual_size);
+      VectorXd cur_movement(primal_size + dual_size);
+      prev_movement << current_primal_delta_, current_dual_delta_;
+      cur_movement << next_primal_solution.delta, next_dual_solution.delta;
 
+      double similarity = ComputeSimilarity(prev_movement, cur_movement);
+      if (params_.absolute_similarity_condition()) {
+        similarity = fabs(similarity);
+      }
+      if (similarity >= params_.similarity_threshold()) {
+        ShardedWorkingQp().PrimalSharder().ParallelForEachShard(
+            [&](const Sharder::Shard& shard) {
+              shard(next_primal_steering) =
+                  multiplicative_factor *
+                  ((shard(p_x_k.value) - shard(current_primal_solution_)) -
+                   memory_factor * shard(current_primal_steering_));
+
+              shard(next_dual_steering_product) =
+                  multiplicative_factor *
+                  ((shard(p_y_product_k) - shard(current_dual_product_)) -
+                   memory_factor * shard(current_dual_steering_product_));
+            });
+        ShardedWorkingQp().DualSharder().ParallelForEachShard(
+            [&](const Sharder::Shard& shard) {
+              shard(next_dual_steering) =
+                  multiplicative_factor *
+                  ((shard(p_y_k.value) - shard(current_dual_solution_)) -
+                   memory_factor * shard(current_dual_steering_));
+            });
+      } else {
+        next_primal_steering = ZeroVector(ShardedWorkingQp().PrimalSharder());
+        next_dual_steering = ZeroVector(ShardedWorkingQp().DualSharder());
+        next_dual_steering_product =
+            ZeroVector(ShardedWorkingQp().PrimalSharder());
+      }
       current_primal_solution_ = std::move(next_primal_solution.value);
       current_dual_solution_ = std::move(next_dual_solution.value);
       current_dual_product_ = std::move(next_dual_product);
