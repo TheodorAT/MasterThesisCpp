@@ -1,31 +1,45 @@
 # Select the type of benchmark that we want to run: 
 # Select between "lp_benchmark", "mip_relaxations", "netlib_benchmark"
-benchmark="lp_benchmark"
+benchmark="fast_mip_relaxations"
 
 accuracy="1.0e-4"
 iteration_limit=10000
 major_iteration_frequency=40
 verbosity=2
 
-steering_vector_option="NO_STEERING_VECTORS"        # Select between: "NO_STEERING_VECTORS", "RESIDUAL_MOMENTUM"
+# Select between: "NO_STEERING_VECTORS", "RESIDUAL_MOMENTUM", "POLYAK_MOMENTUM"
+steering_vector_option="RESIDUAL_MOMENTUM"    
 # From a small experiment it seems much better to restart at least every major iteration, 
 # but maybe this freq can change.
-steering_vector_restart_option="STEERING_VECTOR_EVERY_MAJOR_ITERATION"    # Select between: "STEERING_VECTOR_NO_RESTARTS",  
-                                                                # "STEERING_VECTOR_EVERY_MAJOR_ITERATION", "STEERING_VECTOR_EVERY_PDLP_RESTART"
-similarity_threshold=0.95
-absolute_similarity_condition=false 
-# This was not as good as I had hoped, the regular one was better in most cases.
+
+# Select between: "STEERING_VECTOR_NO_RESTARTS", "STEERING_VECTOR_EVERY_MAJOR_ITERATION", 
+# "STEERING_VECTOR_EVERY_PDLP_RESTART"
+steering_vector_restart_option="STEERING_VECTOR_EVERY_MAJOR_ITERATION"    
+
+similarity_threshold=0.1  # Test in range [-1, 1], 
+# but its probably not very interesting below 0...
+
+steering_vector_kappa=0.7 # Test in range [0, 1]: {0, 0.2, 0.4, 0.6, 0.8, 1}
+# results: Seems to be the best at close to 0 (i.e no steering vectors), or around 0.7 without curve-breaking.
+
+steering_vector_lambda=1  # Test in range [0, 1]: {0, 0.2, 0.4, 0.6, 0.8, 1}
+# TODO: For the future, test increasing lambda with iterations, 
+# this requires some more implementation. 
 
 restart_policy="ADAPTIVE_HEURISTIC"         # Select between: "NO_RESTARTS", "ADAPTIVE_HEURISTIC" 
 step_size_rule="ADAPTIVE_LINESEARCH_RULE"   # Select between: "CONSTANT_STEP_SIZE_RULE", "ADAPTIVE_LINESEARCH_RULE"
 use_feasibility_polishing="true"
 
+absolute_similarity_condition=false # This was not as good as I had hoped, the regular one was better in most cases.
+# Idea: Replace with a lower and upper bound instead, 
+# where lower bound should be fairly close to -1.0 in my opinion
+
 # Suitable experiment name:  
 if [ $steering_vector_option == "NO_STEERING_VECTORS" ]; then
     base_experiment_name="PDLP_polish=$use_feasibility_polishing"
 else 
-    base_experiment_name="PDLP+Steering_no_threshold"
-    base_experiment_name="PDLP+Steering_abs_threshold=${similarity_threshold}"
+    base_experiment_name="PDLP+Steering_no_threshold_kappa=${steering_vector_kappa}_lambda=${steering_vector_lambda}"
+    base_experiment_name="PDLP+Steering_kappa=${steering_vector_kappa}_lambda=${steering_vector_lambda}_threshold=${similarity_threshold}"
 fi
 solve_folder_name="${benchmark}_${accuracy}_${base_experiment_name}"
 
@@ -54,10 +68,19 @@ params="
     steering_vector_restart_option: ${steering_vector_restart_option},
     similarity_threshold: ${similarity_threshold},
     absolute_similarity_condition: ${absolute_similarity_condition},
+    steering_vector_kappa: ${steering_vector_kappa},
+    steering_vector_lambda: ${steering_vector_lambda}, 
 "
 
 # Extract all relevant instances:
-instance_path_base="${HOME}/${benchmark}"
+# Getting the path to where the instances are stored:
+if [[ $benchmark == fast_* ]]; then
+  benchmark_location=${benchmark:5:${#benchmark}}
+  instance_path_base="${HOME}/${benchmark_location}"
+else
+  instance_path_base="${HOME}/${benchmark}"
+fi
+
 instance_list_path="${HOME}/MasterThesisCpp/scripts/${benchmark}_instance_list"
 
 declare -a instances=() 
@@ -78,11 +101,10 @@ for INSTANCE in "${instances[@]}"
 do
   instance_path="${instance_path_base}/${INSTANCE}.mps"
   solve_log_file="${base_solve_log_dir}/${INSTANCE}.json"
-  echo "Solving ${INSTANCE}..."
   if [ ! -f $instance_path ]; then
     echo "Did not find file at $instance_path"
   else 
-    # echo "temp"
+    echo "Solving ${INSTANCE}..."
     ./temp_cpp/pdlp_solve/build/bin/pdlp_solve --input $instance_path --params "${params}" --solve_log_file "${solve_log_file}"
   fi 
 done

@@ -1,3 +1,16 @@
+# The files that I (Theo) have edited in the implementation: 
+
+- ortools/pdlp/primal_dual_hybrid_gradient.cc
+- ortools/pdlp/solvers.proto
+
+The functions changed in primal_dual_hybrid_gradient.cc: 
+
+The step functions: 
+ - ComputeNextPrimalSolutionFromInput
+ - ComputeNextDualSolutionFromInput
+ - TakeConstantSizeStepSteeringResidual
+ - And its variants.
+
 # OR-Tools - Google Optimization Tools
 
 [![PyPI version](https://img.shields.io/pypi/v/ortools.svg)](https://pypi.org/project/ortools/)

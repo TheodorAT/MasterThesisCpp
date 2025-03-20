@@ -281,6 +281,8 @@ message PrimalDualHybridGradientParams {
     NO_STEERING_VECTORS = 0;
     // Applies residual momentum steering vectors: 
     RESIDUAL_MOMENTUM = 1;
+    // Applies Polyak momentum, not as a steering vector but this enum is used out of convenience for now.option
+    POLYAK_MOMENTUM = 2;
   }
 
   enum SteeringVectorRestartOption {
@@ -503,9 +505,17 @@ message PrimalDualHybridGradientParams {
   optional SteeringVectorRestartOption steering_vector_restart_option = 34 [default = STEERING_VECTOR_NO_RESTARTS];
   optional double steering_vector_kappa = 35 [default = 0.8];
   optional double steering_vector_lambda = 36 [default = 1.0];
-  optional double similarity_threshold = 37 [default = 0.9];
-  optional bool absolute_similarity_condition = 38 [default = false];
+  optional bool exact_residual_momentum = 37 [default = false];
   // End of steering vector parameters.
+
+  // Curve-breaking parameters:
+  optional double similarity_threshold = 38 [default = 0.9];
+  optional bool absolute_similarity_condition = 39 [default = false];
+  optional bool similarity_scaling = 40 [default = false];  
+  // End of curve-breaking parameters.
+
+  // Momentum scaling parameter: 
+  optional double momentum_scaling = 41 [default = 0.3];
 
   reserved 13, 14, 15, 20, 21;
 }

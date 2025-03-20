@@ -1,0 +1,56 @@
+instance      , termination_reason                , iteration_count, solve_time_sec           , cumulative_kkt_matrix_passes, preprocessing_time_sec, cumulative_rejected_steps
+netlarge1     , TERMINATION_REASON_ITERATION_LIMIT,           10000, 3054.6669402370003       ,                        10133,  5.313749288          ,                       133
+ts-palko      , TERMINATION_REASON_ITERATION_LIMIT,           10000,   36.102414928           ,                        10017,  0.060538949          ,                        17
+neos-5251015  , TERMINATION_REASON_OPTIMAL        ,               0,    0.000261146           ,                            0,  0.000256477          ,                         0
+ds-big        , TERMINATION_REASON_ITERATION_LIMIT,           10000,  143.63243461300002      ,                        10206,  0.179096052          ,                       206
+cont1         , TERMINATION_REASON_ITERATION_LIMIT,           10000,   32.458240121           ,                        10206,  0.051175099          ,                       206
+long15        , TERMINATION_REASON_OPTIMAL        ,            3080,   72.794532415           ,                         3121,  0.283486243          ,                        41
+neos3         , TERMINATION_REASON_OPTIMAL        ,             480,    7.003419335           ,                          485,  0.238829267          ,                         5
+qap15         , TERMINATION_REASON_OPTIMAL        ,            2360,    1.491627042           ,                         2362,  0.007395657000000001 ,                         2
+s250r10       , TERMINATION_REASON_ITERATION_LIMIT,           10000,   91.39826411700001      ,                        10132,  0.13553489100000002  ,                       132
+L1_sixm1000obs, TERMINATION_REASON_ITERATION_LIMIT,           10000, 1131.314126939           ,                        10017,  2.3452041020000003   ,                        17
+stormG2_1000  , TERMINATION_REASON_ITERATION_LIMIT,           10000,  394.195830069           ,                        10109,  0.412703284          ,                       109
+neos          , TERMINATION_REASON_ITERATION_LIMIT,           10000,   99.91512216900001      ,                        10253,  0.12522158           ,                       253
+i_n13         , TERMINATION_REASON_ITERATION_LIMIT,           10000,  168.38411914500003      ,                        10306,  0.17208009500000002  ,                       306
+neos-3025225  , TERMINATION_REASON_OPTIMAL        ,               0,    0.000297686           ,                            0,  0.000292907          ,                         0
+ex10          , TERMINATION_REASON_OPTIMAL        ,             360,    1.696459139           ,                          366,  0.057073056000000004 ,                         6
+rmine15       , TERMINATION_REASON_OPTIMAL        ,               0,    0.0020897220000000005 ,                            0,  0.0020850530000000003,                         0
+support10     , TERMINATION_REASON_ITERATION_LIMIT,           10000,   40.25768911200001      ,                        10201,  0.049152693000000004 ,                       201
+neos5052403   , TERMINATION_REASON_OPTIMAL        ,            7000,   83.305812263           ,                         7290,  0.15687499300000002  ,                       290
+cont11        , TERMINATION_REASON_ITERATION_LIMIT,           10000,   39.036692365           ,                        10130,  0.049436435          ,                       130
+Linf_520c     , TERMINATION_REASON_ITERATION_LIMIT,           10000,   37.025064114           ,                        10001,  0.049742761          ,                         1
+karted        , TERMINATION_REASON_OPTIMAL        ,            6240,   48.221097571           ,                         6275,  0.122819616          ,                        35
+s82           , TERMINATION_REASON_OPTIMAL        ,               0,    0.000866942           ,                            0,  0.000860671          ,                         0
+netlarge2     , TERMINATION_REASON_ITERATION_LIMIT,           10000,  328.940459127           ,                        10040,  0.402662621          ,                        40
+s100          , TERMINATION_REASON_ITERATION_LIMIT,           10000,  129.636913394           ,                        10197,  0.200343136          ,                       197
+lo10          , TERMINATION_REASON_OPTIMAL        ,            1000,   14.083732113           ,                         1002,  0.131601724          ,                         2
+savsched1     , TERMINATION_REASON_OPTIMAL        ,             840,   17.531341953000002     ,                          878,  0.29543430200000004  ,                        38
+netlarge6     , TERMINATION_REASON_ITERATION_LIMIT,           10000, 7568.694803479001        ,                        10112,  9.097347337          ,                       112
+rail4284      , TERMINATION_REASON_OPTIMAL        ,            2938,  197.105075675           ,                         2998,  1.115423239          ,                        60
+set-cover     , TERMINATION_REASON_OPTIMAL        ,            4809,  894.564465775           ,                         5022,  2.638841621          ,                       213
+fome13        , TERMINATION_REASON_OPTIMAL        ,            8760,   31.470551528           ,                         8949,  0.07245485900000001  ,                       189
+square41      , TERMINATION_REASON_ITERATION_LIMIT,           10000,  393.28245772200006      ,                        10352,  0.599360014          ,                       352
+16_n14        , TERMINATION_REASON_ITERATION_LIMIT,           10000,   60.689371200000004     ,                        10375,  0.059420431          ,                       375
+rail02        , TERMINATION_REASON_ITERATION_LIMIT,           10000,   93.844523766           ,                        10050,  0.093972997          ,                        50
+scpm1         , TERMINATION_REASON_OPTIMAL        ,               0,    0.00038458100000000005,                            0,  0.000379952          ,                         0
+shs1023       , TERMINATION_REASON_ITERATION_LIMIT,           10000,  136.69134474            ,                        10102,  0.16269983400000002  ,                       102
+graph40-40    , TERMINATION_REASON_OPTIMAL        ,               0,    0.000354524           ,                            0,  0.000349815          ,                         0
+degme         , TERMINATION_REASON_ITERATION_LIMIT,           10000,  397.420677214           ,                        10057,  0.48125070700000006  ,                        57
+square15      , TERMINATION_REASON_ITERATION_LIMIT,           10000,  319.55049509900005      ,                        10184,  0.31216420300000003  ,                       184
+datt256       , TERMINATION_REASON_OPTIMAL        ,             400,    4.893890311           ,                          403,  0.192328212          ,                         3
+ns1688926     , TERMINATION_REASON_ITERATION_LIMIT,           10000,   42.799336607           ,                        10005,  0.060807134000000006 ,                         5
+chrom1024-7   , TERMINATION_REASON_OPTIMAL        ,             280,    1.284989681           ,                          291,  0.040096570000000005 ,                        11
+psched3-3     , TERMINATION_REASON_ITERATION_LIMIT,           10000,   81.378320779           ,                        10375,  0.106897686          ,                       375
+ns1687037     , TERMINATION_REASON_ITERATION_LIMIT,           10000,   48.606404681           ,                        10002,  0.070819748          ,                         2
+buildingenergy, TERMINATION_REASON_ITERATION_LIMIT,           10000,   82.35348047900001      ,                        10316,  0.095624544          ,                       316
+self          , TERMINATION_REASON_OPTIMAL        ,             754,    2.3679725339999997    ,                          804,  0.038952576          ,                        50
+wide15        , TERMINATION_REASON_OPTIMAL        ,            3080,   75.288844118           ,                         3121,  0.27985908400000004  ,                        41
+irish-e       , TERMINATION_REASON_ITERATION_LIMIT,           10000,   35.16558043            ,                        10253,  0.042085691          ,                       253
+tp-6          , TERMINATION_REASON_ITERATION_LIMIT,           10000,  595.477703958           ,                        10135,  1.2049560350000001   ,                       135
+L1_sixm250obs , TERMINATION_REASON_OPTIMAL        ,            8920,  269.23108435500006      ,                         8923,  0.37927273100000003  ,                         3
+stat96v1      , TERMINATION_REASON_OPTIMAL        ,            6760,   38.124467075           ,                         6761,  0.063565626          ,                         1
+netlarge3     , TERMINATION_REASON_ITERATION_LIMIT,           10000, 1779.0736453410002       ,                        10193,  3.419512359          ,                       193
+stp3d         , TERMINATION_REASON_OPTIMAL        ,            3360,   28.951948595000005     ,                         3381,  0.10978413000000001  ,                        21
+pds-100       , TERMINATION_REASON_OPTIMAL        ,            9440,  168.89839865000002      ,                         9458,  0.200972846          ,                        18
+fhnw-bin0     , TERMINATION_REASON_OPTIMAL        ,               0,    0.00025238            ,                            0,  0.000248572          ,                         0
+nug08-3rd     , TERMINATION_REASON_OPTIMAL        ,             840,    0.831215716           ,                          842,  0.011457747          ,                         2
