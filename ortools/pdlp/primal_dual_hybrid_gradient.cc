@@ -2763,7 +2763,7 @@ InnerStepOutcome Solver::TakeConstantSizeStepSteeringResidual() {
   VectorXd next_dual_steering(dual_size);
   VectorXd next_dual_steering_product(primal_size);
 
-  const double multiplicative_factor =
+  double multiplicative_factor =
       params_.steering_vector_kappa() * (4 - 2 * lambda) / 2;
   const double memory_factor = (2 - 2 * lambda) / (4 - 2 * lambda);
 
@@ -2781,6 +2781,10 @@ InnerStepOutcome Solver::TakeConstantSizeStepSteeringResidual() {
     similarity = fabs(similarity);
   }
   if (similarity >= params_.similarity_threshold()) {
+    if (params_.similarity_scaling()) {
+      multiplicative_factor *= similarity;
+    }
+    
     ShardedWorkingQp().PrimalSharder().ParallelForEachShard(
         [&](const Sharder::Shard& shard) {
           shard(next_primal_steering) =
@@ -2948,7 +2952,7 @@ InnerStepOutcome Solver::TakeAdaptiveStepSteeringResidual() {
                          : std::numeric_limits<double>::infinity();
 
     if (step_size_ <= step_size_limit) {
-      const double multiplicative_factor =
+      double multiplicative_factor =
           params_.steering_vector_kappa() * (4 - 2 * lambda) / 2;
       const double memory_factor = (2 - 2 * lambda) / (4 - 2 * lambda);
 
@@ -2968,6 +2972,9 @@ InnerStepOutcome Solver::TakeAdaptiveStepSteeringResidual() {
         similarity = fabs(similarity);
       }
       if (similarity >= params_.similarity_threshold()) {
+        if (params_.similarity_scaling) {
+          multiplicative_factor *= similarity;
+        }
         ShardedWorkingQp().PrimalSharder().ParallelForEachShard(
             [&](const Sharder::Shard& shard) {
               shard(next_primal_steering) =
@@ -3139,7 +3146,7 @@ InnerStepOutcome Solver::TakeAdaptiveStepSteeringResidualExact() {
                          : std::numeric_limits<double>::infinity();
 
     if (step_size_ <= step_size_limit) {
-      const double multiplicative_factor =
+      double multiplicative_factor =
           params_.steering_vector_kappa() * (4 - 2 * lambda) / 2;
       const double memory_factor = (2 - 2 * lambda) / (4 - 2 * lambda);
 
@@ -3158,6 +3165,9 @@ InnerStepOutcome Solver::TakeAdaptiveStepSteeringResidualExact() {
         similarity = fabs(similarity);
       }
       if (similarity >= params_.similarity_threshold()) {
+        if (params_.similarity_scaling()) {
+          multiplicative_factor *= similarity;
+        }
         ShardedWorkingQp().PrimalSharder().ParallelForEachShard(
             [&](const Sharder::Shard& shard) {
               shard(next_primal_steering) =

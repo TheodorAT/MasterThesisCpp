@@ -1,6 +1,6 @@
 # Select the type of benchmark that we want to run: 
 # Select between "lp_benchmark", "mip_relaxations", "netlib_benchmark"
-benchmark="fast_mip_relaxations"
+benchmark="fast_lp_benchmark"
 
 accuracy="1.0e-4"
 iteration_limit=10000
@@ -99,13 +99,23 @@ cd "$HOME/MasterThesisCpp"
 
 for INSTANCE in "${instances[@]}" 
 do
-  instance_path="${instance_path_base}/${INSTANCE}.mps"
+  instance_path_zipped="${instance_path_base}/${INSTANCE}.mps.gz"
   solve_log_file="${base_solve_log_dir}/${INSTANCE}.json"
-  if [ ! -f $instance_path ]; then
-    echo "Did not find file at $instance_path"
+  if [ ! -f $instance_path_zipped ]; then
+    echo "Did not find file at $instance_path_zipped"
   else 
-    echo "Solving ${INSTANCE}..."
-    ./temp_cpp/pdlp_solve/build/bin/pdlp_solve --input $instance_path --params "${params}" --solve_log_file "${solve_log_file}"
+    echo "Unzipping $instance_path_zipped"...
+    gunzip -k $instance_path_zipped
+    
+    instance_path="${instance_path_base}/${INSTANCE}.mps"
+    if [ ! -f $instance_path ]; then
+      echo "Did not find unzipped file at $instance_path"
+    else 
+      echo "Solving ${INSTANCE}..."
+      # ./temp_cpp/pdlp_solve/build/bin/pdlp_solve --input $instance_path --params "${params}" --solve_log_file "${solve_log_file}"
+      echo "Solved, deleting unzipped file to save storage... "
+      rm $instance_path
+    fi
   fi 
 done
 
