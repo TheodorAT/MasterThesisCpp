@@ -1,0 +1,12 @@
+# A benchmark for tuning the algorithms, selected instances 
+# which are fairly fast. Mostly used for prototyping.  
+neos3   
+chrom1024-7
+ex10
+datt256
+nug08-3rd
+qap15
+savsched1
+self
+karted
+ts-palko
