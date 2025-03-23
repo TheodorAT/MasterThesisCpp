@@ -8,7 +8,7 @@ major_iteration_frequency=40
 verbosity=2
 
 # Select between: "NO_STEERING_VECTORS", "RESIDUAL_MOMENTUM", "POLYAK_MOMENTUM"
-steering_vector_option="NO_STEERING_VECTORS"    
+steering_vector_option="RESIDUAL_MOMENTUM"    
 # From a small experiment it seems much better to restart at least every major iteration, 
 # but maybe this freq can change.
 
