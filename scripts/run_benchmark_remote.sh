@@ -1,6 +1,6 @@
 # Select the type of benchmark that we want to run: 
 # Select between "lp_benchmark", "mip_relaxations", "netlib_benchmark"
-benchmark="mip_relaxations"
+benchmark="lp_benchmark"
 
 accuracy="1.0e-4"
 iteration_limit=100000
