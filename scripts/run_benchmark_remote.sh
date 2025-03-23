@@ -1,9 +1,10 @@
 # Select the type of benchmark that we want to run: 
 # Select between "lp_benchmark", "mip_relaxations", "netlib_benchmark"
-benchmark="fast_lp_benchmark"
+benchmark="mip_relaxations"
 
 accuracy="1.0e-4"
-iteration_limit=10000
+iteration_limit=100000
+time_sec_limit=900
 major_iteration_frequency=40
 verbosity=2
 
@@ -16,10 +17,10 @@ steering_vector_option="RESIDUAL_MOMENTUM"
 # "STEERING_VECTOR_EVERY_PDLP_RESTART"
 steering_vector_restart_option="STEERING_VECTOR_EVERY_MAJOR_ITERATION"    
 
-similarity_threshold=0.9  # Test in range [-1, 1], 
+similarity_threshold=0.6  # Test in range [-1, 1], 
 # but its probably not very interesting below 0...
 
-steering_vector_kappa=0.3 # Test in range [0, 1]: {0, 0.2, 0.4, 0.6, 0.8, 1}
+steering_vector_kappa=0.8 # Test in range [0, 1]: {0, 0.2, 0.4, 0.6, 0.8, 1}
 # results: Seems to be the best at close to 0 (i.e no steering vectors), or around 0.7 without curve-breaking.
 
 steering_vector_lambda=1  # Test in range [0, 1]: {0, 0.2, 0.4, 0.6, 0.8, 1}
@@ -55,6 +56,7 @@ params="
     major_iteration_frequency: ${major_iteration_frequency},
     termination_criteria {
         iteration_limit: ${iteration_limit},
+        time_sec_limit: ${time_sec_limit},
         simple_optimality_criteria {
             eps_optimal_absolute: ${accuracy},
             eps_optimal_relative: ${accuracy},
@@ -103,16 +105,18 @@ do
   solve_log_file="${base_solve_log_dir}/${INSTANCE}.json"
   if [ ! -f $instance_path_zipped ]; then
     echo "Did not find file at $instance_path_zipped"
-  else 
+  elif [ -f $solve_log_file ]; then 
+    echo "Found existing solve log $solve_log_file$, skipping identical solve..."
+  else   
     echo "Unzipping $instance_path_zipped"...
-    gunzip -k $instance_path_zipped
+    echo "N" | gunzip -k $instance_path_zipped
     
     instance_path="${instance_path_base}/${INSTANCE}.mps"
     if [ ! -f $instance_path ]; then
       echo "Did not find unzipped file at $instance_path"
     else 
       echo "Solving ${INSTANCE}..."
-      # ./temp_cpp/pdlp_solve/build/bin/pdlp_solve --input $instance_path --params "${params}" --solve_log_file "${solve_log_file}"
+      ./temp_cpp/pdlp_solve/build/bin/pdlp_solve --input $instance_path --params "${params}" --solve_log_file "${solve_log_file}"
       echo "Solved, deleting unzipped file to save storage... "
       rm $instance_path
     fi
@@ -122,7 +126,7 @@ done
 echo "All runs complete, creating summary file..."
 
 cd "$HOME/MasterThesisCpp/scripts"
-summary_file="${HOME}/MasterThesisCpp/benchmarking_results/csv_results/${solve_folder_name}.csv"
+summary_file="${HOME}/MasterThesisCpp/benchmarking_results/remote_benchmark_results/${solve_folder_name}.csv"
 python3 parse_log_files.py $base_solve_log_dir $summary_file
 
 echo "Done"
