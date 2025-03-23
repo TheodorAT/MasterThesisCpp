@@ -4,12 +4,11 @@ benchmark="mip_relaxations"
 
 accuracy="1.0e-4"
 iteration_limit=100000
-time_sec_limit=900
 major_iteration_frequency=40
 verbosity=2
 
 # Select between: "NO_STEERING_VECTORS", "RESIDUAL_MOMENTUM", "POLYAK_MOMENTUM"
-steering_vector_option="RESIDUAL_MOMENTUM"    
+steering_vector_option="NO_STEERING_VECTORS"    
 # From a small experiment it seems much better to restart at least every major iteration, 
 # but maybe this freq can change.
 
@@ -56,7 +55,6 @@ params="
     major_iteration_frequency: ${major_iteration_frequency},
     termination_criteria {
         iteration_limit: ${iteration_limit},
-        time_sec_limit: ${time_sec_limit},
         simple_optimality_criteria {
             eps_optimal_absolute: ${accuracy},
             eps_optimal_relative: ${accuracy},
