@@ -1,384 +1,379 @@
-instance                   , termination_reason                  , iteration_count, solve_time_sec         , cumulative_kkt_matrix_passes, preprocessing_time_sec, cumulative_rejected_steps
-ger50-17-trans-pop-3t      , TERMINATION_REASON_OPTIMAL          ,           13960,   3.9117660880000003   ,                        14191,  0.00544897           ,                       231
-bab3                       , TERMINATION_REASON_OPTIMAL          ,           10840,  89.062440224          ,                        10942,  0.10420841           ,                       102
-opm2-z10-s4                , TERMINATION_REASON_OPTIMAL          ,            1600,   2.680530971          ,                         1646,  0.018942975          ,                        46
-gmut-75-50                 , TERMINATION_REASON_ITERATION_LIMIT  ,          100000, 116.83284523100001     ,                       101433,  0.018459089          ,                      1433
-iis-hc-cov                 , TERMINATION_REASON_OPTIMAL          ,             960,   0.180075793          ,                          997,  0.003667558          ,                        37
-uccase7                    , TERMINATION_REASON_OPTIMAL          ,             880,   0.75332328           ,                          893,  0.012605469000000001 ,                        13
-supportcase10              , TERMINATION_REASON_OPTIMAL          ,           11000,  19.363559514000002    ,                        11223,  0.023882505000000002 ,                       223
-neos-3402294-bobin         , TERMINATION_REASON_OPTIMAL          ,             200,   1.8592076750000002   ,                          203,  0.086501114          ,                         3
-graphdraw-grafo2           , TERMINATION_REASON_OPTIMAL          ,             360,   0.8544576380000001   ,                          369,  0.026715499          ,                         9
-buildingenergy             , TERMINATION_REASON_OPTIMAL          ,           10160,  39.845531166          ,                        10478,  0.045764252000000005 ,                       318
-wnq-n100-mw99-14           , TERMINATION_REASON_OPTIMAL          ,            1360,  11.157127992          ,                         1419,  0.09314602400000001  ,                        59
-neos-5114902-kasavu        , TERMINATION_REASON_OPTIMAL          ,             480,   9.909443414          ,                          499,  0.20584027200000002  ,                        19
-neos-876808                , TERMINATION_REASON_OPTIMAL          ,           10920,  22.625965254000004    ,                        11122,  0.026552202          ,                       202
-mushroom-best              , TERMINATION_REASON_OPTIMAL          ,            4560,   1.1201808000000002   ,                         4688,  0.005047776          ,                       128
-scpk4                      , TERMINATION_REASON_OPTIMAL          ,            1240,   3.748731767          ,                         1261,  0.038963583          ,                        21
-triptim7                   , TERMINATION_REASON_OPTIMAL          ,           28200,  20.700986753000002    ,                        28487,  0.012570742000000001 ,                       287
-mzzv11                     , TERMINATION_REASON_ITERATION_LIMIT  ,          100000,  27.554617245000003    ,                       100398,  0.004504800000000001 ,                       398
-circ10-3                   , TERMINATION_REASON_OPTIMAL          ,             240,   0.148785303          ,                          252,  0.008568021          ,                        12
-piperout-d20               , TERMINATION_REASON_OPTIMAL          ,           53240,  16.365480645          ,                        53563,  0.005482941000000001 ,                       323
-neos-3354841-apure         , TERMINATION_REASON_OPTIMAL          ,            5120,  48.002493689          ,                         5309,  0.134845455          ,                       189
-neos-5189128-totara        , TERMINATION_REASON_OPTIMAL          ,               0,   0.040220562          ,                            0,  0.038926945000000004 ,                         0
-sp98ic                     , TERMINATION_REASON_OPTIMAL          ,            4378,   1.473112974          ,                         4539,  0.0072033900000000005,                       161
-neos-3695882-vesdre        , TERMINATION_REASON_OPTIMAL          ,             360,   0.834536496          ,                          363,  0.025739533000000002 ,                         3
-in                         , TERMINATION_REASON_OPTIMAL          ,            1440,  67.57709703100001     ,                         1490,  0.425335277          ,                        50
-ns930473                   , TERMINATION_REASON_OPTIMAL          ,               0,   0.0050627020000000005,                            0,  0.004897196          ,                         0
-bab6                       , TERMINATION_REASON_OPTIMAL          ,            5560,  15.881160152000001    ,                         5659,  0.038760496000000005 ,                        99
-physiciansched3-4          , TERMINATION_REASON_ITERATION_LIMIT  ,          100000, 316.419622606          ,                       100404,  0.042717991000000004 ,                       404
-satellites2-40             , TERMINATION_REASON_OPTIMAL          ,           53560,  27.163825376000002    ,                        53633,  0.008707889          ,                        73
-fastxgemm-n3r22s4t6        , TERMINATION_REASON_OPTIMAL          ,            1040,   2.8365883960000002   ,                         1045,  0.03332748           ,                         5
-neos-5076235-embley        , TERMINATION_REASON_OPTIMAL          ,             720,   1.622824845          ,                          742,  0.030862940000000002 ,                        22
-triptim2                   , TERMINATION_REASON_ITERATION_LIMIT  ,          100000,  73.349998778          ,                       100223,  0.012599705000000001 ,                       223
-sing5                      , TERMINATION_REASON_OPTIMAL          ,            9200,  18.183707874          ,                         9297,  0.025861133          ,                        97
-sing11                     , TERMINATION_REASON_OPTIMAL          ,            3600,   9.088331592000001    ,                         3674,  0.030086189000000003 ,                        74
-neos-5118851-kowhai        , TERMINATION_REASON_OPTIMAL          ,             720,  12.532909125          ,                          751,  0.18012108000000002  ,                        31
-fhnw-binschedule2          , TERMINATION_REASON_OPTIMAL          ,            5120,   1.48681303           ,                         5204,  0.005657743000000001 ,                        84
-nursesched-sprint02        , TERMINATION_REASON_OPTIMAL          ,            1440,   0.37496582500000003  ,                         1483,  0.004721586000000001 ,                        43
-neos-4533806-waima         , TERMINATION_REASON_OPTIMAL          ,           59640, 159.49143309800002     ,                        59844,  0.039121059          ,                       204
-neos-848589                , TERMINATION_REASON_OPTIMAL          ,            3320,  20.693011623000004    ,                         3332,  0.07049912700000001  ,                        12
-scpl4                      , TERMINATION_REASON_OPTIMAL          ,            1600,  11.744604805          ,                         1621,  0.095238505          ,                        21
-mzzv42z                    , TERMINATION_REASON_ITERATION_LIMIT  ,          100000,  30.406672464000003    ,                       100986,  0.004956135          ,                       986
-dolom1                     , TERMINATION_REASON_OPTIMAL          ,               0,   0.005227822000000001 ,                            0,  0.0050442410000000005,                         0
-gfd-schedulen180f7d50m30k18, TERMINATION_REASON_OPTIMAL          ,            3480,  22.725825313          ,                         3541,  0.075277169          ,                        61
-neos-5123665-limmat        , TERMINATION_REASON_OPTIMAL          ,            2000,  33.81647319           ,                         2024,  0.19095898600000002  ,                        24
-gmut-76-40                 , TERMINATION_REASON_ITERATION_LIMIT  ,          100000,  29.272100301          ,                       101282,  0.005647761          ,                      1282
-woodlands09                , TERMINATION_REASON_OPTIMAL          ,            2120,  18.726288285          ,                         2129,  0.099875875          ,                         9
-square23                   , TERMINATION_REASON_OPTIMAL          ,           16240,  21.143934164          ,                        16699,  0.022282026          ,                       459
-neos-3209462-rhin          , TERMINATION_REASON_OPTIMAL          ,             640,   1.293280299          ,                          654,  0.023913416          ,                        14
-n2seq36q                   , TERMINATION_REASON_OPTIMAL          ,            1160,   0.41020265100000003  ,                         1183,  0.005390402000000001 ,                        23
-fhnw-schedule-pairb400     , TERMINATION_REASON_OPTIMAL          ,             920,   5.717947288          ,                          958,  0.064906092          ,                        38
-leo1                       , TERMINATION_REASON_PRIMAL_INFEASIBLE,              40,   0.015010312          ,                           47,  0.003242449          ,                         7
-shs1023                    , TERMINATION_REASON_ITERATION_LIMIT  ,          100000, 567.159510112          ,                       100982,  0.064276713          ,                       982
-unitcal_7                  , TERMINATION_REASON_OPTIMAL          ,           32880,  14.495196405000002    ,                        32899,  0.007520981          ,                        19
-neos-3237086-abava         , TERMINATION_REASON_OPTIMAL          ,             200,   0.24104723600000003  ,                          210,  0.013003121000000001 ,                        10
-cmflsp40-36-2-10           , TERMINATION_REASON_OPTIMAL          ,            2040,   1.103756458          ,                         2105,  0.009523334000000001 ,                        65
-satellites2-60-fs          , TERMINATION_REASON_OPTIMAL          ,           45560,  16.357739142          ,                        45642,  0.006150056          ,                        82
-30n20b8                    , TERMINATION_REASON_ITERATION_LIMIT  ,          100000,  17.318589004          ,                       100129,  0.003597171          ,                       129
-rmine25                    , TERMINATION_REASON_OPTIMAL          ,            4640, 220.44427641900003     ,                         4653,  0.42898832200000003  ,                        13
-neos-3322547-alsek         , TERMINATION_REASON_OPTIMAL          ,            3440,  41.569154477000005    ,                         3498,  0.129079204          ,                        58
-dc1l                       , TERMINATION_REASON_OPTIMAL          ,            3160,   2.521757592          ,                         3220,  0.013278944          ,                        60
-ns1644855                  , TERMINATION_REASON_OPTIMAL          ,           19040,  66.64605123199999     ,                        19518,  0.052188088          ,                       478
-academictimetablebig       , TERMINATION_REASON_OPTIMAL          ,            2280,  10.47009088           ,                         2318,  0.054833389          ,                        38
-sorrell3                   , TERMINATION_REASON_OPTIMAL          ,              40,   0.23977877500000003  ,                           42,  0.019213791          ,                         2
-map14860-20                , TERMINATION_REASON_OPTIMAL          ,            9200,  40.424294951          ,                         9254,  0.058856096000000004 ,                        54
-d20200                     , TERMINATION_REASON_OPTIMAL          ,            3560,   0.7106523480000001   ,                         3731,  0.0041296250000000005,                       171
-supportcase43              , TERMINATION_REASON_OPTIMAL          ,             360,   2.310808145          ,                          361,  0.052535155          ,                         1
-core4872-1529              , TERMINATION_REASON_OPTIMAL          ,               0,   0.008275845          ,                            0,  0.00792998           ,                         0
-neos-5118834-korana        , TERMINATION_REASON_OPTIMAL          ,            3960,  46.180320839000004    ,                         4010,  0.136009084          ,                        50
-neos-780889                , TERMINATION_REASON_OPTIMAL          ,            2080,   5.0640352250000005   ,                         2092,  0.029005356000000003 ,                        12
-supportcase7               , TERMINATION_REASON_ITERATION_LIMIT  ,          100000, 520.5970136620001      ,                       100795,  0.075970823          ,                       795
-v150d30-2hopcds            , TERMINATION_REASON_OPTIMAL          ,             640,   0.126907977          ,                          657,  0.003146437          ,                        17
-graph40-40-1rand           , TERMINATION_REASON_OPTIMAL          ,             212,   1.6014541380000002   ,                          214,  0.057561221          ,                         2
-neos-932721                , TERMINATION_REASON_OPTIMAL          ,             520,   0.172831478          ,                          527,  0.004886553          ,                         7
-supportcase42              , TERMINATION_REASON_OPTIMAL          ,            4240,   2.5066337520000004   ,                         4315,  0.011026068          ,                        75
-nj3                        , TERMINATION_REASON_OPTIMAL          ,               0,   0.022743302          ,                            0,  0.021692909          ,                         0
-neos-957143                , TERMINATION_REASON_OPTIMAL          ,             600,   0.6057830740000001   ,                          617,  0.013909743          ,                        17
-radiationm40-10-02         , TERMINATION_REASON_ITERATION_LIMIT  ,          100000, 265.440145022          ,                       100044,  0.032608443          ,                        44
-ns1456591                  , TERMINATION_REASON_OPTIMAL          ,            6800,   1.4529104640000001   ,                         6964,  0.004454576          ,                       164
-neos-3437289-erdre         , TERMINATION_REASON_OPTIMAL          ,               0,   0.003965064000000001 ,                            0,  0.0038262060000000004,                         0
-neos-662469                , TERMINATION_REASON_OPTIMAL          ,            4840,   1.431890842          ,                         4953,  0.005442625          ,                       113
-cmflsp60-36-2-6            , TERMINATION_REASON_OPTIMAL          ,            2000,   1.908097838          ,                         2070,  0.014812758          ,                        70
-chromaticindex1024-7       , TERMINATION_REASON_OPTIMAL          ,             280,   0.518271306          ,                          291,  0.016839159          ,                        11
-neos-5049753-cuanza        , TERMINATION_REASON_OPTIMAL          ,             360,   2.37420882           ,                          370,  0.068164055          ,                        10
-neos-1593097               , TERMINATION_REASON_OPTIMAL          ,             800,   0.175775506          ,                          810,  0.0035920450000000003,                        10
-ns1116954                  , TERMINATION_REASON_OPTIMAL          ,             280,   0.44289908600000005  ,                          296,  0.016790515000000002 ,                        16
-allcolor58                 , TERMINATION_REASON_OPTIMAL          ,             200,   0.6347435840000001   ,                          201,  0.028996165          ,                         1
-opm2-z8-s0                 , TERMINATION_REASON_OPTIMAL          ,            1400,   0.813084681          ,                         1458,  0.00783755           ,                        58
-uccase9                    , TERMINATION_REASON_OPTIMAL          ,            1240,   1.013252859          ,                         1284,  0.012496874000000002 ,                        44
-neos-5129192-manaia        , TERMINATION_REASON_OPTIMAL          ,             520,   4.7299862919999995   ,                          523,  0.084294834          ,                         3
-nj1                        , TERMINATION_REASON_OPTIMAL          ,               0,   0.019272248000000002 ,                            0,  0.018415062000000003 ,                         0
-irish-electricity          , TERMINATION_REASON_OPTIMAL          ,           25617,  39.958490885          ,                        26044,  0.022868687000000002 ,                       427
-neos-5221106-oparau        , TERMINATION_REASON_OPTIMAL          ,             400,   0.20587791000000003  ,                          407,  0.007250573000000001 ,                         7
-fast0507                   , TERMINATION_REASON_OPTIMAL          ,            2400,   2.189649825          ,                         2462,  0.01499541           ,                        62
-shs1014                    , TERMINATION_REASON_ITERATION_LIMIT  ,          100000, 557.9742150410001      ,                       100355,  0.06411802200000001  ,                       355
-map18                      , TERMINATION_REASON_OPTIMAL          ,            8920,  39.427564198          ,                         8971,  0.058323445          ,                        51
-sorrell7                   , TERMINATION_REASON_OPTIMAL          ,              40,   0.10432727           ,                           42,  0.008738741000000001 ,                         2
-atlanta-ip                 , TERMINATION_REASON_OPTIMAL          ,           15960,  11.636628778000002    ,                        16152,  0.011668069000000001 ,                       192
-van                        , TERMINATION_REASON_OPTIMAL          ,            3080,   1.90365418           ,                         3086,  0.011117444          ,                         6
-neos-913984                , TERMINATION_REASON_OPTIMAL          ,             100,   0.159365008          ,                          105,  0.009131243          ,                         5
-ns1690781                  , TERMINATION_REASON_OPTIMAL          ,           15843,   4.291931613          ,                        16262,  0.0055431130000000006,                       419
-neos-4292145-piako         , TERMINATION_REASON_OPTIMAL          ,               0,   0.011409983          ,                            0,  0.010937109          ,                         0
-map16715-04                , TERMINATION_REASON_OPTIMAL          ,            6720,  30.186881134000004    ,                         6777,  0.059079435000000007 ,                        57
-fhnw-binschedule1          , TERMINATION_REASON_TIME_LIMIT       ,           25108, 900.0249464550001      ,                        25371,  0.42966723500000004  ,                       263
-cdc7-4-3-2                 , TERMINATION_REASON_OPTIMAL          ,              40,   0.033167714          ,                           42,  0.005670627          ,                         2
-neos-960392                , TERMINATION_REASON_OPTIMAL          ,            1360,   0.8035632570000001   ,                         1404,  0.008284517          ,                        44
-neos-4322846-ryton         , TERMINATION_REASON_OPTIMAL          ,            1800,   3.9082731300000004   ,                         1863,  0.024168474000000002 ,                        63
-square37                   , TERMINATION_REASON_TIME_LIMIT       ,           64630, 900.0091811010001      ,                        65594,  0.23766361900000002  ,                       964
-opm2-z12-s8                , TERMINATION_REASON_OPTIMAL          ,            1920,   7.3003677510000005   ,                         1989,  0.039779062000000004 ,                        69
-neos-948346                , TERMINATION_REASON_OPTIMAL          ,            1480,   1.52666232           ,                         1553,  0.015163142000000001 ,                        73
-neos-1122047               , TERMINATION_REASON_OPTIMAL          ,           12280,   4.875625234          ,                        12498,  0.00744516           ,                       218
-dws012-03                  , TERMINATION_REASON_OPTIMAL          ,             360,   0.353572384          ,                          361,  0.014787100000000001 ,                         1
-neos-2746589-doon          , TERMINATION_REASON_OPTIMAL          ,           23840,  13.854892040000001    ,                        23862,  0.011003556000000001 ,                        22
-triptim1                   , TERMINATION_REASON_ITERATION_LIMIT  ,          100000,  75.02964415000001     ,                       100381,  0.012944500000000001 ,                       381
-map10                      , TERMINATION_REASON_OPTIMAL          ,            8400,  37.305773775000006    ,                         8479,  0.058396778          ,                        79
-ns1631475                  , TERMINATION_REASON_ITERATION_LIMIT  ,          100000,  33.54239487700001     ,                       100193,  0.005526281          ,                       193
-neos-4555749-wards         , TERMINATION_REASON_OPTIMAL          ,           14240,  38.266123565          ,                        14399,  0.03871144           ,                       159
-neos-827175                , TERMINATION_REASON_OPTIMAL          ,            3800,   1.1683292480000003   ,                         3816,  0.005484940000000001 ,                        16
-rmine13                    , TERMINATION_REASON_OPTIMAL          ,            1880,   4.508016922          ,                         1950,  0.024851432000000003 ,                        70
-neos-5223573-tarwin        , TERMINATION_REASON_OPTIMAL          ,             280,   2.677692632          ,                          283,  0.09658114300000001  ,                         3
-thor50dday                 , TERMINATION_REASON_OPTIMAL          ,            3920,   3.8971869870000004   ,                         4006,  0.015762788          ,                        86
-dc1c                       , TERMINATION_REASON_OPTIMAL          ,               0,   0.003633161          ,                            0,  0.0034637640000000003,                         0
-neos-787933                , TERMINATION_REASON_OPTIMAL          ,             960,   2.4472112630000002   ,                          988,  0.028050678000000002 ,                        28
-rail01                     , TERMINATION_REASON_OPTIMAL          ,           60560,  99.69165484800001     ,                        61109,  0.021056770000000002 ,                       549
-neos-4260495-otere         , TERMINATION_REASON_OPTIMAL          ,            4520,  16.641103088          ,                         4616,  0.047696259000000005 ,                        96
-neos-4954274-beardy        , TERMINATION_REASON_OPTIMAL          ,            1120,   0.340200602          ,                         1146,  0.0047293050000000005,                        26
-fhnw-schedule-paira200     , TERMINATION_REASON_OPTIMAL          ,              80,   0.08101867600000001  ,                           90,  0.006780087000000001 ,                        10
-neos-498623                , TERMINATION_REASON_OPTIMAL          ,            2680,   0.521219515          ,                         2813,  0.003504403          ,                       133
-t1717                      , TERMINATION_REASON_OPTIMAL          ,            4760,   5.185266644          ,                         4818,  0.016941828000000003 ,                        58
-neos-4972437-bojana        , TERMINATION_REASON_OPTIMAL          ,            3760,  25.957417753000005    ,                         3838,  0.08467685400000001  ,                        78
-neos-4647027-thurso        , TERMINATION_REASON_OPTIMAL          ,            2200,  13.138800808000001    ,                         2261,  0.101153459          ,                        61
-cmflsp40-24-10-7           , TERMINATION_REASON_OPTIMAL          ,            1880,   0.3865651850000001   ,                         1949,  0.0035034460000000003,                        69
-neos-4321076-ruwer         , TERMINATION_REASON_OPTIMAL          ,            1650,  14.144986744          ,                         1713,  0.09089158900000001  ,                        63
-neos-956971                , TERMINATION_REASON_OPTIMAL          ,             400,   0.42055801900000006  ,                          403,  0.013738106000000002 ,                         3
-datt256                    , TERMINATION_REASON_OPTIMAL          ,             400,   2.218634454          ,                          403,  0.055613063000000004 ,                         3
-ns1905797                  , TERMINATION_REASON_OPTIMAL          ,             920,   0.508945178          ,                          927,  0.009173116          ,                         7
-ns1904248                  , TERMINATION_REASON_OPTIMAL          ,              40,   0.148994167          ,                           43,  0.020011079          ,                         3
-z26                        , TERMINATION_REASON_OPTIMAL          ,             200,   3.0691222110000003   ,                          212,  0.11865463400000001  ,                        12
-neos6                      , TERMINATION_REASON_OPTIMAL          ,            2960,   0.9175939750000001   ,                         3063,  0.0058743300000000005,                       103
-pb-fit2d                   , TERMINATION_REASON_OPTIMAL          ,            2200,   7.849278398000001    ,                         2251,  0.045093674          ,                        51
-fastxgemm-n3r23s5t6        , TERMINATION_REASON_OPTIMAL          ,             720,   2.1144098860000002   ,                          728,  0.035322073          ,                         8
-sp97ar                     , TERMINATION_REASON_OPTIMAL          ,            1840,   0.6541167170000001   ,                         1901,  0.006880997000000001 ,                        61
-neos-578379                , TERMINATION_REASON_OPTIMAL          ,            1200,   0.324856213          ,                         1202,  0.004549961          ,                         2
-satellites4-25             , TERMINATION_REASON_OPTIMAL          ,           62840, 126.90251679500001     ,                        62895,  0.026750809          ,                        55
-rail02                     , TERMINATION_REASON_ITERATION_LIMIT  ,          100000, 390.860723724          ,                       100328,  0.045134335000000005 ,                       328
-dws012-01                  , TERMINATION_REASON_OPTIMAL          ,             280,   0.085776702          ,                          281,  0.005334361          ,                         1
-neos-5196530-nuhaka        , TERMINATION_REASON_OPTIMAL          ,             160,   0.116237112          ,                          161,  0.006996934000000001 ,                         1
-neos-941313                , TERMINATION_REASON_OPTIMAL          ,           11480,  20.797738707          ,                        11483,  0.023805577          ,                         3
-ds-big                     , TERMINATION_REASON_OPTIMAL          ,           76280, 690.3316111800001      ,                        77652,  0.128339596          ,                      1372
-seqsolve2short4288         , TERMINATION_REASON_OPTIMAL          ,            2160,  11.483795045          ,                         2230,  0.056666672          ,                        70
-neos-4724674-aorere        , TERMINATION_REASON_OPTIMAL          ,            8400,  14.075255415          ,                         8410,  0.023187594000000002 ,                        10
-bab5                       , TERMINATION_REASON_OPTIMAL          ,            2360,   0.639800969          ,                         2420,  0.0049040130000000005,                        60
-neos-826224                , TERMINATION_REASON_OPTIMAL          ,           25760,   9.89311406           ,                        25837,  0.006975707          ,                        77
-leo2                       , TERMINATION_REASON_PRIMAL_INFEASIBLE,              40,   0.02363385           ,                           47,  0.005250938          ,                         7
-bppc6-02                   , TERMINATION_REASON_OPTIMAL          ,            3880,   0.7480468400000001   ,                         3906,  0.004214687          ,                        26
-neos-4722843-widden        , TERMINATION_REASON_OPTIMAL          ,           14400,  18.149482208000002    ,                        14517,  0.019224324          ,                       117
-nj2                        , TERMINATION_REASON_OPTIMAL          ,               0,   0.022463992000000002 ,                            0,  0.021426835          ,                         0
-neos-5102383-irwell        , TERMINATION_REASON_OPTIMAL          ,             880,   2.2493320030000006   ,                          901,  0.034076761000000004 ,                        21
-physiciansched6-1          , TERMINATION_REASON_ITERATION_LIMIT  ,          100000, 248.16767260100002     ,                       101374,  0.032466428          ,                      1374
-neos-933966                , TERMINATION_REASON_OPTIMAL          ,             840,   0.315519719          ,                          850,  0.0063310020000000005,                        10
-supportcase41              , TERMINATION_REASON_OPTIMAL          ,             520,   0.240022474          ,                          552,  0.006513540000000001 ,                        32
-adult-regularized          , TERMINATION_REASON_OPTIMAL          ,            9120,   8.085415911          ,                         9368,  0.01344027           ,                       248
-nursesched-medium04        , TERMINATION_REASON_OPTIMAL          ,            1600,   1.534075472          ,                         1649,  0.014481935000000001 ,                        49
-neos-5106984-jizera        , TERMINATION_REASON_OPTIMAL          ,             600,   7.919545423          ,                          624,  0.136529925          ,                        24
-rocII-10-11                , TERMINATION_REASON_OPTIMAL          ,            3520,   4.06215849           ,                         3631,  0.01713086           ,                       111
-nsr8k                      , TERMINATION_REASON_OPTIMAL          ,               0,   0.013038701          ,                            0,  0.012454414          ,                         0
-ns1849932                  , TERMINATION_REASON_OPTIMAL          ,            1520,   4.22884546           ,                         1544,  0.034482891          ,                        24
-neos-2987310-joes          , TERMINATION_REASON_OPTIMAL          ,             760,   0.7499628370000001   ,                          790,  0.014175335          ,                        30
-ns1111636                  , TERMINATION_REASON_OPTIMAL          ,            2160,   7.648750855          ,                         2197,  0.041100428          ,                        37
-cmflsp50-24-8-8            , TERMINATION_REASON_OPTIMAL          ,            1280,   0.320235138          ,                         1328,  0.004326507          ,                        48
-neos-4797081-pakoka        , TERMINATION_REASON_OPTIMAL          ,           25360,  13.548989076          ,                        25590,  0.010312088          ,                       230
-fhnw-schedule-paira400     , TERMINATION_REASON_OPTIMAL          ,             120,   0.452488172          ,                          128,  0.026637697000000002 ,                         8
-graphdraw-opmanager        , TERMINATION_REASON_OPTIMAL          ,             280,   0.20959517900000002  ,                          288,  0.009605938000000001 ,                         8
-graph40-20-1rand           , TERMINATION_REASON_OPTIMAL          ,             100,   0.193785542          ,                          102,  0.014878210000000001 ,                         2
-supportcase39              , TERMINATION_REASON_OPTIMAL          ,             960,   0.459842075          ,                         1031,  0.008666275000000001 ,                        71
-ns1760995                  , TERMINATION_REASON_ITERATION_LIMIT  ,          100000, 646.4974100370001      ,                       100926,  0.08678245600000001  ,                       926
-tbfp-network               , TERMINATION_REASON_OPTIMAL          ,            6000,   3.3943289010000006   ,                         6118,  0.009458384          ,                       118
-physiciansched5-3          , TERMINATION_REASON_ITERATION_LIMIT  ,          100000,  35.360456422          ,                       101849,  0.00649479           ,                      1849
-neos-5100895-inster        , TERMINATION_REASON_OPTIMAL          ,            2000,   2.441704298          ,                         2038,  0.018668960000000002 ,                        38
-k1mushroom                 , TERMINATION_REASON_OPTIMAL          ,            2957,   8.107388383          ,                         3114,  0.041726570000000004 ,                       157
-splice1k1                  , TERMINATION_REASON_OPTIMAL          ,            1240,   3.471706886          ,                         1301,  0.043680417000000006 ,                        61
-sorrell4                   , TERMINATION_REASON_OPTIMAL          ,              80,   1.1097806190000001   ,                           82,  0.06932661700000001  ,                         2
-supportcase33              , TERMINATION_REASON_OPTIMAL          ,            1120,   0.486034472          ,                         1127,  0.006911835000000001 ,                         7
-supportcase19              , TERMINATION_REASON_TIME_LIMIT       ,           47610, 900.0094369290001      ,                        47892,  0.20669210300000002  ,                       282
-bab1                       , TERMINATION_REASON_OPTIMAL          ,            2000,   3.9254757780000005   ,                         2069,  0.026922272          ,                        69
-shs1042                    , TERMINATION_REASON_ITERATION_LIMIT  ,          100000, 582.7047715580001      ,                       101220,  0.06696076100000001  ,                      1220
-ex9                        , TERMINATION_REASON_OPTIMAL          ,             200,   0.23409735           ,                          202,  0.013270862000000001 ,                         2
-cryptanalysiskb128n5obj16  , TERMINATION_REASON_OPTIMAL          ,             680,   0.948509208          ,                          687,  0.016125254000000002 ,                         7
-neos-3025225-shelon        , TERMINATION_REASON_OPTIMAL          ,           13280, 186.81757475400002     ,                        13418,  0.22792731700000002  ,                       138
-fiball                     , TERMINATION_REASON_OPTIMAL          ,             600,   0.24805374200000002  ,                          620,  0.00500802           ,                        20
-nsrand-ipx                 , TERMINATION_REASON_OPTIMAL          ,            2520,   0.585586421          ,                         2619,  0.005076218          ,                        99
-neos-4972461-bolong        , TERMINATION_REASON_OPTIMAL          ,            3800,  22.400057087          ,                         3856,  0.07007015200000001  ,                        56
-bppc6-06                   , TERMINATION_REASON_OPTIMAL          ,            4000,   0.7273642180000001   ,                         4026,  0.004058742000000001 ,                        26
-blp-ic98                   , TERMINATION_REASON_OPTIMAL          ,            5170,   1.236035094          ,                         5296,  0.004882677          ,                       126
-netdiversion               , TERMINATION_REASON_OPTIMAL          ,           10520,  25.666427747          ,                        10698,  0.028144829000000003 ,                       178
-sct5                       , TERMINATION_REASON_OPTIMAL          ,           11560,   4.679004627          ,                        11598,  0.007275505000000001 ,                        38
-supportcase2               , TERMINATION_REASON_OPTIMAL          ,             120,   2.520536433          ,                          127,  0.217354652          ,                         7
-physiciansched6-2          , TERMINATION_REASON_ITERATION_LIMIT  ,          100000, 225.27235152600002     ,                       101777,  0.029594204000000002 ,                      1777
-core2536-691               , TERMINATION_REASON_OPTIMAL          ,               0,   0.005575747000000001 ,                            0,  0.005365942          ,                         0
-sct1                       , TERMINATION_REASON_OPTIMAL          ,           53960,  15.43937423           ,                        54063,  0.0052897940000000004,                       103
-sing17                     , TERMINATION_REASON_OPTIMAL          ,           11800,  82.71505238900001     ,                        11902,  0.078142642          ,                       102
-ns1830653                  , TERMINATION_REASON_OPTIMAL          ,            2760,   0.270472283          ,                         2771,  0.002229589          ,                        11
-tpl-tub-ss16               , TERMINATION_REASON_TIME_LIMIT       ,           31057, 900.011148585          ,                        31458,  0.34703785200000004  ,                       401
-neos-953928                , TERMINATION_REASON_OPTIMAL          ,             680,   0.24399816400000002  ,                          694,  0.00569297           ,                        14
-neos-4409277-trave         , TERMINATION_REASON_OPTIMAL          ,             480,   0.159325601          ,                          489,  0.005021116          ,                         9
-neos-5013590-toitoi        , TERMINATION_REASON_ITERATION_LIMIT  ,          100000,  50.982330063000006    ,                       101287,  0.008963201          ,                      1287
-physiciansched3-3          , TERMINATION_REASON_ITERATION_LIMIT  ,          100000, 354.844389072          ,                       100722,  0.048379328000000006 ,                       722
-neos-1367061               , TERMINATION_REASON_OPTIMAL          ,             160,   0.226557533          ,                          165,  0.014315576000000002 ,                         5
-proteindesign121pgb11p9    , TERMINATION_REASON_ITERATION_LIMIT  ,          100000, 155.10428652200002     ,                       101266,  0.020961749000000002 ,                      1266
-neos-4295773-pissa         , TERMINATION_REASON_OPTIMAL          ,             280,   0.947355877          ,                          284,  0.031170939          ,                         4
-sct32                      , TERMINATION_REASON_OPTIMAL          ,           19400,   3.525369164          ,                        19917,  0.003425169          ,                       517
-supportcase23              , TERMINATION_REASON_OPTIMAL          ,            1640,   0.8799468560000001   ,                         1644,  0.007665222          ,                         4
-savsched1                  , TERMINATION_REASON_OPTIMAL          ,             840,   8.400667702          ,                          878,  0.09728238900000001  ,                        38
-blp-ic97                   , TERMINATION_REASON_OPTIMAL          ,            3400,   0.544514296          ,                         3449,  0.003230478          ,                        49
-neos-4763324-toguru        , TERMINATION_REASON_ITERATION_LIMIT  ,          100000, 111.07762031200001     ,                       101392,  0.017517418          ,                      1392
-ivu06                      , TERMINATION_REASON_OPTIMAL          ,            9920, 251.21016574800004     ,                        10077,  0.319518847          ,                       157
-gmut-76-50                 , TERMINATION_REASON_ITERATION_LIMIT  ,          100000,  96.802152988          ,                       101200,  0.016138464          ,                      1200
-fhnw-binschedule0          , TERMINATION_REASON_ITERATION_LIMIT  ,          100000, 487.831239731          ,                       100447,  0.059981652          ,                       447
-neos9                      , TERMINATION_REASON_OPTIMAL          ,             920,   0.797770711          ,                          928,  0.012538674000000001 ,                         8
-neos-2669500-cust          , TERMINATION_REASON_OPTIMAL          ,           18040,  37.53877459700001     ,                        18066,  0.028460033000000003 ,                        26
-vpphard2                   , TERMINATION_REASON_OPTIMAL          ,             560,   2.1042326080000002   ,                          569,  0.042431671000000004 ,                         9
-vpphard                    , TERMINATION_REASON_OPTIMAL          ,             880,   0.812685269          ,                          881,  0.013851052          ,                         1
-eilC76-2                   , TERMINATION_REASON_OPTIMAL          ,            3960,   2.4357247330000003   ,                         4080,  0.010789554          ,                       120
-map06                      , TERMINATION_REASON_OPTIMAL          ,            6240,  28.010819179000002    ,                         6300,  0.058488681          ,                        60
-stp3d                      , TERMINATION_REASON_OPTIMAL          ,            3360,  12.006023126          ,                         3381,  0.041891262000000005 ,                        21
-neos-4976951-bunnoo        , TERMINATION_REASON_OPTIMAL          ,            6960,  47.570626677          ,                         7014,  0.085407882          ,                        54
-nursesched-sprint-hidden09 , TERMINATION_REASON_OPTIMAL          ,            1520,   0.402055121          ,                         1538,  0.004912838          ,                        18
-neos-885524                , TERMINATION_REASON_OPTIMAL          ,             120,   0.17361456           ,                          126,  0.013273279          ,                         6
-neos-5149806-wieprz        , TERMINATION_REASON_OPTIMAL          ,             560,   0.6703256020000001   ,                          572,  0.016390623          ,                        12
-snip10x10-35r1budget17     , TERMINATION_REASON_OPTIMAL          ,             360,   1.038026697          ,                          377,  0.027980887000000003 ,                        17
-chromaticindex512-7        , TERMINATION_REASON_OPTIMAL          ,             240,   0.195588104          ,                          245,  0.007879983          ,                         5
-core2586-950               , TERMINATION_REASON_OPTIMAL          ,               0,   0.004200767          ,                            0,  0.004018066          ,                         0
-neos-5104907-jarama        , TERMINATION_REASON_OPTIMAL          ,            8880,  72.034141611          ,                         8920,  0.100074648          ,                        40
-neos-872648                , TERMINATION_REASON_OPTIMAL          ,           57720, 115.55411125800002     ,                        57925,  0.026708522000000002 ,                       205
-neos-4306827-ravan         , TERMINATION_REASON_OPTIMAL          ,            6960,  23.118252993000002    ,                         7164,  0.042974804000000005 ,                       204
-germanrr                   , TERMINATION_REASON_OPTIMAL          ,           96160,  27.488076622          ,                        97196,  0.005737845          ,                      1036
-rmatr200-p5                , TERMINATION_REASON_OPTIMAL          ,            2680,   1.3256300520000002   ,                         2792,  0.007546803          ,                       112
-neos-950242                , TERMINATION_REASON_OPTIMAL          ,             480,   0.147847491          ,                          483,  0.004633273          ,                         3
-genus-sym-g62-2            , TERMINATION_REASON_OPTIMAL          ,              80,   0.12854679900000002  ,                           80,  0.0109786            ,                         0
-neos-4165869-wannon        , TERMINATION_REASON_OPTIMAL          ,               0,   0.013640707000000002 ,                            0,  0.013162044000000001 ,                         0
-core4284-1064              , TERMINATION_REASON_OPTIMAL          ,               0,   0.007820147000000001 ,                            0,  0.007506207000000001 ,                         0
-eva1aprime6x6opt           , TERMINATION_REASON_OPTIMAL          ,            4880,   1.407779652          ,                         4894,  0.005705618          ,                        14
-ns1952667                  , TERMINATION_REASON_OPTIMAL          ,            2120,   0.9158813880000001   ,                         2124,  0.008142609          ,                         4
-neos-5041822-cockle        , TERMINATION_REASON_ITERATION_LIMIT  ,          100000, 667.668974309          ,                       100145,  0.08451809           ,                       145
-neos-4562542-watut         , TERMINATION_REASON_ITERATION_LIMIT  ,          100000, 430.770995527          ,                       100582,  0.061744193          ,                       582
-ex10                       , TERMINATION_REASON_OPTIMAL          ,             360,   0.9679456670000001   ,                          366,  0.031794881000000004 ,                         6
-neos-2978205-isar          , TERMINATION_REASON_OPTIMAL          ,             880,   0.80452422           ,                          888,  0.012358917          ,                         8
-neos-3572885-glina         , TERMINATION_REASON_OPTIMAL          ,               0,   0.012993498000000001 ,                            0,  0.01236299           ,                         0
-neos-5193246-nerang        , TERMINATION_REASON_OPTIMAL          ,             120,   0.09752730200000001  ,                          121,  0.006940474          ,                         1
-momentum1                  , TERMINATION_REASON_OPTIMAL          ,            3560,   1.14426116           ,                         3650,  0.005550894000000001 ,                        90
-triptim4                   , TERMINATION_REASON_ITERATION_LIMIT  ,          100000,  71.77527287800001     ,                       100217,  0.012620998000000001 ,                       217
-neos-4408804-prosna        , TERMINATION_REASON_OPTIMAL          ,           22760,  18.998462378          ,                        23190,  0.014656038000000001 ,                       430
-neos-1354092               , TERMINATION_REASON_OPTIMAL          ,           16400,   3.955716289          ,                        16407,  0.004677625          ,                         7
-var-smallemery-m6j6        , TERMINATION_REASON_OPTIMAL          ,            3840,   4.5694575980000005   ,                         3879,  0.021047796          ,                        39
-neos-4413714-turia         , TERMINATION_REASON_ITERATION_LIMIT  ,          100000, 236.05681160300003     ,                       100546,  0.030905694          ,                       546
-t1722                      , TERMINATION_REASON_OPTIMAL          ,            4640,   2.1521647560000003   ,                         4709,  0.007793592          ,                        69
-ns1430538                  , TERMINATION_REASON_OPTIMAL          ,           27840,  13.229157505          ,                        27888,  0.008558866          ,                        48
-highschool1-aigio          , TERMINATION_REASON_OPTIMAL          ,             680,   4.252467232          ,                          686,  0.06150597000000001  ,                         6
-neos-873061                , TERMINATION_REASON_OPTIMAL          ,            3880,   7.920713439000001    ,                         3988,  0.026966089000000002 ,                       108
-piperout-d27               , TERMINATION_REASON_OPTIMAL          ,           20520,   7.221308926000001    ,                        20636,  0.0062883470000000006,                       116
-neos-3352863-ancoa         , TERMINATION_REASON_OPTIMAL          ,           10320,  13.096949923          ,                        10516,  0.020851531000000003 ,                       196
-neos-3755335-nizao         , TERMINATION_REASON_OPTIMAL          ,              80,   0.21657341000000002  ,                           86,  0.021258884000000002 ,                         6
-shipsched                  , TERMINATION_REASON_OPTIMAL          ,            1640,   0.6422036799999999   ,                         1641,  0.007017518          ,                         1
-neos-4966258-blicks        , TERMINATION_REASON_OPTIMAL          ,            1400,   6.182021034          ,                         1440,  0.05241958           ,                        40
-pb-grow22                  , TERMINATION_REASON_OPTIMAL          ,             265,   0.13198926800000002  ,                          266,  0.005005144          ,                         1
-neos-860300                , TERMINATION_REASON_OPTIMAL          ,            2520,   0.942062256          ,                         2589,  0.008656573          ,                        69
-brazil3                    , TERMINATION_REASON_OPTIMAL          ,             240,   0.115047513          ,                          248,  0.005084303          ,                         8
-neos-933638                , TERMINATION_REASON_OPTIMAL          ,             840,   0.329951022          ,                          848,  0.0065428230000000006,                         8
-roi2alpha3n4               , TERMINATION_REASON_OPTIMAL          ,            1480,   1.830814434          ,                         1532,  0.021229268000000003 ,                        52
-co-100                     , TERMINATION_REASON_OPTIMAL          ,           27240,  87.48110843100001     ,                        27365,  0.050669511          ,                       125
-hgms30                     , TERMINATION_REASON_ITERATION_LIMIT  ,          100000, 288.545351772          ,                       100190,  0.039100923          ,                       190
-neos-3634244-kauru         , TERMINATION_REASON_OPTIMAL          ,               0,   0.111120467          ,                            0,  0.10774216           ,                         0
-bab2                       , TERMINATION_REASON_OPTIMAL          ,            4440,  19.727178871000003    ,                         4518,  0.058975913000000005 ,                        78
-rmine21                    , TERMINATION_REASON_OPTIMAL          ,            8560, 164.95560332           ,                         8587,  0.195183974          ,                        27
-lr1dr12vc10v70b-t360       , TERMINATION_REASON_ITERATION_LIMIT  ,          100000, 297.71750295           ,                       100381,  0.035249025          ,                       381
-uccase8                    , TERMINATION_REASON_OPTIMAL          ,            1440,   0.9994300230000001   ,                         1509,  0.01078667           ,                        69
-rmine15                    , TERMINATION_REASON_OPTIMAL          ,            4640,  19.823647936          ,                         4770,  0.046507262          ,                       130
-hgms62                     , TERMINATION_REASON_ITERATION_LIMIT  ,          100000, 672.210399848          ,                       100164,  0.08379668300000001  ,                       164
-neos-631710                , TERMINATION_REASON_OPTIMAL          ,            2200,   7.774133421          ,                         2233,  0.042589655000000004 ,                        33
-neos-5052403-cygnet        , TERMINATION_REASON_OPTIMAL          ,            7000,  51.69927939400001     ,                         7290,  0.11571493000000001  ,                       290
-neos-3759587-noosa         , TERMINATION_REASON_OPTIMAL          ,              80,   0.113924279          ,                           85,  0.01226642           ,                         5
-neos-5195221-niemur        , TERMINATION_REASON_OPTIMAL          ,             120,   0.09771494200000001  ,                          121,  0.0070630250000000006,                         1
-hypothyroid-k1             , TERMINATION_REASON_OPTIMAL          ,            2120,   0.937127322          ,                         2219,  0.00945105           ,                        99
-neos-5251015-ogosta        , TERMINATION_REASON_OPTIMAL          ,             200,   1.781436405          ,                          202,  0.084164156          ,                         2
-rocII-8-11                 , TERMINATION_REASON_OPTIMAL          ,            3800,   3.0608589370000003   ,                         3918,  0.013153373000000001 ,                       118
-neos-3148108-pahi          , TERMINATION_REASON_OPTIMAL          ,               0,   0.019774177          ,                            0,  0.01922542           ,                         0
-neos-5273874-yomtsa        , TERMINATION_REASON_OPTIMAL          ,             360,   2.8212742090000003   ,                          364,  0.083442631          ,                         4
-neos-4359986-taipa         , TERMINATION_REASON_OPTIMAL          ,            1600,   0.882277607          ,                         1611,  0.007845162000000001 ,                        11
-blp-ar98                   , TERMINATION_REASON_OPTIMAL          ,            9200,   2.402716646          ,                         9324,  0.00529022           ,                       124
-sing44                     , TERMINATION_REASON_OPTIMAL          ,           13600,  11.130464327          ,                        13809,  0.013696742000000001 ,                       209
-ci-s4                      , TERMINATION_REASON_ITERATION_LIMIT  ,          100000,  21.047180359000002    ,                       100623,  0.004340532          ,                       623
-neos-525149                , TERMINATION_REASON_OPTIMAL          ,             600,   1.946039274          ,                          624,  0.042472635          ,                        24
-neos-824661                , TERMINATION_REASON_OPTIMAL          ,            7680,   3.317641866          ,                         7734,  0.007450150000000001 ,                        54
-neos-5266653-tugela        , TERMINATION_REASON_OPTIMAL          ,             920,   0.339374212          ,                          953,  0.006451891          ,                        33
-neos-4355351-swalm         , TERMINATION_REASON_OPTIMAL          ,            1200,   0.673754129          ,                         1221,  0.009316805000000001 ,                        21
-neos-5093327-huahum        , TERMINATION_REASON_OPTIMAL          ,            3320,   5.121494558          ,                         3435,  0.022339920000000003 ,                       115
-seqsolve1                  , TERMINATION_REASON_OPTIMAL          ,            9040,  43.282468012          ,                         9105,  0.056577890000000006 ,                        65
-rd-rplusc-21               , TERMINATION_REASON_OPTIMAL          ,            1520,   2.8704086300000005   ,                         1545,  0.026720403          ,                        25
-uccase10                   , TERMINATION_REASON_OPTIMAL          ,             720,   2.5692540750000004   ,                          737,  0.038062473          ,                        17
-snp-02-004-104             , TERMINATION_REASON_ITERATION_LIMIT  ,          100000, 308.077480757          ,                       100012,  0.035932151          ,                        12
-neos-885086                , TERMINATION_REASON_OPTIMAL          ,             360,   0.11604510600000001  ,                          386,  0.005347766          ,                        26
-neos-5116085-kenana        , TERMINATION_REASON_OPTIMAL          ,             360,   5.4719159920000005   ,                          375,  0.147645503          ,                        15
-reblock420                 , TERMINATION_REASON_OPTIMAL          ,             480,   0.30285923400000003  ,                          492,  0.007640623000000001 ,                        12
-fhnw-schedule-pairb200     , TERMINATION_REASON_OPTIMAL          ,             920,   1.093279686          ,                          955,  0.015427197          ,                        35
-neos-5079731-flyers        , TERMINATION_REASON_OPTIMAL          ,            1080,   2.350422836          ,                         1110,  0.030875746000000003 ,                        30
-app1-2                     , TERMINATION_REASON_OPTIMAL          ,           34040,  17.365858171          ,                        34717,  0.009445072          ,                       677
-supportcase6               , TERMINATION_REASON_OPTIMAL          ,           15520,  26.843378118          ,                        15866,  0.022715231000000002 ,                       346
-roi5alpha10n8              , TERMINATION_REASON_OPTIMAL          ,            1360,   6.534339147000001    ,                         1410,  0.067216996          ,                        50
-lr1dr04vc05v17a-t360       , TERMINATION_REASON_ITERATION_LIMIT  ,          100000,  39.669953876          ,                       100634,  0.006170422          ,                       634
-proteindesign122trx11p8    , TERMINATION_REASON_ITERATION_LIMIT  ,          100000, 150.978115319          ,                       100704,  0.020091873          ,                       704
-ns1856153                  , TERMINATION_REASON_OPTIMAL          ,             100,   0.055000717000000005 ,                          102,  0.005346668000000001 ,                         2
-stockholm                  , TERMINATION_REASON_OPTIMAL          ,           39600,  23.958785062000004    ,                        39650,  0.00922453           ,                        50
-neos-4754521-awarau        , TERMINATION_REASON_OPTIMAL          ,               0,   0.051328861          ,                            0,  0.049294252000000004 ,                         0
-neos-4647032-veleka        , TERMINATION_REASON_OPTIMAL          ,            2320,  14.746368431          ,                         2397,  0.102357737          ,                        77
-sp98ar                     , TERMINATION_REASON_OPTIMAL          ,            2080,   1.027548705          ,                         2162,  0.009682111          ,                        82
-supportcase12              , TERMINATION_REASON_OPTIMAL          ,            5280,  67.163740531          ,                         5345,  0.13540026200000002  ,                        65
-neos-954925                , TERMINATION_REASON_OPTIMAL          ,             440,   0.945923576          ,                          450,  0.024894413          ,                        10
-nursesched-medium-hint03   , TERMINATION_REASON_OPTIMAL          ,            2840,   2.7846629640000002   ,                         2883,  0.015308126000000002 ,                        43
-uccase12                   , TERMINATION_REASON_OPTIMAL          ,            1040,   1.825064458          ,                         1052,  0.020552215000000002 ,                        12
-dws008-03                  , TERMINATION_REASON_OPTIMAL          ,             360,   0.122633714          ,                          361,  0.006381757          ,                         1
-neos-5138690-middle        , TERMINATION_REASON_OPTIMAL          ,            2400,  34.904214779          ,                         2439,  0.164080584          ,                        39
-2club200v15p5scn           , TERMINATION_REASON_OPTIMAL          ,             440,   0.143414965          ,                          465,  0.00498405           ,                        25
-kosova1                    , TERMINATION_REASON_OPTIMAL          ,             640,   9.563609727000001    ,                          654,  0.140660146          ,                        14
-scpj4scip                  , TERMINATION_REASON_OPTIMAL          ,            1560,   4.578662724          ,                         1582,  0.039319128          ,                        22
-neos-4300652-rahue         , TERMINATION_REASON_OPTIMAL          ,             160,   0.170332368          ,                          161,  0.011107638000000001 ,                         1
-proteindesign121hz512p9    , TERMINATION_REASON_ITERATION_LIMIT  ,          100000, 189.06592098000002     ,                       100884,  0.025346636000000002 ,                       884
-ger50-17-trans-dfn-3t      , TERMINATION_REASON_OPTIMAL          ,            5800,   1.643592579          ,                         5873,  0.00545361           ,                        73
-graph40-80-1rand           , TERMINATION_REASON_OPTIMAL          ,             160,   3.8603412820000003   ,                          163,  0.188271194          ,                         3
-graph20-80-1rand           , TERMINATION_REASON_OPTIMAL          ,             100,   0.098239661          ,                          102,  0.008209471000000001 ,                         2
-neos-3555904-turama        , TERMINATION_REASON_OPTIMAL          ,             920,   2.381679921          ,                          928,  0.030546427          ,                         8
-n3seq24                    , TERMINATION_REASON_OPTIMAL          ,            2040,  12.671939584000002    ,                         2091,  0.08475864400000001  ,                        51
-sp97ic                     , TERMINATION_REASON_OPTIMAL          ,            2120,   0.755384862          ,                         2218,  0.007247225          ,                        98
-tanglegram4                , TERMINATION_REASON_OPTIMAL          ,            1360,   1.7803183940000002   ,                         1363,  0.017983971          ,                         3
-sing326                    , TERMINATION_REASON_OPTIMAL          ,           21600,  16.653648126          ,                        21958,  0.012802770000000002 ,                       358
-ns2122698                  , TERMINATION_REASON_OPTIMAL          ,            2800,   6.121444412          ,                         2805,  0.028304444          ,                         5
-s250r10                    , TERMINATION_REASON_OPTIMAL          ,           90840, 408.845392785          ,                        91432,  0.056797918          ,                       592
-lr2-22dr3-333vc4v17a-t60   , TERMINATION_REASON_OPTIMAL          ,           89680, 183.10814800100002     ,                        89681,  0.027540423          ,                         1
-fastxgemm-n3r21s3t6        , TERMINATION_REASON_OPTIMAL          ,             480,   1.3657774200000001   ,                          488,  0.031752566          ,                         8
-neos8                      , TERMINATION_REASON_OPTIMAL          ,             800,   0.5875597370000001   ,                          817,  0.011752019          ,                        17
-nursesched-sprint-late03   , TERMINATION_REASON_OPTIMAL          ,            2200,   0.5706280770000001   ,                         2214,  0.004935266000000001 ,                        14
-neos-4760493-puerua        , TERMINATION_REASON_ITERATION_LIMIT  ,          100000, 108.34009244300002     ,                       101293,  0.017737311000000002 ,                      1293
-neos-738098                , TERMINATION_REASON_OPTIMAL          ,            2280,   0.581891483          ,                         2378,  0.004480894          ,                        98
-rvb-sub                    , TERMINATION_REASON_OPTIMAL          ,           18920,  31.106600890000003    ,                        19160,  0.025241114000000002 ,                       240
-neos-5044663-wairoa        , TERMINATION_REASON_ITERATION_LIMIT  ,          100000, 126.24486067800001     ,                       101439,  0.017067830000000003 ,                      1439
-eilA101-2                  , TERMINATION_REASON_OPTIMAL          ,            4440,   9.757472505          ,                         4579,  0.032504186000000004 ,                       139
-supportcase40              , TERMINATION_REASON_OPTIMAL          ,             720,   0.28570055           ,                          734,  0.005810216          ,                        14
-seqsolve3short4288excess384, TERMINATION_REASON_OPTIMAL          ,            3080,  13.991243143000002    ,                         3118,  0.05633523000000001  ,                        38
-rail507                    , TERMINATION_REASON_OPTIMAL          ,            1480,   1.4981924270000002   ,                         1528,  0.016059596000000002 ,                        48
-rmine11                    , TERMINATION_REASON_OPTIMAL          ,            3560,   3.21420999           ,                         3575,  0.011941688          ,                        15
-neos-2629914-sudost        , TERMINATION_REASON_OPTIMAL          ,              40,   0.05103976700000001  ,                           41,  0.00772802           ,                         1
-ex1010-pi                  , TERMINATION_REASON_OPTIMAL          ,             800,   0.33192192500000006  ,                          816,  0.006151155          ,                        16
-supportcase37              , TERMINATION_REASON_OPTIMAL          ,            8880,   5.58012859           ,                         9073,  0.00951504           ,                       193
-satellites3-25             , TERMINATION_REASON_OPTIMAL          ,           46360,  80.62637014600001     ,                        46429,  0.022515240000000002 ,                        69
-rwth-timetable             , TERMINATION_REASON_OPTIMAL          ,           11080, 331.438740434          ,                        11254,  0.37461651700000004  ,                       174
-neos-4391920-timok         , TERMINATION_REASON_OPTIMAL          ,           69840, 160.556796591          ,                        70779,  0.032308208000000005 ,                       939
-supportcase34              , TERMINATION_REASON_OPTIMAL          ,               0,   0.019071337          ,                            0,  0.018504064          ,                         0
-satellites2-25             , TERMINATION_REASON_OPTIMAL          ,           42000,  21.911392639000002    ,                        42046,  0.008656418          ,                        46
-neos-4360552-sangro        , TERMINATION_REASON_OPTIMAL          ,            1120,   0.6262065200000001   ,                         1141,  0.009120309          ,                        21
-neos-957323                , TERMINATION_REASON_OPTIMAL          ,            1160,   1.125104732          ,                         1205,  0.013896110000000001 ,                        45
-neos-5108386-kalang        , TERMINATION_REASON_OPTIMAL          ,            5760,  86.38946872400001     ,                         5865,  0.176263061          ,                       105
-ivu52                      , TERMINATION_REASON_OPTIMAL          ,            6720,  36.619763216          ,                         6931,  0.07593462100000001  ,                       211
-nw04                       , TERMINATION_REASON_OPTIMAL          ,            9880,  15.400858677          ,                        10172,  0.021792544          ,                       292
-neos-5188808-nattai        , TERMINATION_REASON_OPTIMAL          ,             160,   0.079607622          ,                          161,  0.005621538000000001 ,                         1
-s55                        , TERMINATION_REASON_ITERATION_LIMIT  ,          100000,  82.08152154400001     ,                       100672,  0.012796218000000002 ,                       672
-neos-4805882-barwon        , TERMINATION_REASON_OPTIMAL          ,           22160,   8.672608704000002    ,                        22320,  0.007384133          ,                       160
-rocII-5-11                 , TERMINATION_REASON_OPTIMAL          ,            4280,   1.9281674400000002   ,                         4410,  0.008251204          ,                       130
-neos-4647030-tutaki        , TERMINATION_REASON_OPTIMAL          ,            3600,  22.412576127          ,                         3715,  0.101536368          ,                       115
-zeil                       , TERMINATION_REASON_OPTIMAL          ,           44880, 143.53518403600003     ,                        44987,  0.046803344000000004 ,                       107
-rmatr200-p10               , TERMINATION_REASON_OPTIMAL          ,            1120,   0.56486899           ,                         1181,  0.0069001340000000005,                        61
-ds                         , TERMINATION_REASON_OPTIMAL          ,            9800,  19.568919809000004    ,                         9960,  0.029675523000000002 ,                       160
-scpm1                      , TERMINATION_REASON_OPTIMAL          ,            1760,  43.002037614          ,                         1784,  0.301300006          ,                        24
-dws012-02                  , TERMINATION_REASON_OPTIMAL          ,             280,   0.167323691          ,                          281,  0.009939287          ,                         1
-ns1828997                  , TERMINATION_REASON_OPTIMAL          ,              80,   0.11390114700000001  ,                           82,  0.011232444000000001 ,                         2
-academictimetablesmall     , TERMINATION_REASON_OPTIMAL          ,            1680,   0.8253608560000001   ,                         1694,  0.007923588          ,                        14
-s100                       , TERMINATION_REASON_ITERATION_LIMIT  ,          100000, 660.818347515          ,                       101290,  0.077592861          ,                      1290
-ns2124243                  , TERMINATION_REASON_OPTIMAL          ,            2560,   5.669267924          ,                         2571,  0.028414976          ,                        11
-neos-5083528-gimone        , TERMINATION_REASON_OPTIMAL          ,             280,   0.30740240900000004  ,                          290,  0.011959321          ,                        10
-neos-1171448               , TERMINATION_REASON_OPTIMAL          ,             240,   0.060272995          ,                          260,  0.003525545          ,                        20
-tpl-tub-ws1617             , TERMINATION_REASON_TIME_LIMIT       ,           24112, 900.026010638          ,                        24320,  0.447325691          ,                       208
-square31                   , TERMINATION_REASON_OPTIMAL          ,           29160, 176.348113072          ,                        29865,  0.099958852          ,                       705
-neos-4532248-waihi         , TERMINATION_REASON_OPTIMAL          ,               0,   0.030298673          ,                            0,  0.029016339000000002 ,                         0
-adult-max5features         , TERMINATION_REASON_OPTIMAL          ,           28920,  24.510822261          ,                        29033,  0.013605006000000001 ,                       113
-neos-3372571-onahau        , TERMINATION_REASON_OPTIMAL          ,            3840,   1.1274178129999999   ,                         3885,  0.005280791          ,                        45
-triptim8                   , TERMINATION_REASON_OPTIMAL          ,           16280,  11.911140804          ,                        16521,  0.012655699000000001 ,                       241
-n3div36                    , TERMINATION_REASON_OPTIMAL          ,             720,   0.366879714          ,                          748,  0.008659337000000001 ,                        28
+instance,termination_reason,iteration_count,solve_time_sec,cumulative_kkt_matrix_passes,preprocessing_time_sec,cumulative_rejected_steps
+ger50-17-trans-pop-3t,TERMINATION_REASON_OPTIMAL,13960,3.9117660880000003,14191,0.00544897,231
+bab3,TERMINATION_REASON_OPTIMAL,10840,89.062440224,10942,0.10420841,102
+opm2-z10-s4,TERMINATION_REASON_OPTIMAL,1600,2.680530971,1646,0.018942975,46
+gmut-75-50,TERMINATION_REASON_ITERATION_LIMIT,100000,116.83284523100001,101433,0.018459089,1433
+iis-hc-cov,TERMINATION_REASON_OPTIMAL,960,0.180075793,997,0.003667558,37
+uccase7,TERMINATION_REASON_OPTIMAL,880,0.75332328,893,0.012605469000000001,13
+supportcase10,TERMINATION_REASON_OPTIMAL,11000,19.363559514000002,11223,0.023882505000000002,223
+neos-3402294-bobin,TERMINATION_REASON_OPTIMAL,200,1.8592076750000002,203,0.086501114,3
+graphdraw-grafo2,TERMINATION_REASON_OPTIMAL,360,0.8544576380000001,369,0.026715499,9
+buildingenergy,TERMINATION_REASON_OPTIMAL,10160,39.845531166,10478,0.045764252000000005,318
+wnq-n100-mw99-14,TERMINATION_REASON_OPTIMAL,1360,11.157127992,1419,0.09314602400000001,59
+neos-5114902-kasavu,TERMINATION_REASON_OPTIMAL,480,9.909443414,499,0.20584027200000002,19
+neos-876808,TERMINATION_REASON_OPTIMAL,10920,22.625965254000004,11122,0.026552202,202
+mushroom-best,TERMINATION_REASON_OPTIMAL,4560,1.1201808000000002,4688,0.005047776,128
+scpk4,TERMINATION_REASON_OPTIMAL,1240,3.748731767,1261,0.038963583,21
+triptim7,TERMINATION_REASON_OPTIMAL,28200,20.700986753000002,28487,0.012570742000000001,287
+mzzv11,TERMINATION_REASON_ITERATION_LIMIT,100000,27.554617245000003,100398,0.004504800000000001,398
+circ10-3,TERMINATION_REASON_OPTIMAL,240,0.148785303,252,0.008568021,12
+piperout-d20,TERMINATION_REASON_OPTIMAL,53240,16.365480645,53563,0.005482941000000001,323
+neos-3354841-apure,TERMINATION_REASON_OPTIMAL,5120,48.002493689,5309,0.134845455,189
+neos-5189128-totara,TERMINATION_REASON_OPTIMAL,0,0.040220562,0,0.038926945000000004,0
+sp98ic,TERMINATION_REASON_OPTIMAL,4378,1.473112974,4539,0.0072033900000000005,161
+neos-3695882-vesdre,TERMINATION_REASON_OPTIMAL,360,0.834536496,363,0.025739533000000002,3
+in,TERMINATION_REASON_OPTIMAL,1440,67.57709703100001,1490,0.425335277,50
+ns930473,TERMINATION_REASON_OPTIMAL,0,0.0050627020000000005,0,0.004897196,0
+bab6,TERMINATION_REASON_OPTIMAL,5560,15.881160152000001,5659,0.038760496000000005,99
+physiciansched3-4,TERMINATION_REASON_ITERATION_LIMIT,100000,316.419622606,100404,0.042717991000000004,404
+satellites2-40,TERMINATION_REASON_OPTIMAL,53560,27.163825376000002,53633,0.008707889,73
+fastxgemm-n3r22s4t6,TERMINATION_REASON_OPTIMAL,1040,2.8365883960000002,1045,0.03332748,5
+neos-5076235-embley,TERMINATION_REASON_OPTIMAL,720,1.622824845,742,0.030862940000000002,22
+triptim2,TERMINATION_REASON_ITERATION_LIMIT,100000,73.349998778,100223,0.012599705000000001,223
+sing5,TERMINATION_REASON_OPTIMAL,9200,18.183707874,9297,0.025861133,97
+sing11,TERMINATION_REASON_OPTIMAL,3600,9.088331592000001,3674,0.030086189000000003,74
+neos-5118851-kowhai,TERMINATION_REASON_OPTIMAL,720,12.532909125,751,0.18012108000000002,31
+fhnw-binschedule2,TERMINATION_REASON_OPTIMAL,5120,1.48681303,5204,0.005657743000000001,84
+nursesched-sprint02,TERMINATION_REASON_OPTIMAL,1440,0.37496582500000003,1483,0.004721586000000001,43
+neos-4533806-waima,TERMINATION_REASON_OPTIMAL,59640,159.49143309800002,59844,0.039121059,204
+neos-848589,TERMINATION_REASON_OPTIMAL,3320,20.693011623000004,3332,0.07049912700000001,12
+scpl4,TERMINATION_REASON_OPTIMAL,1600,11.744604805,1621,0.095238505,21
+mzzv42z,TERMINATION_REASON_ITERATION_LIMIT,100000,30.406672464000003,100986,0.004956135,986
+dolom1,TERMINATION_REASON_OPTIMAL,0,0.005227822000000001,0,0.0050442410000000005,0
+gfd-schedulen180f7d50m30k18,TERMINATION_REASON_OPTIMAL,3480,22.725825313,3541,0.075277169,61
+neos-5123665-limmat,TERMINATION_REASON_OPTIMAL,2000,33.81647319,2024,0.19095898600000002,24
+gmut-76-40,TERMINATION_REASON_ITERATION_LIMIT,100000,29.272100301,101282,0.005647761,1282
+woodlands09,TERMINATION_REASON_OPTIMAL,2120,18.726288285,2129,0.099875875,9
+square23,TERMINATION_REASON_OPTIMAL,16240,21.143934164,16699,0.022282026,459
+neos-3209462-rhin,TERMINATION_REASON_OPTIMAL,640,1.293280299,654,0.023913416,14
+n2seq36q,TERMINATION_REASON_OPTIMAL,1160,0.41020265100000003,1183,0.005390402000000001,23
+fhnw-schedule-pairb400,TERMINATION_REASON_OPTIMAL,920,5.717947288,958,0.064906092,38
+leo1,TERMINATION_REASON_PRIMAL_INFEASIBLE,40,0.015010312,47,0.003242449,7
+shs1023,TERMINATION_REASON_ITERATION_LIMIT,100000,567.159510112,100982,0.064276713,982
+unitcal_7,TERMINATION_REASON_OPTIMAL,32880,14.495196405000002,32899,0.007520981,19
+neos-3237086-abava,TERMINATION_REASON_OPTIMAL,200,0.24104723600000003,210,0.013003121000000001,10
+cmflsp40-36-2-10,TERMINATION_REASON_OPTIMAL,2040,1.103756458,2105,0.009523334000000001,65
+satellites2-60-fs,TERMINATION_REASON_OPTIMAL,45560,16.357739142,45642,0.006150056,82
+30n20b8,TERMINATION_REASON_ITERATION_LIMIT,100000,17.318589004,100129,0.003597171,129
+rmine25,TERMINATION_REASON_OPTIMAL,4640,220.44427641900003,4653,0.42898832200000003,13
+neos-3322547-alsek,TERMINATION_REASON_OPTIMAL,3440,41.569154477000005,3498,0.129079204,58
+dc1l,TERMINATION_REASON_OPTIMAL,3160,2.521757592,3220,0.013278944,60
+ns1644855,TERMINATION_REASON_OPTIMAL,19040,66.64605123199999,19518,0.052188088,478
+academictimetablebig,TERMINATION_REASON_OPTIMAL,2280,10.47009088,2318,0.054833389,38
+sorrell3,TERMINATION_REASON_OPTIMAL,40,0.23977877500000003,42,0.019213791,2
+map14860-20,TERMINATION_REASON_OPTIMAL,9200,40.424294951,9254,0.058856096000000004,54
+d20200,TERMINATION_REASON_OPTIMAL,3560,0.7106523480000001,3731,0.0041296250000000005,171
+supportcase43,TERMINATION_REASON_OPTIMAL,360,2.310808145,361,0.052535155,1
+core4872-1529,TERMINATION_REASON_OPTIMAL,0,0.008275845,0,0.00792998,0
+neos-5118834-korana,TERMINATION_REASON_OPTIMAL,3960,46.180320839000004,4010,0.136009084,50
+neos-780889,TERMINATION_REASON_OPTIMAL,2080,5.0640352250000005,2092,0.029005356000000003,12
+supportcase7,TERMINATION_REASON_ITERATION_LIMIT,100000,520.5970136620001,100795,0.075970823,795
+v150d30-2hopcds,TERMINATION_REASON_OPTIMAL,640,0.126907977,657,0.003146437,17
+graph40-40-1rand,TERMINATION_REASON_OPTIMAL,212,1.6014541380000002,214,0.057561221,2
+neos-932721,TERMINATION_REASON_OPTIMAL,520,0.172831478,527,0.004886553,7
+supportcase42,TERMINATION_REASON_OPTIMAL,4240,2.5066337520000004,4315,0.011026068,75
+nj3,TERMINATION_REASON_OPTIMAL,0,0.022743302,0,0.021692909,0
+neos-957143,TERMINATION_REASON_OPTIMAL,600,0.6057830740000001,617,0.013909743,17
+radiationm40-10-02,TERMINATION_REASON_ITERATION_LIMIT,100000,265.440145022,100044,0.032608443,44
+ns1456591,TERMINATION_REASON_OPTIMAL,6800,1.4529104640000001,6964,0.004454576,164
+neos-3437289-erdre,TERMINATION_REASON_OPTIMAL,0,0.003965064000000001,0,0.0038262060000000004,0
+neos-662469,TERMINATION_REASON_OPTIMAL,4840,1.431890842,4953,0.005442625,113
+cmflsp60-36-2-6,TERMINATION_REASON_OPTIMAL,2000,1.908097838,2070,0.014812758,70
+chromaticindex1024-7,TERMINATION_REASON_OPTIMAL,280,0.518271306,291,0.016839159,11
+neos-5049753-cuanza,TERMINATION_REASON_OPTIMAL,360,2.37420882,370,0.068164055,10
+neos-1593097,TERMINATION_REASON_OPTIMAL,800,0.175775506,810,0.0035920450000000003,10
+ns1116954,TERMINATION_REASON_OPTIMAL,280,0.44289908600000005,296,0.016790515000000002,16
+allcolor58,TERMINATION_REASON_OPTIMAL,200,0.6347435840000001,201,0.028996165,1
+opm2-z8-s0,TERMINATION_REASON_OPTIMAL,1400,0.813084681,1458,0.00783755,58
+uccase9,TERMINATION_REASON_OPTIMAL,1240,1.013252859,1284,0.012496874000000002,44
+neos-5129192-manaia,TERMINATION_REASON_OPTIMAL,520,4.7299862919999995,523,0.084294834,3
+nj1,TERMINATION_REASON_OPTIMAL,0,0.019272248000000002,0,0.018415062000000003,0
+irish-electricity,TERMINATION_REASON_OPTIMAL,25617,39.958490885,26044,0.022868687000000002,427
+neos-5221106-oparau,TERMINATION_REASON_OPTIMAL,400,0.20587791000000003,407,0.007250573000000001,7
+fast0507,TERMINATION_REASON_OPTIMAL,2400,2.189649825,2462,0.01499541,62
+shs1014,TERMINATION_REASON_ITERATION_LIMIT,100000,557.9742150410001,100355,0.06411802200000001,355
+map18,TERMINATION_REASON_OPTIMAL,8920,39.427564198,8971,0.058323445,51
+sorrell7,TERMINATION_REASON_OPTIMAL,40,0.10432727,42,0.008738741000000001,2
+atlanta-ip,TERMINATION_REASON_OPTIMAL,15960,11.636628778000002,16152,0.011668069000000001,192
+van,TERMINATION_REASON_OPTIMAL,3080,1.90365418,3086,0.011117444,6
+neos-913984,TERMINATION_REASON_OPTIMAL,100,0.159365008,105,0.009131243,5
+ns1690781,TERMINATION_REASON_OPTIMAL,15843,4.291931613,16262,0.0055431130000000006,419
+neos-4292145-piako,TERMINATION_REASON_OPTIMAL,0,0.011409983,0,0.010937109,0
+map16715-04,TERMINATION_REASON_OPTIMAL,6720,30.186881134000004,6777,0.059079435000000007,57
+cdc7-4-3-2,TERMINATION_REASON_OPTIMAL,40,0.033167714,42,0.005670627,2
+neos-960392,TERMINATION_REASON_OPTIMAL,1360,0.8035632570000001,1404,0.008284517,44
+neos-4322846-ryton,TERMINATION_REASON_OPTIMAL,1800,3.9082731300000004,1863,0.024168474000000002,63
+opm2-z12-s8,TERMINATION_REASON_OPTIMAL,1920,7.3003677510000005,1989,0.039779062000000004,69
+neos-948346,TERMINATION_REASON_OPTIMAL,1480,1.52666232,1553,0.015163142000000001,73
+neos-1122047,TERMINATION_REASON_OPTIMAL,12280,4.875625234,12498,0.00744516,218
+dws012-03,TERMINATION_REASON_OPTIMAL,360,0.353572384,361,0.014787100000000001,1
+neos-2746589-doon,TERMINATION_REASON_OPTIMAL,23840,13.854892040000001,23862,0.011003556000000001,22
+triptim1,TERMINATION_REASON_ITERATION_LIMIT,100000,75.02964415000001,100381,0.012944500000000001,381
+map10,TERMINATION_REASON_OPTIMAL,8400,37.305773775000006,8479,0.058396778,79
+ns1631475,TERMINATION_REASON_ITERATION_LIMIT,100000,33.54239487700001,100193,0.005526281,193
+neos-4555749-wards,TERMINATION_REASON_OPTIMAL,14240,38.266123565,14399,0.03871144,159
+neos-827175,TERMINATION_REASON_OPTIMAL,3800,1.1683292480000003,3816,0.005484940000000001,16
+rmine13,TERMINATION_REASON_OPTIMAL,1880,4.508016922,1950,0.024851432000000003,70
+neos-5223573-tarwin,TERMINATION_REASON_OPTIMAL,280,2.677692632,283,0.09658114300000001,3
+thor50dday,TERMINATION_REASON_OPTIMAL,3920,3.8971869870000004,4006,0.015762788,86
+dc1c,TERMINATION_REASON_OPTIMAL,0,0.003633161,0,0.0034637640000000003,0
+neos-787933,TERMINATION_REASON_OPTIMAL,960,2.4472112630000002,988,0.028050678000000002,28
+rail01,TERMINATION_REASON_OPTIMAL,60560,99.69165484800001,61109,0.021056770000000002,549
+neos-4260495-otere,TERMINATION_REASON_OPTIMAL,4520,16.641103088,4616,0.047696259000000005,96
+neos-4954274-beardy,TERMINATION_REASON_OPTIMAL,1120,0.340200602,1146,0.0047293050000000005,26
+fhnw-schedule-paira200,TERMINATION_REASON_OPTIMAL,80,0.08101867600000001,90,0.006780087000000001,10
+neos-498623,TERMINATION_REASON_OPTIMAL,2680,0.521219515,2813,0.003504403,133
+t1717,TERMINATION_REASON_OPTIMAL,4760,5.185266644,4818,0.016941828000000003,58
+neos-4972437-bojana,TERMINATION_REASON_OPTIMAL,3760,25.957417753000005,3838,0.08467685400000001,78
+neos-4647027-thurso,TERMINATION_REASON_OPTIMAL,2200,13.138800808000001,2261,0.101153459,61
+cmflsp40-24-10-7,TERMINATION_REASON_OPTIMAL,1880,0.3865651850000001,1949,0.0035034460000000003,69
+neos-4321076-ruwer,TERMINATION_REASON_OPTIMAL,1650,14.144986744,1713,0.09089158900000001,63
+neos-956971,TERMINATION_REASON_OPTIMAL,400,0.42055801900000006,403,0.013738106000000002,3
+datt256,TERMINATION_REASON_OPTIMAL,400,2.218634454,403,0.055613063000000004,3
+ns1905797,TERMINATION_REASON_OPTIMAL,920,0.508945178,927,0.009173116,7
+ns1904248,TERMINATION_REASON_OPTIMAL,40,0.148994167,43,0.020011079,3
+z26,TERMINATION_REASON_OPTIMAL,200,3.0691222110000003,212,0.11865463400000001,12
+neos6,TERMINATION_REASON_OPTIMAL,2960,0.9175939750000001,3063,0.0058743300000000005,103
+pb-fit2d,TERMINATION_REASON_OPTIMAL,2200,7.849278398000001,2251,0.045093674,51
+fastxgemm-n3r23s5t6,TERMINATION_REASON_OPTIMAL,720,2.1144098860000002,728,0.035322073,8
+sp97ar,TERMINATION_REASON_OPTIMAL,1840,0.6541167170000001,1901,0.006880997000000001,61
+neos-578379,TERMINATION_REASON_OPTIMAL,1200,0.324856213,1202,0.004549961,2
+satellites4-25,TERMINATION_REASON_OPTIMAL,62840,126.90251679500001,62895,0.026750809,55
+rail02,TERMINATION_REASON_ITERATION_LIMIT,100000,390.860723724,100328,0.045134335000000005,328
+dws012-01,TERMINATION_REASON_OPTIMAL,280,0.085776702,281,0.005334361,1
+neos-5196530-nuhaka,TERMINATION_REASON_OPTIMAL,160,0.116237112,161,0.006996934000000001,1
+neos-941313,TERMINATION_REASON_OPTIMAL,11480,20.797738707,11483,0.023805577,3
+ds-big,TERMINATION_REASON_OPTIMAL,76280,690.3316111800001,77652,0.128339596,1372
+seqsolve2short4288,TERMINATION_REASON_OPTIMAL,2160,11.483795045,2230,0.056666672,70
+neos-4724674-aorere,TERMINATION_REASON_OPTIMAL,8400,14.075255415,8410,0.023187594000000002,10
+bab5,TERMINATION_REASON_OPTIMAL,2360,0.639800969,2420,0.0049040130000000005,60
+neos-826224,TERMINATION_REASON_OPTIMAL,25760,9.89311406,25837,0.006975707,77
+leo2,TERMINATION_REASON_PRIMAL_INFEASIBLE,40,0.02363385,47,0.005250938,7
+bppc6-02,TERMINATION_REASON_OPTIMAL,3880,0.7480468400000001,3906,0.004214687,26
+neos-4722843-widden,TERMINATION_REASON_OPTIMAL,14400,18.149482208000002,14517,0.019224324,117
+nj2,TERMINATION_REASON_OPTIMAL,0,0.022463992000000002,0,0.021426835,0
+neos-5102383-irwell,TERMINATION_REASON_OPTIMAL,880,2.2493320030000006,901,0.034076761000000004,21
+physiciansched6-1,TERMINATION_REASON_ITERATION_LIMIT,100000,248.16767260100002,101374,0.032466428,1374
+neos-933966,TERMINATION_REASON_OPTIMAL,840,0.315519719,850,0.0063310020000000005,10
+supportcase41,TERMINATION_REASON_OPTIMAL,520,0.240022474,552,0.006513540000000001,32
+adult-regularized,TERMINATION_REASON_OPTIMAL,9120,8.085415911,9368,0.01344027,248
+nursesched-medium04,TERMINATION_REASON_OPTIMAL,1600,1.534075472,1649,0.014481935000000001,49
+neos-5106984-jizera,TERMINATION_REASON_OPTIMAL,600,7.919545423,624,0.136529925,24
+rocII-10-11,TERMINATION_REASON_OPTIMAL,3520,4.06215849,3631,0.01713086,111
+nsr8k,TERMINATION_REASON_OPTIMAL,0,0.013038701,0,0.012454414,0
+ns1849932,TERMINATION_REASON_OPTIMAL,1520,4.22884546,1544,0.034482891,24
+neos-2987310-joes,TERMINATION_REASON_OPTIMAL,760,0.7499628370000001,790,0.014175335,30
+ns1111636,TERMINATION_REASON_OPTIMAL,2160,7.648750855,2197,0.041100428,37
+cmflsp50-24-8-8,TERMINATION_REASON_OPTIMAL,1280,0.320235138,1328,0.004326507,48
+neos-4797081-pakoka,TERMINATION_REASON_OPTIMAL,25360,13.548989076,25590,0.010312088,230
+fhnw-schedule-paira400,TERMINATION_REASON_OPTIMAL,120,0.452488172,128,0.026637697000000002,8
+graphdraw-opmanager,TERMINATION_REASON_OPTIMAL,280,0.20959517900000002,288,0.009605938000000001,8
+graph40-20-1rand,TERMINATION_REASON_OPTIMAL,100,0.193785542,102,0.014878210000000001,2
+supportcase39,TERMINATION_REASON_OPTIMAL,960,0.459842075,1031,0.008666275000000001,71
+ns1760995,TERMINATION_REASON_ITERATION_LIMIT,100000,646.4974100370001,100926,0.08678245600000001,926
+tbfp-network,TERMINATION_REASON_OPTIMAL,6000,3.3943289010000006,6118,0.009458384,118
+physiciansched5-3,TERMINATION_REASON_ITERATION_LIMIT,100000,35.360456422,101849,0.00649479,1849
+neos-5100895-inster,TERMINATION_REASON_OPTIMAL,2000,2.441704298,2038,0.018668960000000002,38
+k1mushroom,TERMINATION_REASON_OPTIMAL,2957,8.107388383,3114,0.041726570000000004,157
+splice1k1,TERMINATION_REASON_OPTIMAL,1240,3.471706886,1301,0.043680417000000006,61
+sorrell4,TERMINATION_REASON_OPTIMAL,80,1.1097806190000001,82,0.06932661700000001,2
+supportcase33,TERMINATION_REASON_OPTIMAL,1120,0.486034472,1127,0.006911835000000001,7
+bab1,TERMINATION_REASON_OPTIMAL,2000,3.9254757780000005,2069,0.026922272,69
+shs1042,TERMINATION_REASON_ITERATION_LIMIT,100000,582.7047715580001,101220,0.06696076100000001,1220
+ex9,TERMINATION_REASON_OPTIMAL,200,0.23409735,202,0.013270862000000001,2
+cryptanalysiskb128n5obj16,TERMINATION_REASON_OPTIMAL,680,0.948509208,687,0.016125254000000002,7
+neos-3025225-shelon,TERMINATION_REASON_OPTIMAL,13280,186.81757475400002,13418,0.22792731700000002,138
+fiball,TERMINATION_REASON_OPTIMAL,600,0.24805374200000002,620,0.00500802,20
+nsrand-ipx,TERMINATION_REASON_OPTIMAL,2520,0.585586421,2619,0.005076218,99
+neos-4972461-bolong,TERMINATION_REASON_OPTIMAL,3800,22.400057087,3856,0.07007015200000001,56
+bppc6-06,TERMINATION_REASON_OPTIMAL,4000,0.7273642180000001,4026,0.004058742000000001,26
+blp-ic98,TERMINATION_REASON_OPTIMAL,5170,1.236035094,5296,0.004882677,126
+netdiversion,TERMINATION_REASON_OPTIMAL,10520,25.666427747,10698,0.028144829000000003,178
+sct5,TERMINATION_REASON_OPTIMAL,11560,4.679004627,11598,0.007275505000000001,38
+supportcase2,TERMINATION_REASON_OPTIMAL,120,2.520536433,127,0.217354652,7
+physiciansched6-2,TERMINATION_REASON_ITERATION_LIMIT,100000,225.27235152600002,101777,0.029594204000000002,1777
+core2536-691,TERMINATION_REASON_OPTIMAL,0,0.005575747000000001,0,0.005365942,0
+sct1,TERMINATION_REASON_OPTIMAL,53960,15.43937423,54063,0.0052897940000000004,103
+sing17,TERMINATION_REASON_OPTIMAL,11800,82.71505238900001,11902,0.078142642,102
+ns1830653,TERMINATION_REASON_OPTIMAL,2760,0.270472283,2771,0.002229589,11
+neos-953928,TERMINATION_REASON_OPTIMAL,680,0.24399816400000002,694,0.00569297,14
+neos-4409277-trave,TERMINATION_REASON_OPTIMAL,480,0.159325601,489,0.005021116,9
+neos-5013590-toitoi,TERMINATION_REASON_ITERATION_LIMIT,100000,50.982330063000006,101287,0.008963201,1287
+physiciansched3-3,TERMINATION_REASON_ITERATION_LIMIT,100000,354.844389072,100722,0.048379328000000006,722
+neos-1367061,TERMINATION_REASON_OPTIMAL,160,0.226557533,165,0.014315576000000002,5
+proteindesign121pgb11p9,TERMINATION_REASON_ITERATION_LIMIT,100000,155.10428652200002,101266,0.020961749000000002,1266
+neos-4295773-pissa,TERMINATION_REASON_OPTIMAL,280,0.947355877,284,0.031170939,4
+sct32,TERMINATION_REASON_OPTIMAL,19400,3.525369164,19917,0.003425169,517
+supportcase23,TERMINATION_REASON_OPTIMAL,1640,0.8799468560000001,1644,0.007665222,4
+savsched1,TERMINATION_REASON_OPTIMAL,840,8.400667702,878,0.09728238900000001,38
+blp-ic97,TERMINATION_REASON_OPTIMAL,3400,0.544514296,3449,0.003230478,49
+neos-4763324-toguru,TERMINATION_REASON_ITERATION_LIMIT,100000,111.07762031200001,101392,0.017517418,1392
+ivu06,TERMINATION_REASON_OPTIMAL,9920,251.21016574800004,10077,0.319518847,157
+gmut-76-50,TERMINATION_REASON_ITERATION_LIMIT,100000,96.802152988,101200,0.016138464,1200
+fhnw-binschedule0,TERMINATION_REASON_ITERATION_LIMIT,100000,487.831239731,100447,0.059981652,447
+neos9,TERMINATION_REASON_OPTIMAL,920,0.797770711,928,0.012538674000000001,8
+neos-2669500-cust,TERMINATION_REASON_OPTIMAL,18040,37.53877459700001,18066,0.028460033000000003,26
+vpphard2,TERMINATION_REASON_OPTIMAL,560,2.1042326080000002,569,0.042431671000000004,9
+vpphard,TERMINATION_REASON_OPTIMAL,880,0.812685269,881,0.013851052,1
+eilC76-2,TERMINATION_REASON_OPTIMAL,3960,2.4357247330000003,4080,0.010789554,120
+map06,TERMINATION_REASON_OPTIMAL,6240,28.010819179000002,6300,0.058488681,60
+stp3d,TERMINATION_REASON_OPTIMAL,3360,12.006023126,3381,0.041891262000000005,21
+neos-4976951-bunnoo,TERMINATION_REASON_OPTIMAL,6960,47.570626677,7014,0.085407882,54
+nursesched-sprint-hidden09,TERMINATION_REASON_OPTIMAL,1520,0.402055121,1538,0.004912838,18
+neos-885524,TERMINATION_REASON_OPTIMAL,120,0.17361456,126,0.013273279,6
+neos-5149806-wieprz,TERMINATION_REASON_OPTIMAL,560,0.6703256020000001,572,0.016390623,12
+snip10x10-35r1budget17,TERMINATION_REASON_OPTIMAL,360,1.038026697,377,0.027980887000000003,17
+chromaticindex512-7,TERMINATION_REASON_OPTIMAL,240,0.195588104,245,0.007879983,5
+core2586-950,TERMINATION_REASON_OPTIMAL,0,0.004200767,0,0.004018066,0
+neos-5104907-jarama,TERMINATION_REASON_OPTIMAL,8880,72.034141611,8920,0.100074648,40
+neos-872648,TERMINATION_REASON_OPTIMAL,57720,115.55411125800002,57925,0.026708522000000002,205
+neos-4306827-ravan,TERMINATION_REASON_OPTIMAL,6960,23.118252993000002,7164,0.042974804000000005,204
+germanrr,TERMINATION_REASON_OPTIMAL,96160,27.488076622,97196,0.005737845,1036
+rmatr200-p5,TERMINATION_REASON_OPTIMAL,2680,1.3256300520000002,2792,0.007546803,112
+neos-950242,TERMINATION_REASON_OPTIMAL,480,0.147847491,483,0.004633273,3
+genus-sym-g62-2,TERMINATION_REASON_OPTIMAL,80,0.12854679900000002,80,0.0109786,0
+neos-4165869-wannon,TERMINATION_REASON_OPTIMAL,0,0.013640707000000002,0,0.013162044000000001,0
+core4284-1064,TERMINATION_REASON_OPTIMAL,0,0.007820147000000001,0,0.007506207000000001,0
+eva1aprime6x6opt,TERMINATION_REASON_OPTIMAL,4880,1.407779652,4894,0.005705618,14
+ns1952667,TERMINATION_REASON_OPTIMAL,2120,0.9158813880000001,2124,0.008142609,4
+neos-5041822-cockle,TERMINATION_REASON_ITERATION_LIMIT,100000,667.668974309,100145,0.08451809,145
+neos-4562542-watut,TERMINATION_REASON_ITERATION_LIMIT,100000,430.770995527,100582,0.061744193,582
+ex10,TERMINATION_REASON_OPTIMAL,360,0.9679456670000001,366,0.031794881000000004,6
+neos-2978205-isar,TERMINATION_REASON_OPTIMAL,880,0.80452422,888,0.012358917,8
+neos-3572885-glina,TERMINATION_REASON_OPTIMAL,0,0.012993498000000001,0,0.01236299,0
+neos-5193246-nerang,TERMINATION_REASON_OPTIMAL,120,0.09752730200000001,121,0.006940474,1
+momentum1,TERMINATION_REASON_OPTIMAL,3560,1.14426116,3650,0.005550894000000001,90
+triptim4,TERMINATION_REASON_ITERATION_LIMIT,100000,71.77527287800001,100217,0.012620998000000001,217
+neos-4408804-prosna,TERMINATION_REASON_OPTIMAL,22760,18.998462378,23190,0.014656038000000001,430
+neos-1354092,TERMINATION_REASON_OPTIMAL,16400,3.955716289,16407,0.004677625,7
+var-smallemery-m6j6,TERMINATION_REASON_OPTIMAL,3840,4.5694575980000005,3879,0.021047796,39
+neos-4413714-turia,TERMINATION_REASON_ITERATION_LIMIT,100000,236.05681160300003,100546,0.030905694,546
+t1722,TERMINATION_REASON_OPTIMAL,4640,2.1521647560000003,4709,0.007793592,69
+ns1430538,TERMINATION_REASON_OPTIMAL,27840,13.229157505,27888,0.008558866,48
+highschool1-aigio,TERMINATION_REASON_OPTIMAL,680,4.252467232,686,0.06150597000000001,6
+neos-873061,TERMINATION_REASON_OPTIMAL,3880,7.920713439000001,3988,0.026966089000000002,108
+piperout-d27,TERMINATION_REASON_OPTIMAL,20520,7.221308926000001,20636,0.0062883470000000006,116
+neos-3352863-ancoa,TERMINATION_REASON_OPTIMAL,10320,13.096949923,10516,0.020851531000000003,196
+neos-3755335-nizao,TERMINATION_REASON_OPTIMAL,80,0.21657341000000002,86,0.021258884000000002,6
+shipsched,TERMINATION_REASON_OPTIMAL,1640,0.6422036799999999,1641,0.007017518,1
+neos-4966258-blicks,TERMINATION_REASON_OPTIMAL,1400,6.182021034,1440,0.05241958,40
+pb-grow22,TERMINATION_REASON_OPTIMAL,265,0.13198926800000002,266,0.005005144,1
+neos-860300,TERMINATION_REASON_OPTIMAL,2520,0.942062256,2589,0.008656573,69
+brazil3,TERMINATION_REASON_OPTIMAL,240,0.115047513,248,0.005084303,8
+neos-933638,TERMINATION_REASON_OPTIMAL,840,0.329951022,848,0.0065428230000000006,8
+roi2alpha3n4,TERMINATION_REASON_OPTIMAL,1480,1.830814434,1532,0.021229268000000003,52
+co-100,TERMINATION_REASON_OPTIMAL,27240,87.48110843100001,27365,0.050669511,125
+hgms30,TERMINATION_REASON_ITERATION_LIMIT,100000,288.545351772,100190,0.039100923,190
+neos-3634244-kauru,TERMINATION_REASON_OPTIMAL,0,0.111120467,0,0.10774216,0
+bab2,TERMINATION_REASON_OPTIMAL,4440,19.727178871000003,4518,0.058975913000000005,78
+rmine21,TERMINATION_REASON_OPTIMAL,8560,164.95560332,8587,0.195183974,27
+lr1dr12vc10v70b-t360,TERMINATION_REASON_ITERATION_LIMIT,100000,297.71750295,100381,0.035249025,381
+uccase8,TERMINATION_REASON_OPTIMAL,1440,0.9994300230000001,1509,0.01078667,69
+rmine15,TERMINATION_REASON_OPTIMAL,4640,19.823647936,4770,0.046507262,130
+hgms62,TERMINATION_REASON_ITERATION_LIMIT,100000,672.210399848,100164,0.08379668300000001,164
+neos-631710,TERMINATION_REASON_OPTIMAL,2200,7.774133421,2233,0.042589655000000004,33
+neos-5052403-cygnet,TERMINATION_REASON_OPTIMAL,7000,51.69927939400001,7290,0.11571493000000001,290
+neos-3759587-noosa,TERMINATION_REASON_OPTIMAL,80,0.113924279,85,0.01226642,5
+neos-5195221-niemur,TERMINATION_REASON_OPTIMAL,120,0.09771494200000001,121,0.0070630250000000006,1
+hypothyroid-k1,TERMINATION_REASON_OPTIMAL,2120,0.937127322,2219,0.00945105,99
+neos-5251015-ogosta,TERMINATION_REASON_OPTIMAL,200,1.781436405,202,0.084164156,2
+rocII-8-11,TERMINATION_REASON_OPTIMAL,3800,3.0608589370000003,3918,0.013153373000000001,118
+neos-3148108-pahi,TERMINATION_REASON_OPTIMAL,0,0.019774177,0,0.01922542,0
+neos-5273874-yomtsa,TERMINATION_REASON_OPTIMAL,360,2.8212742090000003,364,0.083442631,4
+neos-4359986-taipa,TERMINATION_REASON_OPTIMAL,1600,0.882277607,1611,0.007845162000000001,11
+blp-ar98,TERMINATION_REASON_OPTIMAL,9200,2.402716646,9324,0.00529022,124
+sing44,TERMINATION_REASON_OPTIMAL,13600,11.130464327,13809,0.013696742000000001,209
+ci-s4,TERMINATION_REASON_ITERATION_LIMIT,100000,21.047180359000002,100623,0.004340532,623
+neos-525149,TERMINATION_REASON_OPTIMAL,600,1.946039274,624,0.042472635,24
+neos-824661,TERMINATION_REASON_OPTIMAL,7680,3.317641866,7734,0.007450150000000001,54
+neos-5266653-tugela,TERMINATION_REASON_OPTIMAL,920,0.339374212,953,0.006451891,33
+neos-4355351-swalm,TERMINATION_REASON_OPTIMAL,1200,0.673754129,1221,0.009316805000000001,21
+neos-5093327-huahum,TERMINATION_REASON_OPTIMAL,3320,5.121494558,3435,0.022339920000000003,115
+seqsolve1,TERMINATION_REASON_OPTIMAL,9040,43.282468012,9105,0.056577890000000006,65
+rd-rplusc-21,TERMINATION_REASON_OPTIMAL,1520,2.8704086300000005,1545,0.026720403,25
+uccase10,TERMINATION_REASON_OPTIMAL,720,2.5692540750000004,737,0.038062473,17
+snp-02-004-104,TERMINATION_REASON_ITERATION_LIMIT,100000,308.077480757,100012,0.035932151,12
+neos-885086,TERMINATION_REASON_OPTIMAL,360,0.11604510600000001,386,0.005347766,26
+neos-5116085-kenana,TERMINATION_REASON_OPTIMAL,360,5.4719159920000005,375,0.147645503,15
+reblock420,TERMINATION_REASON_OPTIMAL,480,0.30285923400000003,492,0.007640623000000001,12
+fhnw-schedule-pairb200,TERMINATION_REASON_OPTIMAL,920,1.093279686,955,0.015427197,35
+neos-5079731-flyers,TERMINATION_REASON_OPTIMAL,1080,2.350422836,1110,0.030875746000000003,30
+app1-2,TERMINATION_REASON_OPTIMAL,34040,17.365858171,34717,0.009445072,677
+supportcase6,TERMINATION_REASON_OPTIMAL,15520,26.843378118,15866,0.022715231000000002,346
+roi5alpha10n8,TERMINATION_REASON_OPTIMAL,1360,6.534339147000001,1410,0.067216996,50
+lr1dr04vc05v17a-t360,TERMINATION_REASON_ITERATION_LIMIT,100000,39.669953876,100634,0.006170422,634
+proteindesign122trx11p8,TERMINATION_REASON_ITERATION_LIMIT,100000,150.978115319,100704,0.020091873,704
+ns1856153,TERMINATION_REASON_OPTIMAL,100,0.055000717000000005,102,0.005346668000000001,2
+stockholm,TERMINATION_REASON_OPTIMAL,39600,23.958785062000004,39650,0.00922453,50
+neos-4754521-awarau,TERMINATION_REASON_OPTIMAL,0,0.051328861,0,0.049294252000000004,0
+neos-4647032-veleka,TERMINATION_REASON_OPTIMAL,2320,14.746368431,2397,0.102357737,77
+sp98ar,TERMINATION_REASON_OPTIMAL,2080,1.027548705,2162,0.009682111,82
+supportcase12,TERMINATION_REASON_OPTIMAL,5280,67.163740531,5345,0.13540026200000002,65
+neos-954925,TERMINATION_REASON_OPTIMAL,440,0.945923576,450,0.024894413,10
+nursesched-medium-hint03,TERMINATION_REASON_OPTIMAL,2840,2.7846629640000002,2883,0.015308126000000002,43
+uccase12,TERMINATION_REASON_OPTIMAL,1040,1.825064458,1052,0.020552215000000002,12
+dws008-03,TERMINATION_REASON_OPTIMAL,360,0.122633714,361,0.006381757,1
+neos-5138690-middle,TERMINATION_REASON_OPTIMAL,2400,34.904214779,2439,0.164080584,39
+2club200v15p5scn,TERMINATION_REASON_OPTIMAL,440,0.143414965,465,0.00498405,25
+kosova1,TERMINATION_REASON_OPTIMAL,640,9.563609727000001,654,0.140660146,14
+scpj4scip,TERMINATION_REASON_OPTIMAL,1560,4.578662724,1582,0.039319128,22
+neos-4300652-rahue,TERMINATION_REASON_OPTIMAL,160,0.170332368,161,0.011107638000000001,1
+proteindesign121hz512p9,TERMINATION_REASON_ITERATION_LIMIT,100000,189.06592098000002,100884,0.025346636000000002,884
+ger50-17-trans-dfn-3t,TERMINATION_REASON_OPTIMAL,5800,1.643592579,5873,0.00545361,73
+graph40-80-1rand,TERMINATION_REASON_OPTIMAL,160,3.8603412820000003,163,0.188271194,3
+graph20-80-1rand,TERMINATION_REASON_OPTIMAL,100,0.098239661,102,0.008209471000000001,2
+neos-3555904-turama,TERMINATION_REASON_OPTIMAL,920,2.381679921,928,0.030546427,8
+n3seq24,TERMINATION_REASON_OPTIMAL,2040,12.671939584000002,2091,0.08475864400000001,51
+sp97ic,TERMINATION_REASON_OPTIMAL,2120,0.755384862,2218,0.007247225,98
+tanglegram4,TERMINATION_REASON_OPTIMAL,1360,1.7803183940000002,1363,0.017983971,3
+sing326,TERMINATION_REASON_OPTIMAL,21600,16.653648126,21958,0.012802770000000002,358
+ns2122698,TERMINATION_REASON_OPTIMAL,2800,6.121444412,2805,0.028304444,5
+s250r10,TERMINATION_REASON_OPTIMAL,90840,408.845392785,91432,0.056797918,592
+lr2-22dr3-333vc4v17a-t60,TERMINATION_REASON_OPTIMAL,89680,183.10814800100002,89681,0.027540423,1
+fastxgemm-n3r21s3t6,TERMINATION_REASON_OPTIMAL,480,1.3657774200000001,488,0.031752566,8
+neos8,TERMINATION_REASON_OPTIMAL,800,0.5875597370000001,817,0.011752019,17
+nursesched-sprint-late03,TERMINATION_REASON_OPTIMAL,2200,0.5706280770000001,2214,0.004935266000000001,14
+neos-4760493-puerua,TERMINATION_REASON_ITERATION_LIMIT,100000,108.34009244300002,101293,0.017737311000000002,1293
+neos-738098,TERMINATION_REASON_OPTIMAL,2280,0.581891483,2378,0.004480894,98
+rvb-sub,TERMINATION_REASON_OPTIMAL,18920,31.106600890000003,19160,0.025241114000000002,240
+neos-5044663-wairoa,TERMINATION_REASON_ITERATION_LIMIT,100000,126.24486067800001,101439,0.017067830000000003,1439
+eilA101-2,TERMINATION_REASON_OPTIMAL,4440,9.757472505,4579,0.032504186000000004,139
+supportcase40,TERMINATION_REASON_OPTIMAL,720,0.28570055,734,0.005810216,14
+seqsolve3short4288excess384,TERMINATION_REASON_OPTIMAL,3080,13.991243143000002,3118,0.05633523000000001,38
+rail507,TERMINATION_REASON_OPTIMAL,1480,1.4981924270000002,1528,0.016059596000000002,48
+rmine11,TERMINATION_REASON_OPTIMAL,3560,3.21420999,3575,0.011941688,15
+neos-2629914-sudost,TERMINATION_REASON_OPTIMAL,40,0.05103976700000001,41,0.00772802,1
+ex1010-pi,TERMINATION_REASON_OPTIMAL,800,0.33192192500000006,816,0.006151155,16
+supportcase37,TERMINATION_REASON_OPTIMAL,8880,5.58012859,9073,0.00951504,193
+satellites3-25,TERMINATION_REASON_OPTIMAL,46360,80.62637014600001,46429,0.022515240000000002,69
+rwth-timetable,TERMINATION_REASON_OPTIMAL,11080,331.438740434,11254,0.37461651700000004,174
+neos-4391920-timok,TERMINATION_REASON_OPTIMAL,69840,160.556796591,70779,0.032308208000000005,939
+supportcase34,TERMINATION_REASON_OPTIMAL,0,0.019071337,0,0.018504064,0
+satellites2-25,TERMINATION_REASON_OPTIMAL,42000,21.911392639000002,42046,0.008656418,46
+neos-4360552-sangro,TERMINATION_REASON_OPTIMAL,1120,0.6262065200000001,1141,0.009120309,21
+neos-957323,TERMINATION_REASON_OPTIMAL,1160,1.125104732,1205,0.013896110000000001,45
+neos-5108386-kalang,TERMINATION_REASON_OPTIMAL,5760,86.38946872400001,5865,0.176263061,105
+ivu52,TERMINATION_REASON_OPTIMAL,6720,36.619763216,6931,0.07593462100000001,211
+nw04,TERMINATION_REASON_OPTIMAL,9880,15.400858677,10172,0.021792544,292
+neos-5188808-nattai,TERMINATION_REASON_OPTIMAL,160,0.079607622,161,0.005621538000000001,1
+s55,TERMINATION_REASON_ITERATION_LIMIT,100000,82.08152154400001,100672,0.012796218000000002,672
+neos-4805882-barwon,TERMINATION_REASON_OPTIMAL,22160,8.672608704000002,22320,0.007384133,160
+rocII-5-11,TERMINATION_REASON_OPTIMAL,4280,1.9281674400000002,4410,0.008251204,130
+neos-4647030-tutaki,TERMINATION_REASON_OPTIMAL,3600,22.412576127,3715,0.101536368,115
+zeil,TERMINATION_REASON_OPTIMAL,44880,143.53518403600003,44987,0.046803344000000004,107
+rmatr200-p10,TERMINATION_REASON_OPTIMAL,1120,0.56486899,1181,0.0069001340000000005,61
+ds,TERMINATION_REASON_OPTIMAL,9800,19.568919809000004,9960,0.029675523000000002,160
+scpm1,TERMINATION_REASON_OPTIMAL,1760,43.002037614,1784,0.301300006,24
+dws012-02,TERMINATION_REASON_OPTIMAL,280,0.167323691,281,0.009939287,1
+ns1828997,TERMINATION_REASON_OPTIMAL,80,0.11390114700000001,82,0.011232444000000001,2
+academictimetablesmall,TERMINATION_REASON_OPTIMAL,1680,0.8253608560000001,1694,0.007923588,14
+s100,TERMINATION_REASON_ITERATION_LIMIT,100000,660.818347515,101290,0.077592861,1290
+ns2124243,TERMINATION_REASON_OPTIMAL,2560,5.669267924,2571,0.028414976,11
+neos-5083528-gimone,TERMINATION_REASON_OPTIMAL,280,0.30740240900000004,290,0.011959321,10
+neos-1171448,TERMINATION_REASON_OPTIMAL,240,0.060272995,260,0.003525545,20
+square31,TERMINATION_REASON_OPTIMAL,29160,176.348113072,29865,0.099958852,705
+neos-4532248-waihi,TERMINATION_REASON_OPTIMAL,0,0.030298673,0,0.029016339000000002,0
+adult-max5features,TERMINATION_REASON_OPTIMAL,28920,24.510822261,29033,0.013605006000000001,113
+neos-3372571-onahau,TERMINATION_REASON_OPTIMAL,3840,1.1274178129999999,3885,0.005280791,45
+triptim8,TERMINATION_REASON_OPTIMAL,16280,11.911140804,16521,0.012655699000000001,241
+n3div36,TERMINATION_REASON_OPTIMAL,720,0.366879714,748,0.008659337000000001,28
