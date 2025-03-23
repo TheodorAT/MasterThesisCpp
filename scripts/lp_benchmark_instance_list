@@ -17,70 +17,67 @@
 # dbic1, neos1, neos2, ns1644855, nug15, pds-40, stat96v4, and watson_2 had been
 # dropped, and set-cover had been added.
 #
-# We only select the ones where we didnt solve in 10000 iterations now.  
 # Faster ones below, for smaller testing and modeling (fast_lp_benchmark): 
-# neos3   
-# chrom1024-7
-# ex10
-# datt256
-# nug08-3rd
-# qap15
-# savsched1
-# self
-# karted
-# ts-palko
-# # The ones below take a little longer, only include in final test runs:
-# fome13
-# neos5052403
+neos3   
+chrom1024-7
+ex10
+datt256
+nug08-3rd
+qap15
+savsched1
+self
+karted
+ts-palko
+# The ones below take a little longer, only include in final test runs:
+fome13
+neos5052403
 set-cover
-# stat96v1
-# stormG2_1000
-# stp3d
-# # These are the largest losers from inertia:
-# buildingenergy
-# degme
-# # Largest winner from inertia
-# L1_sixm250obs
-# # The ones below cannot be solved to 1e-4 with less than 10000 iterations:
-# pds-100
-# rail4284 
-# support10
-# tp-6
-# # The ones below require 30000+ iterations for 1e-4 (PDLP)
-# s250r10
-# irish-e
-# # The ones below cannot be solved to 1e-4 with less than 50000 (PDLP) iterations:
-# ds-big
-# cont1
-# cont11
-# Linf_520c
-# neos
-# ns1687037
-# ns1688926
-# psched3-3
-# rail02
-# s100
-# shs1023
-# square41
-# # Below took really, really long... we skip it for now. (my poor computer)
-# L1_sixm1000obs
-# # These are excluded since they did not work with pdlp.
-# square15 
-# wide15
-# lo10
-# netlarge2
-# netlarge3
-# long15
-# 16_n14
-# i_n13
-# # The ones below are excluded since they did not work with the presolve.
-# fhnw-bin0 
-# graph40-40 
-# neos-3025225   
-# neos-5251015   
+stat96v1
+stormG2_1000
+stp3d
+# These are the largest losers from inertia:
+buildingenergy
+degme
+# Largest winner from inertia
+L1_sixm250obs
+# The ones below cannot be solved to 1e-4 with less than 10000 iterations:
+pds-100
+rail4284 
+support10
+# The ones below require 30000+ iterations for 1e-4 (PDLP)
+s250r10
+irish-e
+# The ones below cannot be solved to 1e-4 with less than 50000 (PDLP) iterations:
+ds-big
+cont1
+cont11
+Linf_520c
+neos
+ns1687037
+ns1688926
+psched3-3
+rail02
+s100
+shs1023
+L1_sixm1000obs
+square15 
+wide15
+lo10
+netlarge2
+long15
+16_n14
+i_n13
+fhnw-bin0 
+graph40-40 
+neos-3025225   
+neos-5251015   
+rmine15    
+s82        
+scpm1       
+tpl-tub-ws16 
+# Excluded due to size and limited resources: 
 # netlarge1     
-netlarge6 
-# rmine15    
-# s82        
-# scpm1       
-# tpl-tub-ws16 
+# netlarge3
+# netlarge6 
+# square41
+# tp-6

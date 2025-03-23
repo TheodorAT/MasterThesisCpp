@@ -69,7 +69,6 @@ fastxgemm-n3r21s3t6
 fastxgemm-n3r22s4t6
 fastxgemm-n3r23s5t6
 fhnw-binschedule0
-fhnw-binschedule1
 fhnw-binschedule2
 fhnw-schedule-paira200
 fhnw-schedule-paira400
@@ -101,10 +100,6 @@ ivu06
 ivu52
 k1mushroom
 kosova1
-# lectsched-1
-# lectsched-2
-# lectsched-3
-# lectsched-5-obj
 leo1
 leo2
 lr1dr04vc05v17a-t360
@@ -353,12 +348,10 @@ sp98ic
 splice1k1
 square23
 square31
-square37
 stockholm
 stp3d
 supportcase10
 supportcase12
-supportcase19
 supportcase2
 supportcase23
 supportcase33
@@ -376,8 +369,6 @@ t1722
 tanglegram4
 tbfp-network
 thor50dday
-tpl-tub-ss16
-tpl-tub-ws1617
 triptim1
 triptim2
 triptim4
@@ -398,3 +389,14 @@ wnq-n100-mw99-14
 woodlands09
 z26
 zeil
+# Excluded due to size and limited resources: 
+# fhnw-binschedule1
+# square37
+# supportcase19
+# tpl-tub-ss16
+# tpl-tub-ws1617
+# Previously excluded ones: 
+# lectsched-1
+# lectsched-2
+# lectsched-3
+# lectsched-5-obj

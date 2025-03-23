@@ -1,7 +1,25 @@
+# Experimental setup: 
+The same benchmarks as in the PDLP paper are ran, with an iteration limit of 100 000, and the with the following instances excluded since they are too large for my testing resources, where PDLP could not solve them or complete 100 000 iterations in 15 minutes (900 seconds).
+
+From the LP benchmark:
+- netlarge1
+- netlarge3
+- netlarge6
+- square41
+- tp-6
+
+From the MIP relaxations benchmark:
+- fhnw-binschedule1
+- square37
+- supportcase19
+- tpl-tub-ss16
+- tpl-tub-ws1617
+
 # Test settings:
 For the baseline, we use the following settings in PDLP, which are kept when "adding on" the steering vectors, and their corresponding settings.
 
 List of settings: 
+- Iteration limit: 100 000
 - Baseline PDLP settings with feasibility polishing = on
 - Termination check and major iteration freq = 40
 - l_inf_ruiz_iterations = 10
