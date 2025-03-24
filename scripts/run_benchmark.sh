@@ -3,7 +3,7 @@
 benchmark="fast_mip_relaxations"
 
 accuracy="1.0e-4"
-iteration_limit=10000
+kkt_matrix_pass_limit=10000
 major_iteration_frequency=40
 verbosity=2
 
@@ -54,7 +54,7 @@ params="
     termination_check_frequency: ${major_iteration_frequency},
     major_iteration_frequency: ${major_iteration_frequency},
     termination_criteria {
-        iteration_limit: ${iteration_limit},
+        kkt_matrix_pass_limit: ${kkt_matrix_pass_limit},
         simple_optimality_criteria {
             eps_optimal_absolute: ${accuracy},
             eps_optimal_relative: ${accuracy},

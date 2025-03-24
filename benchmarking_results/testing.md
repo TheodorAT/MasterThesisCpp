@@ -1,5 +1,5 @@
 # Experimental setup: 
-The same benchmarks as in the PDLP paper are ran, with an iteration limit of 100 000, and the with the following instances excluded since they are too large for my testing resources, where PDLP could not solve them or complete 100 000 iterations in 15 minutes (900 seconds).
+The same benchmarks as in the PDLP paper are ran, with an iteration limit of 100 000, and the with the following instances excluded since they are too large for my testing resources, where PDLP could not solve them to 1.0e-4 accuracy or complete 100 000 iterations in 15 minutes (900 seconds).
 
 From the LP benchmark:
 - netlarge1

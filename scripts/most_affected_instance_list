@@ -1,0 +1,22 @@
+# Some of the most affected instances, we can do fast tests on these, 
+# to see if tuned algorithm can perform better on these.
+# The worst performers:
+buildingenergy
+neos
+triptim7
+triptim8
+piperout-d20
+map16715-04
+map10
+scorpion
+gfrd-pnc
+lotfi
+bnl2
+# The best performers:
+rail02
+mzzv42z
+supportcase7
+neos-4533806-waima
+ger50-17-trans-pop-3t
+forplan
+maros

@@ -1,19 +1,19 @@
 # Select the type of benchmark that we want to run: 
-# Select between "lp_benchmark", "mip_relaxations", "netlib_benchmark"
-benchmark="fast_mip_relaxations"
+# Select between "lp_benchmark", "mip_relaxations", "netlib_benchmark", "most_affected"
+benchmark="most_affected"
 
 accuracy="1.0e-4"
-iteration_limit=10000
+kkt_matrix_pass_limit=100000
 major_iteration_frequency=40
 verbosity=2
 
 # These are probably the parameters that we want to tune with:
 
 # Threshold = 0.6 seems to perform well on many kappas, try this...
-declare -a similarity_threshold_list=(0.6)
+declare -a similarity_threshold_list=(0.6 0.7 0.8 0.9 0.95)
 
 # steering_vector_kappa=0.3 # Test in range [0, 1]: {0, 0.2, 0.4, 0.6, 0.8, 1}
-declare -a kappa_list=(0.2 0.3 0.4 0.5 0.9)
+declare -a kappa_list=(0.8)
 
 steering_vector_lambda=1  # Test in range [0, 1]: {0, 0.2, 0.4, 0.6, 0.8, 1}
 # TODO: For the future, test increasing lambda with iterations, 
@@ -65,7 +65,7 @@ do
 				termination_check_frequency: ${major_iteration_frequency},
 				major_iteration_frequency: ${major_iteration_frequency},
 				termination_criteria {
-						iteration_limit: ${iteration_limit},
+						kkt_matrix_pass_limit: ${kkt_matrix_pass_limit},
 						simple_optimality_criteria {
 								eps_optimal_absolute: ${accuracy},
 								eps_optimal_relative: ${accuracy},
@@ -88,6 +88,8 @@ do
 		if [[ $benchmark == fast_* ]]; then
 			benchmark_location=${benchmark:5:${#benchmark}}
 			instance_path_base="${HOME}/${benchmark_location}"
+		elif [[ $benchmark == most_affected ]]; then 
+			instance_path_base="${HOME}/combined_benchmark"
 		else
 			instance_path_base="${HOME}/${benchmark}"
 		fi

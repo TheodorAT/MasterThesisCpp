@@ -1,3 +1,32 @@
 # This is a collection of notes to self: 
 To recompile basic example of running pdlp with input as mps file:
  - make build SOURCE=examples/cpp/pdlp_solve.cc
+
+# The worst performers for steering vectors:
+LP benchmark: 
+- buildingenergy
+- neos
+Mip Relaxations:
+- triptim7
+- triptim8
+- piperout-d20
+- map16715-04
+- map10
+- buildingenergy
+Netlib:
+- scorpion
+- gfrd-pnc
+- lotfi
+- bnl2
+# The best performers with steering vectors
+LP benchmark: 
+- rail02
+Mip Relaxations:
+- mzzv42z
+- supportcase7
+- rail02
+- neos-4533806-waima
+- ger50-17-trans-pop-3t
+Netlib:
+- forplan
+- maros
