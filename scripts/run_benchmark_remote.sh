@@ -16,7 +16,7 @@ steering_vector_option="RESIDUAL_MOMENTUM"
 # "STEERING_VECTOR_EVERY_PDLP_RESTART"
 steering_vector_restart_option="STEERING_VECTOR_EVERY_MAJOR_ITERATION"    
 
-similarity_threshold=0.6  # Test in range [-1, 1], 
+similarity_threshold=0.9  # Test in range [-1, 1], 
 # but its probably not very interesting below 0...
 
 steering_vector_kappa=0.8 # Test in range [0, 1]: {0, 0.2, 0.4, 0.6, 0.8, 1}
