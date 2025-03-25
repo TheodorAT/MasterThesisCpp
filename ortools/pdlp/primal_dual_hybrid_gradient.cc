@@ -26,6 +26,7 @@
 #include <vector>
 #include <fstream>
 #include <iterator>
+#include <iostream>
 
 #include "Eigen/Core"
 #include "Eigen/SparseCore"
@@ -3790,9 +3791,11 @@ SolverResult Solver::Solve(const IterationType iteration_type,
     if (maybe_result.has_value()) {
       // HACK: We also write the similarity to a file here for now... (This won't work with feasibility polishing)
       if (params_.save_similarity()) {
-        std::ofstream output_file(params_.similarity_file_name());
-        std::ostream_iterator<std::string> output_iterator(output_file, "\n");
-        std::copy(std::begin(step_similarities_), std::end(step_similarities_), output_iterator);
+        std::ofstream myfile;
+        myfile.open (params_.similarity_file_name());
+        for (double sim: step_similarities_)
+          myfile << sim << ", ";
+        myfile.close();
       } 
       return maybe_result.value();
     }
@@ -3874,15 +3877,15 @@ SolverResult Solver::Solve(const IterationType iteration_type,
     if (outcome == InnerStepOutcome::kForceNumericalTermination) {
       force_numerical_termination = true;
     }
-    if (params_.save_similarity) {
+    if (params_.save_similarity()) {
       if (iterations_completed_ == 0) {
         std::cout << "First iteration, saving the step";
-        VectorXd first_step(ShardedWorkingQp().PrimalSize() + ShardedWorkingQp().DualSize()) 
+        VectorXd first_step(ShardedWorkingQp().PrimalSize() + ShardedWorkingQp().DualSize());
         first_step << current_primal_delta_, current_dual_delta_;
         first_step /= first_step.norm();
         first_step_unit_ = std::move(first_step);
       } else {
-        VectorXd taken_step(ShardedWorkingQp().PrimalSize() + ShardedWorkingQp().DualSize()) 
+        VectorXd taken_step(ShardedWorkingQp().PrimalSize() + ShardedWorkingQp().DualSize());
         taken_step << current_primal_delta_, current_dual_delta_;
         step_similarities_relative_first_.push_back(ComputeSimilarityRelativeFirst(taken_step));
       }
