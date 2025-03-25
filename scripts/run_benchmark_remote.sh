@@ -9,7 +9,7 @@ verbosity=2
 
 # Select between: "NO_STEERING_VECTORS", "RESIDUAL_MOMENTUM", "POLYAK_MOMENTUM"
 steering_vector_option="RESIDUAL_MOMENTUM"   
-similarity_scaling=true 
+similarity_scaling="true" 
 # From a small experiment it seems much better to restart at least every major iteration, 
 # but maybe this freq can change.
 
