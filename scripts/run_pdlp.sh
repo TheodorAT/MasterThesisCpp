@@ -15,10 +15,11 @@ instance_path="${HOME}/lp_benchmark/${instance}.mps" # We need to have already e
 
 accuracy="1.0e-4"
 
-kkt_matrix_pass_limit=10000
+kkt_matrix_pass_limit=1000
 major_iteration_frequency=40
 verbosity=2
 
+similarity_scaling="true"
 steering_vector_option="RESIDUAL_MOMENTUM"        # Select between: "NO_STEERING_VECTORS", "RESIDUAL_MOMENTUM"
 steering_vector_restart_option="STEERING_VECTOR_EVERY_MAJOR_ITERATION"    # Select between: "STEERING_VECTOR_NO_RESTARTS",  
                                                                 # "STEERING_VECTOR_EVERY_MAJOR_ITERATION", "STEERING_VECTOR_EVERY_PDLP_RESTART"
@@ -57,7 +58,8 @@ params="
     use_feasibility_polishing: ${use_feasibility_polishing},
     steering_vector_option: ${steering_vector_option},
     steering_vector_restart_option: ${steering_vector_restart_option},
-    similarity_threshold: ${similarity_threshold}
+    similarity_threshold: ${similarity_threshold},
+    similarity_scaling: ${similarity_scaling},
 "
 
 solve_log_file="${HOME}/MasterThesisCpp/benchmarking_results/solve_logs/log_${experiment_name}.json"
