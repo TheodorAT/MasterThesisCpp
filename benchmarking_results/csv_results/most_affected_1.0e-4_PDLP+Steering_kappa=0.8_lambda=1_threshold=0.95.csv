@@ -1,0 +1,19 @@
+instance             , termination_reason                , iteration_count, solve_time_sec        , cumulative_kkt_matrix_passes, preprocessing_time_sec, cumulative_rejected_steps
+gfrd-pnc             , TERMINATION_REASON_OPTIMAL        ,           51240,    1.6573871930000001 ,                        51247, 0.0050908970000000005 ,                         7
+map16715-04          , TERMINATION_REASON_ITERATION_LIMIT,          100000, 1525.829278784        ,                       100825, 0.113702306           ,                       825
+triptim7             , TERMINATION_REASON_ITERATION_LIMIT,          100000,  248.90615410100003   ,                       100298, 0.025784210000000002  ,                       298
+neos                 , TERMINATION_REASON_ITERATION_LIMIT,          100000, 1416.5965483240002    ,                       100872, 0.117438231           ,                       872
+mzzv42z              , TERMINATION_REASON_OPTIMAL        ,           41080,   34.804835822        ,                        41289, 0.007551622000000001  ,                       209
+forplan              , TERMINATION_REASON_OPTIMAL        ,           19440,    0.30284886         ,                        19517, 0.00109346            ,                        77
+maros                , TERMINATION_REASON_ITERATION_LIMIT,          100000,    4.489019865        ,                       100105, 0.000807417           ,                       105
+ger50-17-trans-pop-3t, TERMINATION_REASON_OPTIMAL        ,            7080,    9.224739769000001  ,                         7093, 0.008028116           ,                        13
+bnl2                 , TERMINATION_REASON_OPTIMAL        ,           28320,    3.216865899        ,                        28331, 0.002343945           ,                        11
+map10                , TERMINATION_REASON_ITERATION_LIMIT,          100000, 1581.4037864410002    ,                       101005, 0.120607668           ,                      1005
+rail02               , TERMINATION_REASON_ITERATION_LIMIT,          100000, 2460.9323592690002    ,                       100245, 0.10809647500000001   ,                       245
+scorpion             , TERMINATION_REASON_OPTIMAL        ,           12280,    0.23914437400000002,                        12281, 0.0005864420000000001 ,                         1
+neos-4533806-waima   , TERMINATION_REASON_OPTIMAL        ,           18240,  122.80097853400001   ,                        18371, 0.08832334500000001   ,                       131
+piperout-d20         , TERMINATION_REASON_OPTIMAL        ,           33480,   39.082173565        ,                        33484, 0.010683101           ,                         4
+buildingenergy       , TERMINATION_REASON_OPTIMAL        ,           18840,  216.97754704000002   ,                        19172, 0.092832381           ,                       332
+lotfi                , TERMINATION_REASON_OPTIMAL        ,           83440,    0.98043684         ,                        83846, 0.00044726000000000005,                       406
+supportcase7         , TERMINATION_REASON_OPTIMAL        ,           16792,  170.37559867         ,                        16855, 0.10934326100000001   ,                        63
+triptim8             , TERMINATION_REASON_ITERATION_LIMIT,          100000,  218.290435746        ,                       100317, 0.025286835           ,                       317

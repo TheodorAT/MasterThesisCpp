@@ -10,7 +10,7 @@ verbosity=2
 # These are probably the parameters that we want to tune with:
 
 # Threshold = 0.6 seems to perform well on many kappas, try this...
-declare -a similarity_threshold_list=(0.6 0.7 0.8 0.9 0.95)
+declare -a similarity_threshold_list=(0.8 0.9)
 
 # steering_vector_kappa=0.3 # Test in range [0, 1]: {0, 0.2, 0.4, 0.6, 0.8, 1}
 declare -a kappa_list=(0.8)
@@ -116,6 +116,8 @@ do
 			solve_log_file="${base_solve_log_dir}/${INSTANCE}.json"
 			if [ ! -f $instance_path ]; then
 				echo "Did not find file at $instance_path"
+			elif [ -f $solve_log_file ]; then 
+			    echo "Found existing solve log $solve_log_file$, skipping identical solve..."
 			else 
 				echo "Solving ${INSTANCE}..."
 				./temp_cpp/pdlp_solve/build/bin/pdlp_solve --input $instance_path --params "${params}" --solve_log_file "${solve_log_file}"

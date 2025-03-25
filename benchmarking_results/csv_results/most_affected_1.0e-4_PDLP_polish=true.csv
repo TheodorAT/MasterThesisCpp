@@ -5,6 +5,7 @@ triptim7             , TERMINATION_REASON_OPTIMAL        ,           28200,  20.
 neos                 , TERMINATION_REASON_OPTIMAL        ,           89680, 464.010569293         ,                        90689, 0.06421068            ,                      1009
 mzzv42z              , TERMINATION_REASON_ITERATION_LIMIT,          100000,  30.406672464000003   ,                       100986, 0.004956135           ,                       986
 forplan              , TERMINATION_REASON_ITERATION_LIMIT,          100000,   0.718433431         ,                       100942, 0.000258066           ,                       942
+maros                , TERMINATION_REASON_ITERATION_LIMIT,          100000,   2.071444099         ,                       100405, 0.000524011           ,                       405
 ger50-17-trans-pop-3t, TERMINATION_REASON_OPTIMAL        ,           13960,   3.9117660880000003  ,                        14191, 0.00544897            ,                       231
 bnl2                 , TERMINATION_REASON_OPTIMAL        ,           26280,   1.099987851         ,                        26436, 0.000916612           ,                       156
 map10                , TERMINATION_REASON_OPTIMAL        ,            8400,  37.305773775000006   ,                         8479, 0.058396778           ,                        79
@@ -16,4 +17,3 @@ buildingenergy       , TERMINATION_REASON_OPTIMAL        ,           10160,  41.
 lotfi                , TERMINATION_REASON_OPTIMAL        ,           20640,   0.077058845         ,                        21097, 0.000188857           ,                       457
 supportcase7         , TERMINATION_REASON_ITERATION_LIMIT,          100000, 520.5970136620001     ,                       100795, 0.075970823           ,                       795
 triptim8             , TERMINATION_REASON_OPTIMAL        ,           16280,  11.911140804         ,                        16521, 0.012655699000000001  ,                       241
-maros                , TERMINATION_REASON_ITERATION_LIMIT,          100000,   2.071444099         ,                       100405, 0.000524011           ,                       405

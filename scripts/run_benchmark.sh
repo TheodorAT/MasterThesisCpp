@@ -103,6 +103,9 @@ do
   solve_log_file="${base_solve_log_dir}/${INSTANCE}.json"
   if [ ! -f $instance_path ]; then
     echo "Did not find file at $instance_path"
+   instance_path_zipped="${instance_path_base}/${INSTANCE}.mps.gz"
+  elif [ -f $solve_log_file ]; then 
+    echo "Found existing solve log $solve_log_file$, skipping identical solve..."
   else 
     echo "Solving ${INSTANCE}..."
     ./temp_cpp/pdlp_solve/build/bin/pdlp_solve --input $instance_path --params "${params}" --solve_log_file "${solve_log_file}"

@@ -5,6 +5,7 @@ triptim7             , TERMINATION_REASON_ITERATION_LIMIT,          100000,  220
 neos                 , TERMINATION_REASON_OPTIMAL        ,           92200, 1255.470107552        ,                        92811, 0.11572230500000001   ,                       611
 mzzv42z              , TERMINATION_REASON_ITERATION_LIMIT,          100000,   93.61033699000001   ,                       100447, 0.009913556           ,                       447
 forplan              , TERMINATION_REASON_OPTIMAL        ,           11480,    0.182085466        ,                        11596, 0.000493953           ,                       116
+maros                , TERMINATION_REASON_OPTIMAL        ,           51280,    2.3021252850000002 ,                        51353, 0.0007771840000000001 ,                        73
 ger50-17-trans-pop-3t, TERMINATION_REASON_OPTIMAL        ,            4040,    3.642840338        ,                         4049, 0.008455384           ,                         9
 bnl2                 , TERMINATION_REASON_OPTIMAL        ,           33400,    3.1207766720000003 ,                        33400, 0.001413416           ,                         0
 map10                , TERMINATION_REASON_ITERATION_LIMIT,          100000, 1379.906983452        ,                       100826, 0.103954418           ,                       826
