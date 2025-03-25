@@ -511,11 +511,13 @@ message PrimalDualHybridGradientParams {
   // Curve-breaking parameters:
   optional double similarity_threshold = 38 [default = 0.9];
   optional bool absolute_similarity_condition = 39 [default = false];
-  optional bool similarity_scaling = 40 [default = false];  
+  optional bool similarity_scaling = 40 [default = false];
+  optional bool save_similarity = 41 [default = false];
+  optional string similarity_file_name = 42 [default = "~/similarity_log_default"];
   // End of curve-breaking parameters.
 
   // Momentum scaling parameter: 
-  optional double momentum_scaling = 41 [default = 0.3];
+  optional double momentum_scaling = 43 [default = 0.3];
 
   reserved 13, 14, 15, 20, 21;
 }
