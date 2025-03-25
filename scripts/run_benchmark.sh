@@ -15,6 +15,7 @@ steering_vector_option="RESIDUAL_MOMENTUM"
 # Select between: "STEERING_VECTOR_NO_RESTARTS", "STEERING_VECTOR_EVERY_MAJOR_ITERATION", 
 # "STEERING_VECTOR_EVERY_PDLP_RESTART"
 steering_vector_restart_option="STEERING_VECTOR_EVERY_MAJOR_ITERATION"    
+similarity_scaling=true
 
 similarity_threshold=0.9  # Test in range [-1, 1], 
 # but its probably not very interesting below 0...
@@ -69,7 +70,8 @@ params="
     similarity_threshold: ${similarity_threshold},
     absolute_similarity_condition: ${absolute_similarity_condition},
     steering_vector_kappa: ${steering_vector_kappa},
-    steering_vector_lambda: ${steering_vector_lambda}, 
+    steering_vector_lambda: ${steering_vector_lambda},
+    similarity_scaling: ${similarity_scaling}, 
 "
 
 # Extract all relevant instances:

@@ -1,6 +1,6 @@
 # Select the type of benchmark that we want to run: 
 # Select between "lp_benchmark", "mip_relaxations", "netlib_benchmark", "most_affected"
-benchmark="most_affected"
+benchmark="fast_mip_relaxations"
 
 accuracy="1.0e-4"
 kkt_matrix_pass_limit=100000
@@ -82,7 +82,7 @@ do
 				absolute_similarity_condition: ${absolute_similarity_condition},
 				steering_vector_kappa: ${steering_vector_kappa},
 				steering_vector_lambda: ${steering_vector_lambda}, 
-				similarity_scaling: ${similarity_scaling}
+				similarity_scaling: ${similarity_scaling},
 		"
 
 		# Extract all relevant instances:

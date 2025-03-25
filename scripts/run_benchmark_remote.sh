@@ -8,7 +8,8 @@ major_iteration_frequency=40
 verbosity=2
 
 # Select between: "NO_STEERING_VECTORS", "RESIDUAL_MOMENTUM", "POLYAK_MOMENTUM"
-steering_vector_option="RESIDUAL_MOMENTUM"    
+steering_vector_option="RESIDUAL_MOMENTUM"   
+similarity_scaling=true 
 # From a small experiment it seems much better to restart at least every major iteration, 
 # but maybe this freq can change.
 
@@ -39,7 +40,7 @@ if [ $steering_vector_option == "NO_STEERING_VECTORS" ]; then
     base_experiment_name="PDLP_polish=$use_feasibility_polishing"
 else 
     base_experiment_name="PDLP+Steering_no_threshold_kappa=${steering_vector_kappa}_lambda=${steering_vector_lambda}"
-    base_experiment_name="PDLP+Steering_kappa=${steering_vector_kappa}_lambda=${steering_vector_lambda}_threshold=${similarity_threshold}"
+    base_experiment_name="PDLP+Steering_kappa=${steering_vector_kappa}_lambda=${steering_vector_lambda}_threshold=${similarity_threshold}_sim_scaling=${similarity_scaling}"
 fi
 solve_folder_name="${benchmark}_${accuracy}_${base_experiment_name}"
 
@@ -70,6 +71,7 @@ params="
     absolute_similarity_condition: ${absolute_similarity_condition},
     steering_vector_kappa: ${steering_vector_kappa},
     steering_vector_lambda: ${steering_vector_lambda}, 
+    similarity_scaling: ${similarity_scaling},
 "
 
 # Extract all relevant instances:
