@@ -1,6 +1,6 @@
 # Select the type of benchmark that we want to run: 
 # Select between "lp_benchmark", "mip_relaxations", "netlib_benchmark"
-benchmark="netlib_benchmark"
+benchmark="mip_relaxations"
 
 accuracy="1.0e-4"
 kkt_matrix_pass_limit=100000
@@ -17,7 +17,7 @@ similarity_scaling="true"
 # "STEERING_VECTOR_EVERY_PDLP_RESTART"
 steering_vector_restart_option="STEERING_VECTOR_EVERY_MAJOR_ITERATION"    
 
-similarity_threshold=0.9  # Test in range [-1, 1], 
+similarity_threshold=0.6  # Test in range [-1, 1], 
 # but its probably not very interesting below 0...
 
 steering_vector_kappa=0.8 # Test in range [0, 1]: {0, 0.2, 0.4, 0.6, 0.8, 1}
@@ -119,8 +119,11 @@ do
       ./temp_cpp/pdlp_solve/build/bin/pdlp_solve --input $instance_path --params "${params}" --solve_log_file "${solve_log_file}"
       echo "Solved, deleting unzipped file to save storage... "
       rm $instance_path
+
     fi
-  fi 
+
+  fi
+
 done
 
 echo "All runs complete, creating summary file..."
