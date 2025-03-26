@@ -17,16 +17,16 @@
 #include <atomic>
 #include <cmath>
 #include <cstdint>
+#include <fstream>
 #include <functional>
+#include <iostream>
+#include <iterator>
 #include <limits>
 #include <optional>
 #include <random>
 #include <string>
 #include <utility>
 #include <vector>
-#include <fstream>
-#include <iterator>
-#include <iostream>
 
 #include "Eigen/Core"
 #include "Eigen/SparseCore"
@@ -693,11 +693,11 @@ class Solver {
   // Takes a adaptive step with steering vectors in the residual momentum
   // direction.
   InnerStepOutcome TakeAdaptiveStepSteeringResidual();
-    
+
   // Takes a adaptive step with steering vectors in the residual momentum
   // direction.
   InnerStepOutcome TakeAdaptiveStepSteeringResidualExact();
-  
+
   InnerStepOutcome TakeConstantSizeStepPolyakMomentum();
 
   InnerStepOutcome TakeAdaptiveStepPolyakMomentum();
@@ -1828,6 +1828,8 @@ Solver::Solver(const PrimalDualHybridGradientParams& params,
       primal_weight_(initial_primal_weight),
       preprocess_solver_(preprocess_solver) {
   ResetSteeringVectors();
+  current_primal_delta_ = ZeroVector(ShardedWorkingQp().PrimalSharder());
+  current_dual_delta_ = ZeroVector(ShardedWorkingQp().DualSharder());
 }
 
 void Solver::ResetSteeringVectors() {
@@ -2056,10 +2058,10 @@ double Solver::ComputeSimilarity(const VectorXd& vec1,
 
 // For now, we let this be single-threaded. Maybe make it parallellized later
 double Solver::ComputeSimilarityRelativeFirst(const VectorXd& vec1) const {
+  const double norm_first = first_step_unit_.norm();
   const double norm_1 = vec1.norm();
-  return first_step_unit_.dot(vec1) / (norm_1);
+  return first_step_unit_.dot(vec1) / (norm_1 * norm_first);
 }
-
 
 IterationStats Solver::CreateSimpleIterationStats(
     RestartChoice restart_used) const {
@@ -2615,6 +2617,19 @@ InnerStepOutcome Solver::TakeAdaptiveStep() {
         ComputeNextPrimalSolution(primal_step_size);
     NextSolutionAndDelta next_dual_solution = ComputeNextDualSolution(
         dual_step_size, /*extrapolation_factor=*/1.0, next_primal_solution);
+
+    if (params_.save_similarity()) {
+      const int64_t primal_size = ShardedWorkingQp().PrimalSize();
+      const int64_t dual_size = ShardedWorkingQp().DualSize();
+      VectorXd prev_movement(primal_size + dual_size);
+      VectorXd cur_movement(primal_size + dual_size);
+      prev_movement << current_primal_delta_, current_dual_delta_;
+      cur_movement << next_primal_solution.delta, next_dual_solution.delta;
+
+      double similarity = ComputeSimilarity(prev_movement, cur_movement);
+      step_similarities_.push_back(similarity);
+    }
+
     const double movement =
         ComputeMovement(next_primal_solution.delta, next_dual_solution.delta);
     if (movement == 0.0) {
@@ -2796,8 +2811,8 @@ InnerStepOutcome Solver::TakeConstantSizeStepSteeringResidual() {
   double similarity = ComputeSimilarity(prev_movement, cur_movement);
   if (params_.save_similarity()) {
     step_similarities_.push_back(similarity);
-  } 
-  
+  }
+
   if (params_.absolute_similarity_condition()) {
     similarity = fabs(similarity);
   }
@@ -2805,7 +2820,7 @@ InnerStepOutcome Solver::TakeConstantSizeStepSteeringResidual() {
     if (params_.similarity_scaling()) {
       multiplicative_factor *= similarity;
     }
-    
+
     ShardedWorkingQp().PrimalSharder().ParallelForEachShard(
         [&](const Sharder::Shard& shard) {
           shard(next_primal_steering) =
@@ -2991,7 +3006,7 @@ InnerStepOutcome Solver::TakeAdaptiveStepSteeringResidual() {
       double similarity = ComputeSimilarity(prev_movement, cur_movement);
       if (params_.save_similarity()) {
         step_similarities_.push_back(similarity);
-      } 
+      }
       if (params_.absolute_similarity_condition()) {
         similarity = fabs(similarity);
       }
@@ -3187,7 +3202,7 @@ InnerStepOutcome Solver::TakeAdaptiveStepSteeringResidualExact() {
       double similarity = ComputeSimilarity(prev_movement, cur_movement);
       if (params_.save_similarity()) {
         step_similarities_.push_back(similarity);
-      } 
+      }
       if (params_.absolute_similarity_condition()) {
         similarity = fabs(similarity);
       }
@@ -3265,7 +3280,7 @@ InnerStepOutcome Solver::TakeConstantSizeStepPolyakMomentum() {
   const double dual_step_size = step_size_ * primal_weight_;
   const int64_t primal_size = ShardedWorkingQp().PrimalSize();
   const int64_t dual_size = ShardedWorkingQp().DualSize();
-  
+
   NextSolutionAndDelta next_primal_solution =
       ComputeNextPrimalSolution(primal_step_size);
   NextSolutionAndDelta next_dual_solution = ComputeNextDualSolution(
@@ -3279,7 +3294,7 @@ InnerStepOutcome Solver::TakeConstantSizeStepPolyakMomentum() {
   double similarity = ComputeSimilarity(prev_movement, cur_movement);
   if (params_.save_similarity()) {
     step_similarities_.push_back(similarity);
-  } 
+  }
   if (params_.absolute_similarity_condition()) {
     similarity = fabs(similarity);
   }
@@ -3298,14 +3313,13 @@ InnerStepOutcome Solver::TakeConstantSizeStepPolyakMomentum() {
               shard(next_primal_solution.value) -
               shard(current_primal_solution_);
         });
-    ShardedWorkingQp().PrimalSharder().ParallelForEachShard(
+    ShardedWorkingQp().DualSharder().ParallelForEachShard(
         [&](const Sharder::Shard& shard) {
           shard(next_dual_solution.value) =
               shard(next_dual_solution.value) +
               (momentum_scaling_factor * shard(current_dual_delta_));
           shard(next_dual_solution.delta) =
-              shard(next_dual_solution.value) -
-              shard(current_dual_solution_);
+              shard(next_dual_solution.value) - shard(current_dual_solution_);
         });
   }
   const double movement =
@@ -3347,7 +3361,7 @@ InnerStepOutcome Solver::TakeAdaptiveStepPolyakMomentum() {
     const double dual_step_size = step_size_ * primal_weight_;
     const int64_t primal_size = ShardedWorkingQp().PrimalSize();
     const int64_t dual_size = ShardedWorkingQp().DualSize();
-    
+
     NextSolutionAndDelta next_primal_solution =
         ComputeNextPrimalSolution(primal_step_size);
     NextSolutionAndDelta next_dual_solution = ComputeNextDualSolution(
@@ -3362,7 +3376,7 @@ InnerStepOutcome Solver::TakeAdaptiveStepPolyakMomentum() {
     double similarity = ComputeSimilarity(prev_movement, cur_movement);
     if (params_.save_similarity()) {
       step_similarities_.push_back(similarity);
-    } 
+    }
     if (params_.absolute_similarity_condition()) {
       similarity = fabs(similarity);
     }
@@ -3371,7 +3385,6 @@ InnerStepOutcome Solver::TakeAdaptiveStepPolyakMomentum() {
       if (params_.similarity_scaling()) {
         momentum_scaling_factor *= similarity;
       }
-
       ShardedWorkingQp().PrimalSharder().ParallelForEachShard(
           [&](const Sharder::Shard& shard) {
             shard(next_primal_solution.value) =
@@ -3381,14 +3394,13 @@ InnerStepOutcome Solver::TakeAdaptiveStepPolyakMomentum() {
                 shard(next_primal_solution.value) -
                 shard(current_primal_solution_);
           });
-      ShardedWorkingQp().PrimalSharder().ParallelForEachShard(
+      ShardedWorkingQp().DualSharder().ParallelForEachShard(
           [&](const Sharder::Shard& shard) {
             shard(next_dual_solution.value) =
                 shard(next_dual_solution.value) +
                 (momentum_scaling_factor * shard(current_dual_delta_));
             shard(next_dual_solution.delta) =
-                shard(next_dual_solution.value) -
-                shard(current_dual_solution_);
+                shard(next_dual_solution.value) - shard(current_dual_solution_);
           });
     }
     const double movement =
@@ -3789,14 +3801,22 @@ SolverResult Solver::Solve(const IterationType iteration_type,
             iteration_type, force_numerical_termination, interrupt_solve,
             work_from_feasibility_polishing, solve_log);
     if (maybe_result.has_value()) {
-      // HACK: We also write the similarity to a file here for now... (This won't work with feasibility polishing)
+      // HACK: We also write the similarity to a file here for now... (This
+      // won't work with feasibility polishing)
       if (params_.save_similarity()) {
         std::ofstream myfile;
-        myfile.open (params_.similarity_file_name());
-        for (double sim: step_similarities_)
+        std::cout << "Printing to file: " << params_.similarity_file_name()
+                  << "\n";
+        myfile.open(params_.similarity_file_name());
+        for (double sim : step_similarities_) {
           myfile << sim << ", ";
+        }
+        myfile << "\n";
+        for (double sim : step_similarities_relative_first_) {
+          myfile << sim << ", ";
+        }
         myfile.close();
-      } 
+      }
       return maybe_result.value();
     }
 
@@ -3879,15 +3899,17 @@ SolverResult Solver::Solve(const IterationType iteration_type,
     }
     if (params_.save_similarity()) {
       if (iterations_completed_ == 0) {
-        std::cout << "First iteration, saving the step";
-        VectorXd first_step(ShardedWorkingQp().PrimalSize() + ShardedWorkingQp().DualSize());
+        std::cout << "First iteration, saving the step\n";
+        VectorXd first_step(ShardedWorkingQp().PrimalSize() +
+                            ShardedWorkingQp().DualSize());
         first_step << current_primal_delta_, current_dual_delta_;
-        first_step /= first_step.norm();
         first_step_unit_ = std::move(first_step);
       } else {
-        VectorXd taken_step(ShardedWorkingQp().PrimalSize() + ShardedWorkingQp().DualSize());
+        VectorXd taken_step(ShardedWorkingQp().PrimalSize() +
+                            ShardedWorkingQp().DualSize());
         taken_step << current_primal_delta_, current_dual_delta_;
-        step_similarities_relative_first_.push_back(ComputeSimilarityRelativeFirst(taken_step));
+        step_similarities_relative_first_.push_back(
+            ComputeSimilarityRelativeFirst(taken_step));
       }
     }
   }  // loop over iterations

@@ -14,14 +14,15 @@ instance="forplan"
 instance_path="${HOME}/netlib_benchmark/${instance}.mps" # We need to have already extracted it from mps.gz
 
 accuracy="1.0e-4"
-save_similarity="true"
+save_similarity="false"
+similarity_file_name="'./similarity_logs/${instance}_PDLP'"
 kkt_matrix_pass_limit=100000
 major_iteration_frequency=40
-verbosity=2
+verbosity=1
 
 similarity_scaling="false"
-similarity_threshold="0.9"
-steering_vector_option="RESIDUAL_MOMENTUM"        # Select between: "NO_STEERING_VECTORS", "RESIDUAL_MOMENTUM"
+similarity_threshold="0.999"
+steering_vector_option="POLYAK_MOMENTUM"        # Select between: "NO_STEERING_VECTORS", "RESIDUAL_MOMENTUM", "POLYAK_MOMENTUM"
 
 steering_vector_restart_option="STEERING_VECTOR_EVERY_MAJOR_ITERATION"    # Select between: "STEERING_VECTOR_NO_RESTARTS",  
                                                                 # "STEERING_VECTOR_EVERY_MAJOR_ITERATION", "STEERING_VECTOR_EVERY_PDLP_RESTART"
@@ -61,7 +62,8 @@ params="
     steering_vector_restart_option: ${steering_vector_restart_option},
     similarity_threshold: ${similarity_threshold},
     similarity_scaling: ${similarity_scaling},
-    save_similarity: ${save_similarity}
+    save_similarity: ${save_similarity},
+    similarity_file_name: ${similarity_file_name},
 "
 
 solve_log_file="${HOME}/MasterThesisCpp/benchmarking_results/solve_logs/log_${experiment_name}.json"
@@ -69,4 +71,3 @@ solve_log_file="${HOME}/MasterThesisCpp/benchmarking_results/solve_logs/log_${ex
 cd "$HOME/MasterThesisCpp"
 echo "Solving $instance..."
 ./temp_cpp/pdlp_solve/build/bin/pdlp_solve --input $instance_path --params "$params"
-
