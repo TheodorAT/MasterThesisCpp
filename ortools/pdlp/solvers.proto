@@ -281,8 +281,10 @@ message PrimalDualHybridGradientParams {
     NO_STEERING_VECTORS = 0;
     // Applies residual momentum steering vectors: 
     RESIDUAL_MOMENTUM = 1;
-    // Applies Polyak momentum, not as a steering vector but this enum is used out of convenience for now.option
+    // Applies Polyak momentum, not as a steering vector but this enum is used out of convenience for now.
     POLYAK_MOMENTUM = 2;
+    // Applies Polyak momentum, not as a steering vector but this enum is used out of convenience for now.
+    NESTEROV_MOMENTUM = 3;
   }
 
   enum SteeringVectorRestartOption {

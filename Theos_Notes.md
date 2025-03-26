@@ -2,6 +2,17 @@
 To recompile basic example of running pdlp with input as mps file:
  - make build SOURCE=examples/cpp/pdlp_solve.cc
 
+(Tuning is done on the Netlib benchmark for Polyak & Nesterov)
+# Results of Polyak Tuning: 
+Best performance: 
+- scaling=0.3_threshold=0.995_sim_scaling=false (Most Solves = 102, KKT SGM10 = 5756)
+- scaling=0.3_threshold=0.990_sim_scaling=true (Lowest KKT SGM10 = 5645, Solves = 101)
+
+# Results of Nesterov Tuning: 
+Best performance: 
+- scaling=0.3_threshold=0.80_sim_scaling=true (Most Solves = 103, KKT SGM10 = 5391)
+- scaling=0.3_threshold=0.9_sim_scaling=false (Lowest KKT SGM10 = 5320, Solves =  102)
+
 # The worst performers for steering vectors:
 LP benchmark: 
 - buildingenergy

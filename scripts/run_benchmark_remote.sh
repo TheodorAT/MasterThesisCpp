@@ -7,7 +7,7 @@ kkt_matrix_pass_limit=100000
 major_iteration_frequency=40
 verbosity=2
 
-# Select between: "NO_STEERING_VECTORS", "RESIDUAL_MOMENTUM", "POLYAK_MOMENTUM"
+# Select between: "NO_STEERING_VECTORS", "RESIDUAL_MOMENTUM", "POLYAK_MOMENTUM", "NESTEROV_MOMENTUM"
 steering_vector_option="RESIDUAL_MOMENTUM"   
 similarity_scaling="true" 
 # From a small experiment it seems much better to restart at least every major iteration, 

@@ -1,6 +1,6 @@
 # Select the type of benchmark that we want to run: 
 # Select between "lp_benchmark", "mip_relaxations", "netlib_benchmark", "most_affected"
-benchmark="fast_mip_relaxations"
+benchmark="netlib_benchmark"
 
 accuracy="1.0e-4"
 kkt_matrix_pass_limit=100000
@@ -10,10 +10,15 @@ verbosity=2
 # These are probably the parameters that we want to tune with:
 
 # Threshold = 0.6 seems to perform well on many kappas, try this...
-declare -a similarity_threshold_list=(0.9 0.8 0.7 0.6)
+declare -a similarity_threshold_list=(0.80)
+# Next: Test lower threshold (0.60 0.70) and sim_scaling=true.
+similarity_scaling="true"
 
-# steering_vector_kappa=0.3 # Test in range [0, 1]: {0, 0.2, 0.4, 0.6, 0.8, 1}
-declare -a kappa_list=(0.8)
+# momentum_scaling=0.3
+declare -a momentum_scaling_list=(0.1 0.2 0.3 0.4 0.5)
+
+steering_vector_kappa=0.3 # Test in range [0, 1]: {0, 0.2, 0.4, 0.6, 0.8, 1}
+# declare -a kappa_list=(0.8)
 
 steering_vector_lambda=1  # Test in range [0, 1]: {0, 0.2, 0.4, 0.6, 0.8, 1}
 # TODO: For the future, test increasing lambda with iterations, 
@@ -25,9 +30,8 @@ steering_vector_lambda=1  # Test in range [0, 1]: {0, 0.2, 0.4, 0.6, 0.8, 1}
 # kappa=0.7_lambda=1_threshold=0.9.csv <---- This one "feels" right
 
 ### The constant parameters: 
-# Select between: "NO_STEERING_VECTORS", "RESIDUAL_MOMENTUM", "POLYAK_MOMENTUM"
-steering_vector_option="RESIDUAL_MOMENTUM"    
-similarity_scaling=true
+# Select between: "NO_STEERING_VECTORS", "RESIDUAL_MOMENTUM", "POLYAK_MOMENTUM", "NESTEROV_MOMENTUM"
+steering_vector_option="NESTEROV_MOMENTUM"    
 # From a small experiment it seems much better to restart at least every major iteration, 
 # but maybe this freq can change.
 
@@ -43,15 +47,19 @@ absolute_similarity_condition=false # This was not as good as I had hoped, the r
 # Idea: Replace with a lower and upper bound instead, 
 # where lower bound should be fairly close to -1.0 in my opinion
 
-for steering_vector_kappa in "${kappa_list[@]}" 
+for momentum_scaling in "${momentum_scaling_list[@]}" 
 do
 	for similarity_threshold in "${similarity_threshold_list[@]}"
 	do 
 		# Suitable experiment name:  
 		if [ $steering_vector_option == "NO_STEERING_VECTORS" ]; then
-				base_experiment_name="PDLP_polish=$use_feasibility_polishing"
+			base_experiment_name="PDLP_polish=$use_feasibility_polishing"
+		elif [ $steering_vector_option == "POLYAK_MOMENTUM" ]; then 
+  			base_experiment_name="PDLP+Polyak_scaling=${momentum_scaling}_threshold=${similarity_threshold}_sim_scaling=${similarity_scaling}"
+		elif [ $steering_vector_option == "NESTEROV_MOMENTUM" ]; then 
+		    base_experiment_name="PDLP+Nesterov_scaling=${momentum_scaling}_threshold=${similarity_threshold}_sim_scaling=${similarity_scaling}"
 		else 
-				base_experiment_name="PDLP+Steering_kappa=${steering_vector_kappa}_lambda=${steering_vector_lambda}_threshold=${similarity_threshold}_sim_scaling=${similarity_scaling}"
+			base_experiment_name="PDLP+Steering_kappa=${steering_vector_kappa}_lambda=${steering_vector_lambda}_threshold=${similarity_threshold}_sim_scaling=${similarity_scaling}"
 		fi
 		solve_folder_name="${benchmark}_${accuracy}_${base_experiment_name}"
 
@@ -83,6 +91,7 @@ do
 				steering_vector_kappa: ${steering_vector_kappa},
 				steering_vector_lambda: ${steering_vector_lambda}, 
 				similarity_scaling: ${similarity_scaling},
+				momentum_scaling: ${momentum_scaling},
 		"
 
 		# Extract all relevant instances:

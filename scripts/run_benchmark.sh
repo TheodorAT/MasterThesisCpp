@@ -1,28 +1,28 @@
 # Select the type of benchmark that we want to run: 
 # Select between "lp_benchmark", "mip_relaxations", "netlib_benchmark"
-benchmark="fast_mip_relaxations"
+benchmark="netlib_benchmark"
 
 accuracy="1.0e-4"
-kkt_matrix_pass_limit=10000
+kkt_matrix_pass_limit=100000
 major_iteration_frequency=40
 verbosity=2
 
-# Select between: "NO_STEERING_VECTORS", "RESIDUAL_MOMENTUM", "POLYAK_MOMENTUM"
-steering_vector_option="RESIDUAL_MOMENTUM"    
-# From a small experiment it seems much better to restart at least every major iteration, 
-# but maybe this freq can change.
+# Select between: "NO_STEERING_VECTORS", "RESIDUAL_MOMENTUM", "POLYAK_MOMENTUM", "NESTEROV_MOMENTUM"
+steering_vector_option="NESTEROV_MOMENTUM"    
+similarity_scaling="false"
+
+momentum_scaling=0.3
+similarity_threshold=0.995 # Test in range [-1, 1], 
+# but its probably not very interesting below 0...
+
 
 # Select between: "STEERING_VECTOR_NO_RESTARTS", "STEERING_VECTOR_EVERY_MAJOR_ITERATION", 
 # "STEERING_VECTOR_EVERY_PDLP_RESTART"
 steering_vector_restart_option="STEERING_VECTOR_EVERY_MAJOR_ITERATION"    
-similarity_scaling=true
+# From a small experiment it seems much better to restart at least every major iteration, 
+# but maybe this freq can change.
 
-similarity_threshold=0.9  # Test in range [-1, 1], 
-# but its probably not very interesting below 0...
-
-steering_vector_kappa=0.3 # Test in range [0, 1]: {0, 0.2, 0.4, 0.6, 0.8, 1}
-# results: Seems to be the best at close to 0 (i.e no steering vectors), or around 0.7 without curve-breaking.
-
+steering_vector_kappa=0.8 # Test in range [0, 1]: {0, 0.2, 0.4, 0.6, 0.8, 1}
 steering_vector_lambda=1  # Test in range [0, 1]: {0, 0.2, 0.4, 0.6, 0.8, 1}
 # TODO: For the future, test increasing lambda with iterations, 
 # this requires some more implementation. 
@@ -37,10 +37,13 @@ absolute_similarity_condition=false # This was not as good as I had hoped, the r
 
 # Suitable experiment name:  
 if [ $steering_vector_option == "NO_STEERING_VECTORS" ]; then
-    base_experiment_name="PDLP_polish=$use_feasibility_polishing"
+  base_experiment_name="PDLP_polish=$use_feasibility_polishing"
+elif [ $steering_vector_option == "POLYAK_MOMENTUM" ]; then 
+  base_experiment_name="PDLP+Polyak_scaling=${momentum_scaling}_threshold=${similarity_threshold}_similarity_scaling=${similarity_scaling}"
+elif [ $steering_vector_option == "NESTEROV_MOMENTUM" ]; then 
+  base_experiment_name="PDLP+Nesterov_scaling=${momentum_scaling}_threshold=${similarity_threshold}_similarity_scaling=${similarity_scaling}"
 else 
-    base_experiment_name="PDLP+Steering_no_threshold_kappa=${steering_vector_kappa}_lambda=${steering_vector_lambda}"
-    base_experiment_name="PDLP+Steering_kappa=${steering_vector_kappa}_lambda=${steering_vector_lambda}_threshold=${similarity_threshold}"
+  base_experiment_name="PDLP+Steering_kappa=${steering_vector_kappa}_lambda=${steering_vector_lambda}_threshold=${similarity_threshold}"
 fi
 solve_folder_name="${benchmark}_${accuracy}_${base_experiment_name}"
 
@@ -72,6 +75,7 @@ params="
     steering_vector_kappa: ${steering_vector_kappa},
     steering_vector_lambda: ${steering_vector_lambda},
     similarity_scaling: ${similarity_scaling}, 
+    momentum_scaling: ${momentum_scaling},
 "
 
 # Extract all relevant instances:
