@@ -1,8 +1,8 @@
 # Select the type of benchmark that we want to run: 
 # Select between "lp_benchmark", "mip_relaxations", "netlib_benchmark"
-benchmark="mip_relaxations"
+benchmark="netlib_benchmark"
 
-accuracy="1.0e-4"
+accuracy="1.0e-8"
 kkt_matrix_pass_limit=100000
 major_iteration_frequency=40
 verbosity=2
@@ -132,7 +132,7 @@ done
 echo "All runs complete, creating summary file..."
 
 cd "$HOME/MasterThesisCpp/scripts"
-summary_file="${HOME}/MasterThesisCpp/benchmarking_results/remote_benchmark_results/${solve_folder_name}.csv"
+summary_file="${HOME}/MasterThesisCpp/benchmarking_results/remote_benchmark_results_high_acc/${solve_folder_name}.csv"
 python3 parse_log_files.py $base_solve_log_dir $summary_file
 
 echo "Done"
