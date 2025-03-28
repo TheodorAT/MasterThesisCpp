@@ -2,7 +2,7 @@
 # Select between "lp_benchmark", "mip_relaxations", "netlib_benchmark", "most_affected"
 benchmark="netlib_benchmark"
 
-accuracy="1.0e-4"
+accuracy="1.0e-8"
 kkt_matrix_pass_limit=100000
 major_iteration_frequency=40
 verbosity=2
@@ -10,12 +10,12 @@ verbosity=2
 # These are probably the parameters that we want to tune with:
 
 # Threshold = 0.6 seems to perform well on many kappas, try this...
-declare -a similarity_threshold_list=(0.80)
+declare -a similarity_threshold_list=(0.8 0.9)
 # Next: Test lower threshold (0.60 0.70) and sim_scaling=true.
-similarity_scaling="true"
+similarity_scaling="false"
 
 # momentum_scaling=0.3
-declare -a momentum_scaling_list=(0.1 0.2 0.3 0.4 0.5)
+declare -a momentum_scaling_list=(0.2 0.3 0.4 0.5)
 
 steering_vector_kappa=0.3 # Test in range [0, 1]: {0, 0.2, 0.4, 0.6, 0.8, 1}
 # declare -a kappa_list=(0.8)

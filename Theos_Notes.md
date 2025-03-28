@@ -15,6 +15,9 @@ Best performance:
 - scaling=0.3_threshold=0.9_sim_scaling=false (Lowest KKT SGM10 = 5320, Solves =  102)
 TODO: Tune around with scaling=0.4, try different thresholds and with/without similarity scaling.
 
+# Tuning Nesterov for higher accuracy: 
+- scaling=0.3_threshold=0.9_sim_scaling=false
+
 # The worst performers for steering vectors:
 LP benchmark: 
 - buildingenergy

@@ -20,8 +20,9 @@ kkt_matrix_pass_limit=100000
 major_iteration_frequency=40
 verbosity=1
 
-similarity_scaling="false"
-similarity_threshold="0.9"
+similarity_scaling="true"
+similarity_threshold="0.8"
+momentum_scaling="0.4"
 # Select between: "NO_STEERING_VECTORS", "RESIDUAL_MOMENTUM", "POLYAK_MOMENTUM", "NESTEROV_MOMENTUM"
 steering_vector_option="NESTEROV_MOMENTUM"        
 
@@ -65,6 +66,7 @@ params="
     similarity_scaling: ${similarity_scaling},
     save_similarity: ${save_similarity},
     similarity_file_name: ${similarity_file_name},
+    momentum_scaling: ${momentum_scaling},
 "
 
 solve_log_file="${HOME}/MasterThesisCpp/benchmarking_results/solve_logs/log_${experiment_name}.json"
