@@ -114,4 +114,5 @@ MODULE.bazel.lock
 
 # Ignoring the results from the PDLP experiments:
 benchmarking_results/solve_logs
+benchmarking_results/solve_logs_remote
 similarity_logs

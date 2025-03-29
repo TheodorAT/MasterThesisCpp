@@ -82,6 +82,9 @@ params="
 if [[ $benchmark == fast_* ]]; then
   benchmark_location=${benchmark:5:${#benchmark}}
   instance_path_base="${HOME}/${benchmark_location}"
+elif [[ $benchmark == tuning_* ]]; then
+  benchmark_location=${benchmark:7:${#benchmark}}
+  instance_path_base="${HOME}/${benchmark_location}"
 else
   instance_path_base="${HOME}/${benchmark}"
 fi

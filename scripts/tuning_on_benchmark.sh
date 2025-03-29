@@ -133,6 +133,7 @@ do
 				echo "Solving ${INSTANCE}..."
 				./temp_cpp/pdlp_solve/build/bin/pdlp_solve --input $instance_path --params "${params}" --solve_log_file "${solve_log_file}"
 			fi 
+
 		done
 		echo "All runs complete, creating summary file..."
 
@@ -141,6 +142,7 @@ do
 		python3 parse_log_files.py $base_solve_log_dir $summary_file
 
 	done
+
 done
 
 echo "Done"
