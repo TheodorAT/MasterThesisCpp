@@ -2,25 +2,25 @@
 # Select between "lp_benchmark", "mip_relaxations", "netlib_benchmark", "most_affected"
 benchmark="netlib_benchmark"
 
-accuracy="1.0e-8"
+accuracy="1.0e-4"
 kkt_matrix_pass_limit=100000
 major_iteration_frequency=40
 verbosity=2
 
 # These are probably the parameters that we want to tune with:
 
-# Threshold = 0.6 seems to perform well on many kappas, try this...
-declare -a similarity_threshold_list=(0.8 0.9)
-# Next: Test lower threshold (0.60 0.70) and sim_scaling=true.
+# Threshold = 0.8 seems to perform well on many kappas, try this...
+declare -a similarity_threshold_list=(-2.0) # 0.9 0.95)
 similarity_scaling="false"
 
-# momentum_scaling=0.3
-declare -a momentum_scaling_list=(0.2 0.3 0.4 0.5)
+momentum_scaling=0.3
+# declare -a momentum_scaling_list=(0.3)
 
-steering_vector_kappa=0.3 # Test in range [0, 1]: {0, 0.2, 0.4, 0.6, 0.8, 1}
+steering_vector_kappa=0.7 # Test in range [0, 1]: {0, 0.2, 0.4, 0.6, 0.8, 1}
 # declare -a kappa_list=(0.8)
 
-steering_vector_lambda=1  # Test in range [0, 1]: {0, 0.2, 0.4, 0.6, 0.8, 1}
+# steering_vector_lambda=1  # Test in range [0, 1]: {0, 0.2, 0.4, 0.6, 0.8, 1}
+declare -a steering_vector_lambda_list=(0.2 0.4 0.6 0.8 0.8 1 1.2)
 # TODO: For the future, test increasing lambda with iterations, 
 # this requires some more implementation. 
 
@@ -31,7 +31,7 @@ steering_vector_lambda=1  # Test in range [0, 1]: {0, 0.2, 0.4, 0.6, 0.8, 1}
 
 ### The constant parameters: 
 # Select between: "NO_STEERING_VECTORS", "RESIDUAL_MOMENTUM", "POLYAK_MOMENTUM", "NESTEROV_MOMENTUM"
-steering_vector_option="NESTEROV_MOMENTUM"    
+steering_vector_option="RESIDUAL_MOMENTUM"    
 # From a small experiment it seems much better to restart at least every major iteration, 
 # but maybe this freq can change.
 
@@ -47,7 +47,7 @@ absolute_similarity_condition=false # This was not as good as I had hoped, the r
 # Idea: Replace with a lower and upper bound instead, 
 # where lower bound should be fairly close to -1.0 in my opinion
 
-for momentum_scaling in "${momentum_scaling_list[@]}" 
+for steering_vector_lambda in "${steering_vector_lambda_list[@]}" 
 do
 	for similarity_threshold in "${similarity_threshold_list[@]}"
 	do 
@@ -101,6 +101,9 @@ do
 			instance_path_base="${HOME}/${benchmark_location}"
 		elif [[ $benchmark == most_affected ]]; then 
 			instance_path_base="${HOME}/combined_benchmark"
+		elif [[ $benchmark == tuning_* ]]; then
+			benchmark_location=${benchmark:7:${#benchmark}}
+			instance_path_base="${HOME}/${benchmark_location}"
 		else
 			instance_path_base="${HOME}/${benchmark}"
 		fi
