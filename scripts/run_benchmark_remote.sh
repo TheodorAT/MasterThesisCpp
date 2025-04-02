@@ -12,7 +12,7 @@ steering_vector_option="NESTEROV_MOMENTUM"
 similarity_scaling="false" 
 
 momentum_scaling=0.3
-similarity_threshold=-2.0
+similarity_threshold=0.8
 
 # Select between: "STEERING_VECTOR_NO_RESTARTS", "STEERING_VECTOR_EVERY_MAJOR_ITERATION", 
 # "STEERING_VECTOR_EVERY_PDLP_RESTART"
