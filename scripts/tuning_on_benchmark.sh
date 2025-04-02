@@ -10,17 +10,17 @@ verbosity=2
 # These are probably the parameters that we want to tune with:
 
 # Threshold = 0.8 seems to perform well on many kappas, try this...
-declare -a similarity_threshold_list=(-2.0) # 0.9 0.95)
-similarity_scaling="false"
+declare -a similarity_threshold_list=(0.8) # 0.9 0.95)
+similarity_scaling="true"
 
 momentum_scaling=0.3
 # declare -a momentum_scaling_list=(0.3)
 
-steering_vector_kappa=0.7 # Test in range [0, 1]: {0, 0.2, 0.4, 0.6, 0.8, 1}
-# declare -a kappa_list=(0.8)
+# steering_vector_kappa=0.7 # Test in range [0, 1]: {0, 0.2, 0.4, 0.6, 0.8, 1}
+declare -a kappa_list=(0.8)
 
-# steering_vector_lambda=1  # Test in range [0, 1]: {0, 0.2, 0.4, 0.6, 0.8, 1}
-declare -a steering_vector_lambda_list=(0.2 0.4 0.6 0.8 0.8 1 1.2)
+steering_vector_lambda=1  # Test in range [0, 1]: {0, 0.2, 0.4, 0.6, 0.8, 1}
+# declare -a steering_vector_lambda_list=(0.2 0.4 0.6 0.8 0.8 1 1.2)
 # TODO: For the future, test increasing lambda with iterations, 
 # this requires some more implementation. 
 
@@ -47,7 +47,7 @@ absolute_similarity_condition=false # This was not as good as I had hoped, the r
 # Idea: Replace with a lower and upper bound instead, 
 # where lower bound should be fairly close to -1.0 in my opinion
 
-for steering_vector_lambda in "${steering_vector_lambda_list[@]}" 
+for steering_vector_kappa in "${kappa_list[@]}" 
 do
 	for similarity_threshold in "${similarity_threshold_list[@]}"
 	do 
