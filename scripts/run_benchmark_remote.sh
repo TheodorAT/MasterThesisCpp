@@ -2,17 +2,17 @@
 # Select between "lp_benchmark", "mip_relaxations", "netlib_benchmark"
 benchmark="netlib_benchmark"
 
-accuracy="1.0e-8"
+accuracy="1.0e-4"
 kkt_matrix_pass_limit=100000
 major_iteration_frequency=40
 verbosity=2
 
 # Select between: "NO_STEERING_VECTORS", "RESIDUAL_MOMENTUM", "POLYAK_MOMENTUM", "NESTEROV_MOMENTUM"
-steering_vector_option="NESTEROV_MOMENTUM"   
+steering_vector_option="POLYAK_MOMENTUM"   
 similarity_scaling="false" 
 
 momentum_scaling=0.3
-similarity_threshold=0.9
+similarity_threshold=-2.0
 
 # Select between: "STEERING_VECTOR_NO_RESTARTS", "STEERING_VECTOR_EVERY_MAJOR_ITERATION", 
 # "STEERING_VECTOR_EVERY_PDLP_RESTART"
@@ -132,7 +132,7 @@ done
 echo "All runs complete, creating summary file..."
 
 cd "$HOME/MasterThesisCpp/scripts"
-summary_file="${HOME}/MasterThesisCpp/benchmarking_results/remote_benchmark_results_high_acc/${solve_folder_name}.csv"
+summary_file="${HOME}/MasterThesisCpp/benchmarking_results/remote_benchmark_results_tuning/${solve_folder_name}.csv"
 python3 parse_log_files.py $base_solve_log_dir $summary_file
 
 echo "Done"
