@@ -1,0 +1,52 @@
+instance      , termination_reason                      , iteration_count, solve_time_sec           , cumulative_kkt_matrix_passes, preprocessing_time_sec, cumulative_rejected_steps
+square15      , TERMINATION_REASON_OPTIMAL              ,           33440,  491.07931986600005      ,                        33603, 0.098464562           ,                       163
+buildingenergy, TERMINATION_REASON_KKT_MATRIX_PASS_LIMIT,           98919,  494.13014108400006      ,                       100000, 0.038374728000000004  ,                      1081
+fome13        , TERMINATION_REASON_OPTIMAL              ,           45880,  102.87579220900001      ,                        45933, 0.022442571           ,                        53
+L1_sixm1000obs, TERMINATION_REASON_OPTIMAL              ,           12960, 1282.7548734790003       ,                        12963, 0.656567015           ,                         3
+self          , TERMINATION_REASON_OPTIMAL              ,             715,    1.31173672            ,                          759, 0.029607152           ,                        44
+degme         , TERMINATION_REASON_KKT_MATRIX_PASS_LIMIT,           99972, 2510.442785828           ,                       100000, 0.25783799            ,                        28
+s82           , TERMINATION_REASON_OPTIMAL              ,               0,    0.00033263300000000004,                            0, 0.00032796400000000003,                         0
+long15        , TERMINATION_REASON_OPTIMAL              ,           23720,  329.842670295           ,                        23755, 0.09878642200000001   ,                        35
+16_n14        , TERMINATION_REASON_KKT_MATRIX_PASS_LIMIT,           98214,  359.25640995900005      ,                       100000, 0.025691352           ,                      1786
+shs1023       , TERMINATION_REASON_KKT_MATRIX_PASS_LIMIT,           99609,  784.2662497240001       ,                       100000, 0.05393117            ,                       391
+fhnw-bin0     , TERMINATION_REASON_OPTIMAL              ,               0,    0.00015905600000000003,                            0, 0.00015591200000000002,                         0
+stat96v1      , TERMINATION_REASON_KKT_MATRIX_PASS_LIMIT,           99999,  305.541044439           ,                       100000, 0.028866184000000003  ,                         1
+graph40-40    , TERMINATION_REASON_OPTIMAL              ,               0,    0.00014138600000000002,                            0, 0.00013913800000000002,                         0
+datt256       , TERMINATION_REASON_OPTIMAL              ,            1160,    6.999409245           ,                         1163, 0.05311766800000001   ,                         3
+neos3         , TERMINATION_REASON_OPTIMAL              ,             760,    5.867735778           ,                          763, 0.068193985           ,                         3
+rail02        , TERMINATION_REASON_KKT_MATRIX_PASS_LIMIT,           99706,  513.903319476           ,                       100000, 0.037941854000000004  ,                       294
+ds-big        , TERMINATION_REASON_KKT_MATRIX_PASS_LIMIT,           99251,  981.718413807           ,                       100000, 0.13040658900000002   ,                       749
+L1_sixm250obs , TERMINATION_REASON_OPTIMAL              ,           13200,  283.09933731100006      ,                        13202, 0.17616757500000002   ,                         2
+lo10          , TERMINATION_REASON_OPTIMAL              ,           23360,  178.526450497           ,                        23361, 0.050129919           ,                         1
+set-cover     , TERMINATION_REASON_KKT_MATRIX_PASS_LIMIT,           99677, 7540.866769452001        ,                       100000, 0.8659355270000001    ,                       323
+qap15         , TERMINATION_REASON_OPTIMAL              ,           31240,    7.959406708000001     ,                        31242, 0.00320499            ,                         2
+ns1688926     , TERMINATION_REASON_KKT_MATRIX_PASS_LIMIT,           99995,  275.273072395           ,                       100000, 0.046100213           ,                         5
+irish-e       , TERMINATION_REASON_KKT_MATRIX_PASS_LIMIT,           99704,  194.625075606           ,                       100000, 0.019065937           ,                       296
+chrom1024-7   , TERMINATION_REASON_OPTIMAL              ,             520,    1.0508432070000002    ,                          523, 0.012465973           ,                         3
+savsched1     , TERMINATION_REASON_OPTIMAL              ,            1440,   16.347195689           ,                         1462, 0.08511534800000001   ,                        22
+stp3d         , TERMINATION_REASON_OPTIMAL              ,           75640,  349.80303004            ,                        75662, 0.035707093           ,                        22
+neos5052403   , TERMINATION_REASON_OPTIMAL              ,           23600,  180.792642119           ,                        24008, 0.118670378           ,                       408
+neos-3025225  , TERMINATION_REASON_OPTIMAL              ,               0,    0.000138209           ,                            0, 0.000136121           ,                         0
+wide15        , TERMINATION_REASON_OPTIMAL              ,           23720,  329.305686986           ,                        23755, 0.099029082           ,                        35
+ex10          , TERMINATION_REASON_OPTIMAL              ,             400,    1.140783226           ,                          404, 0.031478497           ,                         4
+karted        , TERMINATION_REASON_KKT_MATRIX_PASS_LIMIT,           99985,  486.587765438           ,                       100000, 0.055862858           ,                        15
+i_n13         , TERMINATION_REASON_KKT_MATRIX_PASS_LIMIT,           98162, 1162.369062526           ,                       100000, 0.079452331           ,                      1838
+stormG2_1000  , TERMINATION_REASON_KKT_MATRIX_PASS_LIMIT,           99986, 2835.612909757           ,                       100000, 0.174627277           ,                        14
+netlarge2     , TERMINATION_REASON_OPTIMAL              ,           57960, 1299.145928875           ,                        57973, 0.14970281600000002   ,                        13
+rmine15       , TERMINATION_REASON_OPTIMAL              ,               0,    0.000163326           ,                            0, 0.000161039           ,                         0
+cont11        , TERMINATION_REASON_KKT_MATRIX_PASS_LIMIT,           99881,  233.65548079700002      ,                       100000, 0.018912734           ,                       119
+neos          , TERMINATION_REASON_KKT_MATRIX_PASS_LIMIT,           99504,  633.51611283            ,                       100000, 0.052555325           ,                       496
+neos-5251015  , TERMINATION_REASON_OPTIMAL              ,               0,    0.000240256           ,                            0, 0.000236822           ,                         0
+ts-palko      , TERMINATION_REASON_KKT_MATRIX_PASS_LIMIT,           99991,  229.629707934           ,                       100000, 0.029429623000000002  ,                         9
+tpl-tub-ws16  , TERMINATION_REASON_OPTIMAL              ,               0,    0.000140914           ,                            0, 0.00013880200000000002,                         0
+psched3-3     , TERMINATION_REASON_KKT_MATRIX_PASS_LIMIT,           99418,  446.9261589430001       ,                       100000, 0.042083696000000004  ,                       582
+support10     , TERMINATION_REASON_OPTIMAL              ,           20960,   43.533908503           ,                        21160, 0.020592128           ,                       200
+Linf_520c     , TERMINATION_REASON_KKT_MATRIX_PASS_LIMIT,           99275,  241.13454774500002      ,                       100000, 0.021000182000000003  ,                       725
+pds-100       , TERMINATION_REASON_OPTIMAL              ,           36960,  365.346101356           ,                        36962, 0.069369345           ,                         2
+s250r10       , TERMINATION_REASON_KKT_MATRIX_PASS_LIMIT,           99536,  566.012916631           ,                       100000, 0.0529772             ,                       464
+cont1         , TERMINATION_REASON_KKT_MATRIX_PASS_LIMIT,           99664,  180.89955850900003      ,                       100000, 0.016830413000000002  ,                       336
+rail4284      , TERMINATION_REASON_KKT_MATRIX_PASS_LIMIT,           99956, 4224.255843553001        ,                       100000, 0.422722655           ,                        44
+ns1687037     , TERMINATION_REASON_KKT_MATRIX_PASS_LIMIT,           99998,  291.92922579000003      ,                       100000, 0.041085203           ,                         2
+nug08-3rd     , TERMINATION_REASON_OPTIMAL              ,            1160,    0.430079888           ,                         1161, 0.004283311000000001  ,                         1
+scpm1         , TERMINATION_REASON_OPTIMAL              ,               0,    0.00015119600000000003,                            0, 0.00014871800000000002,                         0
+s100          , TERMINATION_REASON_KKT_MATRIX_PASS_LIMIT,           98557,  815.6496864610001       ,                       100000, 0.07447904200000001   ,                      1443

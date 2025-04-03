@@ -10,10 +10,11 @@
 # Very affected fast instances: (in netlib)
 # forplan   (large improvement)
 # bnl2      (large deterioration)
-instance="stat96v1"
-instance_path="${HOME}/lp_benchmark/${instance}.mps" # We need to have already extracted it from mps.gz
+instance="set-cover" # This one is very difficult to solve, and has large cost for KKT passes.
+instance_path_base="${HOME}/lp_benchmark"
+instance_path_zipped="${instance_path_base}/${instance}.mps.gz"
 
-accuracy="1.0e-8"
+accuracy="1.0e-4"
 save_similarity="false"
 similarity_file_name="'./similarity_logs/${instance}_PDLP'"
 kkt_matrix_pass_limit=100000
@@ -69,8 +70,23 @@ params="
     momentum_scaling: ${momentum_scaling},
 "
 
-solve_log_file="${HOME}/MasterThesisCpp/benchmarking_results/solve_logs/log_${experiment_name}.json"
 # Running the algorithm:
 cd "$HOME/MasterThesisCpp"
-echo "Solving $instance..."
-./temp_cpp/pdlp_solve/build/bin/pdlp_solve --input $instance_path --params "$params"
+if [ ! -f $instance_path_zipped ]; then
+  echo "Did not find file at $instance_path_zipped"
+else   
+  echo "Unzipping $instance_path_zipped"...
+  echo "N" | gunzip -k $instance_path_zipped
+
+  instance_path="${instance_path_base}/${INSTANCE}.mps"
+  
+  if [ ! -f $instance_path ]; then
+    echo "Did not find unzipped file at $instance_path"
+  else 
+    echo "Solving ${INSTANCE}..."
+    ./temp_cpp/pdlp_solve/build/bin/pdlp_solve --input $instance_path --params "${params}"
+    echo "Solved, deleting unzipped file to save storage... "
+    rm $instance_path
+  fi
+fi
+

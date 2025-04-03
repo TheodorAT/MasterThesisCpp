@@ -2,7 +2,21 @@
 To recompile basic example of running pdlp with input as mps file:
  - make build SOURCE=examples/cpp/pdlp_solve.cc
 
-(Tuning is done on the Netlib benchmark for Polyak & Nesterov)
+##  The timing of different implementations: 
+
+# 1000 KKT Passes on set-cover
+PDLP:  950 Iters in 178.4 secs
+PLDP+STSN: 960 Iters in 178.6 secs
+
+# 100 000 KKT Passes on stat96v1
+PDLP: 99999 Iters in 462.7 secs
+
+
+
+## Tuning 
+
+Tuning is done on the Netlib benchmark
+
 # Results of Polyak Tuning: 
 Best performance: 
 - scaling=0.3_threshold=0.995_sim_scaling=false (Most Solves = 102, KKT SGM10 = 5756)
@@ -18,7 +32,7 @@ TODO: Tune around with scaling=0.4, try different thresholds and with/without si
 # Tuning Nesterov for higher accuracy: 
 - scaling=0.3_threshold=0.9_sim_scaling=false
 
-# The worst performers for steering vectors:
+## The worst performers for steering vectors:
 LP benchmark: 
 - buildingenergy
 - neos
