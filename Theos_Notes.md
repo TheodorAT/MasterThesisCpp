@@ -8,6 +8,11 @@ To recompile basic example of running pdlp with input as mps file:
 PDLP:  950 Iters in 178.4 secs
 PLDP+STSN: 960 Iters in 178.6 secs
 
+# On "heron02"
+PDLP:  950 Iters in 75.6 secs
+PDLP+STSN: 950 Iters in ~80 secs
+
+
 # 100 000 KKT Passes on stat96v1
 PDLP: 99999 Iters in 462.7 secs
 
