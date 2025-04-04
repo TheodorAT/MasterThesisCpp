@@ -1,6 +1,6 @@
 # Select the type of benchmark that we want to run: 
 # Select between "lp_benchmark", "mip_relaxations", "netlib_benchmark"
-benchmark="netlib_benchmark"
+benchmark="slow_lp_benchmark"
 
 accuracy="1.0e-4"
 kkt_matrix_pass_limit=100000
@@ -8,11 +8,11 @@ major_iteration_frequency=40
 verbosity=2
 
 # Select between: "NO_STEERING_VECTORS", "RESIDUAL_MOMENTUM", "POLYAK_MOMENTUM", "NESTEROV_MOMENTUM"
-steering_vector_option="POLYAK_MOMENTUM"   
-similarity_scaling="false" 
+steering_vector_option="NESTEROV_MOMENTUM"   
+similarity_scaling="true" 
 
 momentum_scaling=0.3
-similarity_threshold=-1.1
+similarity_threshold=0.8
 
 # Select between: "STEERING_VECTOR_NO_RESTARTS", "STEERING_VECTOR_EVERY_MAJOR_ITERATION", 
 # "STEERING_VECTOR_EVERY_PDLP_RESTART"
