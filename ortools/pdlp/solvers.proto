@@ -290,6 +290,8 @@ message PrimalDualHybridGradientParams {
     NO_STEERING_VECTORS_CALC_SIMILARITY = 4;
     NO_STEERING_VECTORS_USE_INPUT_METHOD = 5;
     NO_STEERING_VECTORS_CALC_SUM = 6;
+    NO_STEERING_VECTORS_CALC_SIMILARITY_SHARDED = 7;
+
   }
 
   enum SteeringVectorRestartOption {

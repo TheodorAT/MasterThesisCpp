@@ -10,21 +10,21 @@
 # Very affected fast instances: (in netlib)
 # forplan   (large improvement)
 # bnl2      (large deterioration)
-instance="stat96v1"
+instance="self"
 instance_path="${HOME}/lp_benchmark/${instance}.mps" # We need to have already extracted it from mps.gz
 
-accuracy="1.0e-8"
+accuracy="1.0e-4"
 save_similarity="false"
 similarity_file_name="'./similarity_logs/${instance}_PDLP'"
 kkt_matrix_pass_limit=100000
 major_iteration_frequency=40
-verbosity=2
+verbosity=1
 
 similarity_scaling="true"
 similarity_threshold="0.8"
 momentum_scaling="0.3"
 # Select between: "NO_STEERING_VECTORS", "RESIDUAL_MOMENTUM", "POLYAK_MOMENTUM", "NESTEROV_MOMENTUM"
-steering_vector_option="NESTEROV_MOMENTUM"        
+steering_vector_option="NO_STEERING_VECTORS_CALC_SIMILARITY"        
 
 steering_vector_restart_option="STEERING_VECTOR_EVERY_MAJOR_ITERATION"    # Select between: "STEERING_VECTOR_NO_RESTARTS",  
                                                                 # "STEERING_VECTOR_EVERY_MAJOR_ITERATION", "STEERING_VECTOR_EVERY_PDLP_RESTART"
