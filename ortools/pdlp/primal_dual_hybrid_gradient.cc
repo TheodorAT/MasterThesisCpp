@@ -3694,7 +3694,7 @@ InnerStepOutcome Solver::TakeAdaptiveStepUseInputMethod() {
           current_dual_product_);
     NextSolutionAndDelta next_dual_solution = ComputeNextDualSolutionFromInput(
         dual_step_size,
-        /*extrapolation_factor=*/1.0, next_primal_solution, dual_input);
+        /*extrapolation_factor=*/1.0, next_primal_solution, current_dual_solution_);
 
     const double movement =
         ComputeMovement(next_primal_solution.delta, next_dual_solution.delta);
