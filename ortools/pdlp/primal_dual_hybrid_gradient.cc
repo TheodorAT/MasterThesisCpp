@@ -3687,14 +3687,11 @@ InnerStepOutcome Solver::TakeAdaptiveStepUseInputMethod() {
     }
     const double primal_step_size = step_size_ / primal_weight_;
     const double dual_step_size = step_size_ * primal_weight_;
-    
-    VectorXd primal_input = current_primal_solution_;
-    VectorXd dual_product_input = current_dual_product_;
-    VectorXd dual_input = current_dual_solution_;
+  
     // Calculating the next iterates:
     NextSolutionAndDelta next_primal_solution =
-        ComputeNextPrimalSolutionFromInput(primal_step_size, primal_input,
-                                          dual_product_input);
+        ComputeNextPrimalSolutionFromInput(primal_step_size, current_primal_solution_,
+          current_dual_product_);
     NextSolutionAndDelta next_dual_solution = ComputeNextDualSolutionFromInput(
         dual_step_size,
         /*extrapolation_factor=*/1.0, next_primal_solution, dual_input);
