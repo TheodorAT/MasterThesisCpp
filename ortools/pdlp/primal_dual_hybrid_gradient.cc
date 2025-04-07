@@ -2094,15 +2094,6 @@ double Solver::ComputeSimilaritySharded(const VectorXd& vec1_primal,
                                         const VectorXd& vec1_dual,
                                         const VectorXd& vec2_primal,
                                         const VectorXd& vec2_dual) const {
-  const double primal_norm_squared_1 =
-      SquaredNorm(vec1_primal, ShardedWorkingQp().PrimalSharder());
-  const double primal_norm_squared_2 =
-      SquaredNorm(vec2_primal, ShardedWorkingQp().PrimalSharder());
-  const double dual_norm_squared_1 =
-      SquaredNorm(vec1_dual, ShardedWorkingQp().DualSharder());
-  const double dual_norm_squared_2 =
-      SquaredNorm(vec2_dual, ShardedWorkingQp().DualSharder());
-
   const double primal_dot_product =
       ShardedWorkingQp().PrimalSharder().ParallelSumOverShards(
           [&](const Sharder::Shard& shard) {
@@ -2113,8 +2104,12 @@ double Solver::ComputeSimilaritySharded(const VectorXd& vec1_primal,
           [&](const Sharder::Shard& shard) {
             return shard(vec1_dual).dot(shard(vec2_dual));
           });
-  const double norm_1 = std::sqrt(primal_norm_squared_1 + dual_norm_squared_1);
-  const double norm_2 = std::sqrt(primal_norm_squared_2 + dual_norm_squared_2);
+  const double norm_1 =
+      std::sqrt(SquaredNorm(vec1_primal, ShardedWorkingQp().PrimalSharder()) +
+                SquaredNorm(vec1_dual, ShardedWorkingQp().DualSharder()));
+  const double norm_2 =
+      std::sqrt(SquaredNorm(vec2_primal, ShardedWorkingQp().PrimalSharder()) +
+                SquaredNorm(vec2_dual, ShardedWorkingQp().DualSharder()));
   return (primal_dot_product + dual_dot_product) / (norm_1 * norm_2);
 }
 
