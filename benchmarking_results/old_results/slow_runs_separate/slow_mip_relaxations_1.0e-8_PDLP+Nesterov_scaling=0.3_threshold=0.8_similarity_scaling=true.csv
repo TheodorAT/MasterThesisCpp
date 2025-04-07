@@ -1,0 +1,6 @@
+instance         , termination_reason                      , iteration_count, solve_time_sec    , cumulative_kkt_matrix_passes, preprocessing_time_sec, cumulative_rejected_steps
+fhnw-binschedule1, TERMINATION_REASON_KKT_MATRIX_PASS_LIMIT,           99921, 4486.5828347980005,                       100000,    0.440775564        ,                        79
+square37         , TERMINATION_REASON_OPTIMAL              ,           74480, 1107.774373473    ,                        75158,    0.24180353300000001,                       678
+supportcase19    , TERMINATION_REASON_KKT_MATRIX_PASS_LIMIT,           99714, 2570.566948679    ,                       100000,    0.211604803        ,                       286
+tpl-tub-ss16     , TERMINATION_REASON_OPTIMAL              ,           61240, 2157.4165235680002,                        61492,    0.34820468000000004,                       252
+tpl-tub-ws1617   , TERMINATION_REASON_KKT_MATRIX_PASS_LIMIT,           99753, 4448.309782275    ,                       100000,    0.45073636600000005,                       247

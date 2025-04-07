@@ -377,3 +377,8 @@ adult-max5features         , TERMINATION_REASON_OPTIMAL              ,          
 neos-3372571-onahau        , TERMINATION_REASON_OPTIMAL              ,            3880,    2.5427442440000005  ,                         3892,  0.009482907          ,                        12
 triptim8                   , TERMINATION_REASON_KKT_MATRIX_PASS_LIMIT,           99609,  179.867565272         ,                       100000,  0.025384825000000003 ,                       391
 n3div36                    , TERMINATION_REASON_OPTIMAL              ,             680,    0.8567455020000001  ,                          706,  0.016131179000000002 ,                        26
+fhnw-binschedule1          , TERMINATION_REASON_KKT_MATRIX_PASS_LIMIT,           99921, 4495.806624510001      ,                       100000,  0.405941773          ,                        79
+square37                   , TERMINATION_REASON_OPTIMAL              ,           52040,  770.411518642         ,                        52711,  0.24995762200000002  ,                       671
+supportcase19              , TERMINATION_REASON_KKT_MATRIX_PASS_LIMIT,           99714, 2571.753470259         ,                       100000,  0.18622776100000002  ,                       286
+tpl-tub-ss16               , TERMINATION_REASON_OPTIMAL              ,           47640, 1699.187700069         ,                        47875,  0.302415515          ,                       235
+tpl-tub-ws1617             , TERMINATION_REASON_OPTIMAL              ,           53640, 2451.212174321         ,                        53887,  0.40294807600000004  ,                       247

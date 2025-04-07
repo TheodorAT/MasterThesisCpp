@@ -50,3 +50,8 @@ ns1687037     , TERMINATION_REASON_KKT_MATRIX_PASS_LIMIT,           99998, 270.4
 nug08-3rd     , TERMINATION_REASON_OPTIMAL              ,            1000, 0.312565246           ,                         1001, 0.005171022           ,                         1
 scpm1         , TERMINATION_REASON_OPTIMAL              ,               0, 8.927e-05             ,                            0, 8.759e-05             ,                         0
 s100          , TERMINATION_REASON_KKT_MATRIX_PASS_LIMIT,           98736, 654.9664587860001     ,                       100000, 0.078514474           ,                      1264
+netlarge6     , TERMINATION_REASON_KKT_MATRIX_PASS_LIMIT,           98535, 42073.660385719006    ,                       100000, 3.1394813860000004    ,                      1465
+netlarge3     , TERMINATION_REASON_OPTIMAL              ,           66400, 8126.381704864        ,                        66610, 1.030818139           ,                       210
+netlarge1     , TERMINATION_REASON_OPTIMAL              ,           33960, 7282.926263654001     ,                        34093, 1.77132928            ,                       133
+square41      , TERMINATION_REASON_KKT_MATRIX_PASS_LIMIT,           98552, 2013.283809683        ,                       100000, 0.343384448           ,                      1448
+tp-6          , TERMINATION_REASON_KKT_MATRIX_PASS_LIMIT,           99865, 3094.029238005        ,                       100000, 0.398823953           ,                       135

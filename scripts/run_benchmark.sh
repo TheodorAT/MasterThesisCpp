@@ -8,13 +8,14 @@ major_iteration_frequency=40
 verbosity=2
 
 # Select between: "NO_STEERING_VECTORS", "RESIDUAL_MOMENTUM", "POLYAK_MOMENTUM", "NESTEROV_MOMENTUM"
-steering_vector_option="NESTEROV_MOMENTUM"    
+steering_vector_option="POLYAK_MOMENTUM"    
 similarity_scaling="false"
 
-momentum_scaling=0.3
-similarity_threshold=0.995 # Test in range [-1, 1], 
+momentum_scaling=0.005
+similarity_threshold=-1.1 # Test in range [-1, 1], 
 # but its probably not very interesting below 0...
-
+# Select between "COSINE_SIMILARITY" and "RANDOM_SIMILARITY"
+similarity_option="COSINE_SIMILARITY"
 
 # Select between: "STEERING_VECTOR_NO_RESTARTS", "STEERING_VECTOR_EVERY_MAJOR_ITERATION", 
 # "STEERING_VECTOR_EVERY_PDLP_RESTART"
@@ -22,7 +23,7 @@ steering_vector_restart_option="STEERING_VECTOR_EVERY_MAJOR_ITERATION"
 # From a small experiment it seems much better to restart at least every major iteration, 
 # but maybe this freq can change.
 
-steering_vector_kappa=0.8 # Test in range [0, 1]: {0, 0.2, 0.4, 0.6, 0.8, 1}
+steering_vector_kappa=0.08 # Test in range [0, 1]: {0, 0.2, 0.4, 0.6, 0.8, 1}
 steering_vector_lambda=1  # Test in range [0, 1]: {0, 0.2, 0.4, 0.6, 0.8, 1}
 # TODO: For the future, test increasing lambda with iterations, 
 # this requires some more implementation. 
@@ -76,6 +77,7 @@ params="
     steering_vector_lambda: ${steering_vector_lambda},
     similarity_scaling: ${similarity_scaling}, 
     momentum_scaling: ${momentum_scaling},
+    similarity_option: ${similarity_option},
 "
 
 # Extract all relevant instances:

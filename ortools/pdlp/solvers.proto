@@ -294,8 +294,13 @@ message PrimalDualHybridGradientParams {
     STEERING_VECTOR_EVERY_MAJOR_ITERATION = 1;
     // Resets the steering vectors to 0 every time PDLP resets the iterates to the average:
     STEERING_VECTOR_EVERY_PDLP_RESTART = 2;
-    
-    // TODO(Theo): Maybe we want an option for more flexibility in this? Every n:th iteration?
+  }
+
+  enum SimilarityOption {
+    // The usual definition. 
+    COSINE_SIMILARITY = 0;
+    // Only for "ablation" study, comparing distributing momentum differently.
+    RANDOM_SIMILARITY = 1;
   }
 
   optional TerminationCriteria termination_criteria = 1;
@@ -517,9 +522,12 @@ message PrimalDualHybridGradientParams {
   optional bool save_similarity = 41 [default = false];
   optional string similarity_file_name = 42 [default = "~/similarity_log_default"];
   // End of curve-breaking parameters.
-
+  
   // Momentum scaling parameter: 
   optional double momentum_scaling = 43 [default = 0.3];
+  
+  // Experimental parameters:
+  optional SimilarityOption similarity_option = 44 [default = COSINE_SIMILARITY];
 
   reserved 13, 14, 15, 20, 21;
 }

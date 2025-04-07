@@ -2060,9 +2060,26 @@ double Solver::ComputeNonlinearity(const VectorXd& delta_primal,
 // For now, we let this be single-threaded. Maybe make it parallellized later
 double Solver::ComputeSimilarity(const VectorXd& vec1,
                                  const VectorXd& vec2) const {
-  const double norm_1 = vec1.norm();
-  const double norm_2 = vec2.norm();
-  return vec1.dot(vec2) / (norm_1 * norm_2);
+  switch (params_.similarity_option()) {
+    case PrimalDualHybridGradientParams::COSINE_SIMILARITY: {
+      double norm_1 = vec1.norm();
+      double norm_2 = vec2.norm();
+      return vec1.dot(vec2) / (norm_1 * norm_2);
+    }
+    case PrimalDualHybridGradientParams::RANDOM_SIMILARITY: {
+      // Return a random number between -1 and 1
+      std::random_device r;
+      std::default_random_engine re(r());
+      std::uniform_real_distribution<double> unif_ones(-1, 1);
+      double res = unif_ones(re);
+      return res;
+    }
+    default: {
+      LOG(FATAL) << "Unrecognized similarity option "
+                 << params_.similarity_option();
+      return -2.0;
+    }
+  }
 }
 
 // For now, we let this be single-threaded. Maybe make it parallellized later
@@ -2169,7 +2186,8 @@ bool Solver::ShouldDoAdaptiveRestartHeuristic(
 }
 
 RestartChoice Solver::DetermineDistanceBasedRestartChoice() const {
-  // The following checks are safeguards that normally should not be triggered.
+  // The following checks are safeguards that normally should not be
+  // triggered.
   if (primal_average_.NumTerms() == 0) {
     return RESTART_CHOICE_NO_RESTART;
   } else if (distance_based_restart_info_.length_of_last_restart_period == 0) {
@@ -2190,8 +2208,9 @@ RestartChoice Solver::DetermineDistanceBasedRestartChoice() const {
       params_.sufficient_reduction_for_restart() *
           (distance_moved_last_restart_period /
            distance_based_restart_info_.length_of_last_restart_period)) {
-    // Restart at current solution when it yields a smaller normalized potential
-    // function value than the average (heuristic suggested by ohinder@).
+    // Restart at current solution when it yields a smaller normalized
+    // potential function value than the average (heuristic suggested by
+    // ohinder@).
     if (AverageHasBetterPotential(ComputeLocalizedBoundsAtAverage(),
                                   ComputeLocalizedBoundsAtCurrent())) {
       return RESTART_CHOICE_RESTART_TO_AVERAGE;
@@ -2210,10 +2229,10 @@ RestartChoice Solver::ChooseRestartToApply(const bool is_major_iteration) {
   }
   // TODO(user): This forced restart is very important for the performance of
   // `ADAPTIVE_HEURISTIC`. Test if the impact comes primarily from the first
-  // forced restart (which would unseat a good initial starting point that could
-  // prevent restarts early in the solve) or if it's really needed for the full
-  // duration of the solve. If it is really needed, should we then trigger major
-  // iterations on powers of two?
+  // forced restart (which would unseat a good initial starting point that
+  // could prevent restarts early in the solve) or if it's really needed for
+  // the full duration of the solve. If it is really needed, should we then
+  // trigger major iterations on powers of two?
   const int restart_length = primal_average_.NumTerms();
   if (restart_length >= iterations_completed_ / 2 &&
       params_.restart_strategy() ==
@@ -2290,9 +2309,10 @@ double Solver::ComputeNewPrimalWeight() const {
       Distance(current_dual_solution_, last_dual_start_point_,
                ShardedWorkingQp().DualSharder());
   // This choice of a nonzero tolerance balances performance and numerical
-  // issues caused by very huge or very tiny weights. It was picked as the best
-  // among {0.0, 1.0e-20, 2.0e-16, 1.0e-10, 1.0e-5} on the preprocessed MIPLIB
-  // dataset. The effect of changing this value is relatively minor overall.
+  // issues caused by very huge or very tiny weights. It was picked as the
+  // best among {0.0, 1.0e-20, 2.0e-16, 1.0e-10, 1.0e-5} on the preprocessed
+  // MIPLIB dataset. The effect of changing this value is relatively minor
+  // overall.
   constexpr double kNonzeroTol = 1.0e-10;
   if (primal_distance <= kNonzeroTol || primal_distance >= 1.0 / kNonzeroTol ||
       dual_distance <= kNonzeroTol || dual_distance >= 1.0 / kNonzeroTol) {
@@ -2461,8 +2481,8 @@ std::optional<SolverResult> Solver::MajorIterationAndTerminationCheck(
   DCHECK(!is_major_iteration || check_termination);
   if (check_termination) {
     // Check for termination and update iteration stats with both simple and
-    // solution statistics. The later are computationally harder to compute and
-    // hence only computed here.
+    // solution statistics. The later are computationally harder to compute
+    // and hence only computed here.
     VectorXd primal_average = PrimalAverage();
     VectorXd dual_average = DualAverage();
 
@@ -2529,10 +2549,11 @@ InnerStepOutcome Solver::TakeMalitskyPockStep() {
   const double primal_step_size = step_size_ / primal_weight_;
   NextSolutionAndDelta next_primal_solution =
       ComputeNextPrimalSolution(primal_step_size);
-  // The theory by Malitsky and Pock holds for any new_step_size in the interval
+  // The theory by Malitsky and Pock holds for any new_step_size in the
+  // interval
   // [`step_size`, `step_size` * sqrt(1 + `ratio_last_two_step_sizes_`)].
-  // `dilating_coeff` determines where in this interval the new step size lands.
-  // NOTE: Malitsky and Pock use theta for `ratio_last_two_step_sizes`.
+  // `dilating_coeff` determines where in this interval the new step size
+  // lands. NOTE: Malitsky and Pock use theta for `ratio_last_two_step_sizes`.
   double dilating_coeff =
       1 + (params_.malitsky_pock_parameters().step_size_interpolation() *
            (sqrt(1 + ratio_last_two_step_sizes_) - 1));
@@ -2570,9 +2591,9 @@ InnerStepOutcome Solver::TakeMalitskyPockStep() {
       step_size_ = new_primal_step_size * primal_weight_;
       ratio_last_two_step_sizes_ = new_last_two_step_sizes_ratio;
       // Malitsky and Pock guarantee uses a nonsymmetric weighted average,
-      // the primal variable average involves the initial point, while the dual
-      // doesn't. See Theorem 2 in https://arxiv.org/pdf/1608.08883.pdf for
-      // details.
+      // the primal variable average involves the initial point, while the
+      // dual doesn't. See Theorem 2 in https://arxiv.org/pdf/1608.08883.pdf
+      // for details.
       if (!primal_average_.HasNonzeroWeight()) {
         primal_average_.Add(
             current_primal_solution_,
@@ -2677,9 +2698,9 @@ InnerStepOutcome Solver::TakeAdaptiveStep() {
     const double total_steps_attempted =
         num_rejected_steps_ + inner_iterations + iterations_completed_ + 1;
     // Our step sizes are a factor 1 - (`total_steps_attempted` + 1)^(-
-    // `step_size_reduction_exponent`) smaller than they could be as a margin to
-    // reduce rejected steps.
-    // The std::isinf() test protects against NAN if std::pow() == 1.0.
+    // `step_size_reduction_exponent`) smaller than they could be as a margin
+    // to reduce rejected steps. The std::isinf() test protects against NAN if
+    // std::pow() == 1.0.
     const double first_term =
         std::isinf(step_size_limit)
             ? step_size_limit
@@ -3450,9 +3471,9 @@ InnerStepOutcome Solver::TakeAdaptiveStepPolyakMomentum() {
     const double total_steps_attempted =
         num_rejected_steps_ + inner_iterations + iterations_completed_ + 1;
     // Our step sizes are a factor 1 - (`total_steps_attempted` + 1)^(-
-    // `step_size_reduction_exponent`) smaller than they could be as a margin to
-    // reduce rejected steps.
-    // The std::isinf() test protects against NAN if std::pow() == 1.0.
+    // `step_size_reduction_exponent`) smaller than they could be as a margin
+    // to reduce rejected steps. The std::isinf() test protects against NAN if
+    // std::pow() == 1.0.
     const double first_term =
         std::isinf(step_size_limit)
             ? step_size_limit
@@ -3481,8 +3502,8 @@ InnerStepOutcome Solver::TakeAdaptiveStepPolyakMomentum() {
   return outcome;
 }
 
-// HACK: In this method, we use the current_dual_steering_product_ to store the
-// dual product for the momentum.
+// HACK: In this method, we use the current_dual_steering_product_ to store
+// the dual product for the momentum.
 InnerStepOutcome Solver::TakeConstantSizeStepNesterovMomentum() {
   const double primal_step_size = step_size_ / primal_weight_;
   const double dual_step_size = step_size_ * primal_weight_;
@@ -3494,8 +3515,8 @@ InnerStepOutcome Solver::TakeConstantSizeStepNesterovMomentum() {
   VectorXd dual_product_input(primal_size);
   VectorXd dual_input(dual_size);
 
-  // If similarity checks pass, we add Nesterov momentum (before evaluating the
-  // gradients):
+  // If similarity checks pass, we add Nesterov momentum (before evaluating
+  // the gradients):
   double similarity = prev_similarity_;
 
   // Some similarity settings:
@@ -3553,8 +3574,8 @@ InnerStepOutcome Solver::TakeConstantSizeStepNesterovMomentum() {
                             next_dual_solution.delta);
     return InnerStepOutcome::kForceNumericalTermination;
   }
-  // Calculating the similarity for the next iteration to decide whether to use
-  // momentum or not:
+  // Calculating the similarity for the next iteration to decide whether to
+  // use momentum or not:
   VectorXd prev_movement(primal_size + dual_size);
   VectorXd cur_movement(primal_size + dual_size);
   prev_movement << current_primal_delta_, current_dual_delta_;
@@ -3652,8 +3673,8 @@ InnerStepOutcome Solver::TakeAdaptiveStepNesterovMomentum() {
         ComputeNextPrimalSolutionFromInput(primal_step_size, primal_input,
                                            dual_product_input);
     NextSolutionAndDelta next_dual_solution = ComputeNextDualSolutionFromInput(
-        dual_step_size, /*extrapolation_factor=*/1.0, next_primal_solution,
-        dual_input);
+        dual_step_size,
+        /*extrapolation_factor=*/1.0, next_primal_solution, dual_input);
 
     const double movement =
         ComputeMovement(next_primal_solution.delta, next_dual_solution.delta);
@@ -3681,8 +3702,8 @@ InnerStepOutcome Solver::TakeAdaptiveStepNesterovMomentum() {
                          : std::numeric_limits<double>::infinity();
 
     if (step_size_ <= step_size_limit) {
-      // Calculating the similarity for the next iteration to decide whether to
-      // use momentum or not:
+      // Calculating the similarity for the next iteration to decide whether
+      // to use momentum or not:
       VectorXd prev_movement(primal_size + dual_size);
       VectorXd cur_movement(primal_size + dual_size);
       prev_movement << current_primal_delta_, current_dual_delta_;
@@ -3712,9 +3733,9 @@ InnerStepOutcome Solver::TakeAdaptiveStepNesterovMomentum() {
     const double total_steps_attempted =
         num_rejected_steps_ + inner_iterations + iterations_completed_ + 1;
     // Our step sizes are a factor 1 - (`total_steps_attempted` + 1)^(-
-    // `step_size_reduction_exponent`) smaller than they could be as a margin to
-    // reduce rejected steps.
-    // The std::isinf() test protects against NAN if std::pow() == 1.0.
+    // `step_size_reduction_exponent`) smaller than they could be as a margin
+    // to reduce rejected steps. The std::isinf() test protects against NAN if
+    // std::pow() == 1.0.
     const double first_term =
         std::isinf(step_size_limit)
             ? step_size_limit
