@@ -8,7 +8,7 @@ verbosity=2
 # Select between: "NO_STEERING_VECTORS", "NO_STEERING_VECTORS_CALC_SIMILARITY", 
 # "NO_STEERING_VECTORS_USE_INPUT_METHOD", "NO_STEERING_VECTORS_CALC_SUM", 
 # "NESTEROV_MOMENTUM"
-steering_vector_option="NESTEROV_MOMENTUM"    
+steering_vector_option="NO_STEERING_VECTORS_USE_INPUT_METHOD"    
 
 similarity_scaling="true"
 momentum_scaling=0.3
