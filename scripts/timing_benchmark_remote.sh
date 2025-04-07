@@ -7,8 +7,8 @@ verbosity=2
 
 # Select between: "NO_STEERING_VECTORS", "NO_STEERING_VECTORS_CALC_SIMILARITY", 
 # "NO_STEERING_VECTORS_USE_INPUT_METHOD", "NO_STEERING_VECTORS_CALC_SUM", 
-# "NESTEROV_MOMENTUM"
-steering_vector_option="NO_STEERING_VECTORS_CALC_SUM"    
+# "NO_STEERING_VECTORS_CALC_SIMILARITY_SHARDED", "NESTEROV_MOMENTUM"
+steering_vector_option="NO_STEERING_VECTORS_CALC_SIMILARITY_SHARDED"    
 
 similarity_scaling="true"
 momentum_scaling=0.3
@@ -29,6 +29,8 @@ if [ $steering_vector_option == "NO_STEERING_VECTORS" ]; then
   base_experiment_name="PDLP"
 elif [ $steering_vector_option == "NO_STEERING_VECTORS_CALC_SIMILARITY" ]; then 
   base_experiment_name="PDLP+calc_sim"
+elif [ $steering_vector_option == "NO_STEERING_VECTORS_CALC_SIMILARITY_SHARDED" ]; then 
+  base_experiment_name="PDLP+calc_sim_sharded"
 elif [ $steering_vector_option == "NO_STEERING_VECTORS_USE_INPUT_METHOD" ]; then 
   base_experiment_name="PDLP+use_input_method"
 elif [ $steering_vector_option == "NO_STEERING_VECTORS_CALC_SUM" ]; then 
