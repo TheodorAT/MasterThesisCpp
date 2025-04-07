@@ -285,6 +285,11 @@ message PrimalDualHybridGradientParams {
     POLYAK_MOMENTUM = 2;
     // Applies Polyak momentum, not as a steering vector but this enum is used out of convenience for now.
     NESTEROV_MOMENTUM = 3;
+
+    // The following options are for testing which parts of the Nesterov momentum algorithm decrease performance: 
+    NO_STEERING_VECTORS_CALC_SIMILARITY = 4;
+    NO_STEERING_VECTORS_USE_INPUT_METHOD = 5;
+    NO_STEERING_VECTORS_CALC_SUM = 6;
   }
 
   enum SteeringVectorRestartOption {
@@ -512,21 +517,19 @@ message PrimalDualHybridGradientParams {
   optional SteeringVectorRestartOption steering_vector_restart_option = 34 [default = STEERING_VECTOR_NO_RESTARTS];
   optional double steering_vector_kappa = 35 [default = 0.8];
   optional double steering_vector_lambda = 36 [default = 1.0];
-  optional bool exact_residual_momentum = 37 [default = false];
   // End of steering vector parameters.
-
-  // Curve-breaking parameters:
-  optional double similarity_threshold = 38 [default = 0.9];
-  optional bool absolute_similarity_condition = 39 [default = false];
-  optional bool similarity_scaling = 40 [default = false];
-  optional bool save_similarity = 41 [default = false];
-  optional string similarity_file_name = 42 [default = "~/similarity_log_default"];
-  // End of curve-breaking parameters.
   
   // Momentum scaling parameter: 
-  optional double momentum_scaling = 43 [default = 0.3];
+  optional double momentum_scaling = 37 [default = 0.3];
+
+  // Similarity Thresholding parameters:
+  optional double similarity_threshold = 38 [default = 0.8];
+  optional bool similarity_scaling = 39 [default = false];
   
   // Experimental parameters:
+  optional bool absolute_similarity_condition = 40 [default = false];
+  optional bool save_similarity = 41 [default = false];
+  optional string similarity_file_name = 42 [default = "~/similarity_log_default"];
   optional SimilarityOption similarity_option = 44 [default = COSINE_SIMILARITY];
 
   reserved 13, 14, 15, 20, 21;

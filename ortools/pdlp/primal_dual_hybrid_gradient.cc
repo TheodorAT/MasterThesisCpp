@@ -694,10 +694,6 @@ class Solver {
   // direction.
   InnerStepOutcome TakeAdaptiveStepSteeringResidual();
 
-  // Takes a adaptive step with steering vectors in the residual momentum
-  // direction.
-  InnerStepOutcome TakeAdaptiveStepSteeringResidualExact();
-
   InnerStepOutcome TakeConstantSizeStepPolyakMomentum();
 
   InnerStepOutcome TakeAdaptiveStepPolyakMomentum();
@@ -705,6 +701,11 @@ class Solver {
   InnerStepOutcome TakeConstantSizeStepNesterovMomentum();
 
   InnerStepOutcome TakeAdaptiveStepNesterovMomentum();
+
+  // Experimental methods, only for finding slow parts
+  InnerStepOutcome TakeAdaptiveStepCalcSimilarity();
+  InnerStepOutcome TakeAdaptiveStepUseInputMethod();
+  InnerStepOutcome TakeAdaptiveStepCalcSum();
 
   const PrimalDualHybridGradientParams params_;
 
@@ -3117,194 +3118,6 @@ InnerStepOutcome Solver::TakeAdaptiveStepSteeringResidual() {
   return outcome;
 }
 
-InnerStepOutcome Solver::TakeAdaptiveStepSteeringResidualExact() {
-  InnerStepOutcome outcome = InnerStepOutcome::kSuccessful;
-  int inner_iterations = 0;
-  for (bool accepted_step = false; !accepted_step; ++inner_iterations) {
-    if (inner_iterations >= 60) {
-      LogInnerIterationLimitHit();
-      ResetAverageToCurrent();
-      outcome = InnerStepOutcome::kForceNumericalTermination;
-      break;
-    }
-    const double primal_step_size = step_size_ / primal_weight_;
-    const double dual_step_size = step_size_ * primal_weight_;
-    const int64_t primal_size = ShardedWorkingQp().PrimalSize();
-    const int64_t dual_size = ShardedWorkingQp().DualSize();
-    const double lambda = params_.steering_vector_lambda();
-
-    VectorXd x_hat_k(primal_size);
-    VectorXd y_hat_k(dual_size);
-
-    ShardedWorkingQp().PrimalSharder().ParallelForEachShard(
-        [&](const Sharder::Shard& shard) {
-          shard(x_hat_k) =
-              shard(current_primal_solution_) + shard(current_primal_steering_);
-        });
-    ShardedWorkingQp().DualSharder().ParallelForEachShard(
-        [&](const Sharder::Shard& shard) {
-          shard(y_hat_k) =
-              shard(current_dual_solution_) + shard(current_dual_steering_);
-        });
-
-    VectorXd y_hat_product_k = TransposedMatrixVectorProduct(
-        WorkingQp().constraint_matrix, y_hat_k,
-        ShardedWorkingQp().ConstraintMatrixSharder());
-    ;
-
-    // Calculating the gradient information (p_k):
-    NextSolutionAndDelta p_x_k = ComputeNextPrimalSolutionFromInput(
-        primal_step_size, x_hat_k, y_hat_product_k);
-
-    NextSolutionAndDelta p_y_k = ComputeNextDualSolutionFromInput(
-        dual_step_size, /*extrapolation_factor=*/1.0, p_x_k, y_hat_k);
-
-    NextSolutionAndDelta next_primal_solution = {
-        .value = VectorXd(primal_size),
-        .delta = VectorXd(primal_size),
-    };
-    NextSolutionAndDelta next_dual_solution = {
-        .value = VectorXd(dual_size),
-        .delta = VectorXd(dual_size),
-    };
-
-    // Calculating the next iterates:
-    ShardedWorkingQp().PrimalSharder().ParallelForEachShard(
-        [&](const Sharder::Shard& shard) {
-          shard(next_primal_solution.value) =
-              shard(current_primal_solution_) +
-              lambda * (shard(p_x_k.value) - shard(x_hat_k));
-          shard(next_primal_solution.delta) =
-              shard(next_primal_solution.value) -
-              shard(current_primal_solution_);
-        });
-    ShardedWorkingQp().DualSharder().ParallelForEachShard(
-        [&](const Sharder::Shard& shard) {
-          shard(next_dual_solution.value) =
-              shard(current_dual_solution_) +
-              lambda * (shard(p_y_k.value) - shard(y_hat_k));
-          shard(next_dual_solution.delta) =
-              shard(next_dual_solution.value) - shard(current_dual_solution_);
-        });
-
-    const double movement =
-        ComputeMovement(next_primal_solution.delta, next_dual_solution.delta);
-    if (movement == 0.0) {
-      LogNumericalTermination(next_primal_solution.delta,
-                              next_dual_solution.delta);
-      ResetAverageToCurrent();
-      outcome = InnerStepOutcome::kForceNumericalTermination;
-      break;
-    } else if (movement > kDivergentMovement) {
-      LogNumericalTermination(next_primal_solution.delta,
-                              next_dual_solution.delta);
-      outcome = InnerStepOutcome::kForceNumericalTermination;
-      break;
-    }
-
-    VectorXd next_dual_product = TransposedMatrixVectorProduct(
-        WorkingQp().constraint_matrix, next_dual_solution.value,
-        ShardedWorkingQp().ConstraintMatrixSharder());
-
-    const double nonlinearity =
-        ComputeNonlinearity(next_primal_solution.delta, next_dual_product);
-
-    // See equation (5) in https://arxiv.org/pdf/2106.04756.pdf.
-    const double step_size_limit =
-        nonlinearity > 0 ? movement / nonlinearity
-                         : std::numeric_limits<double>::infinity();
-
-    if (step_size_ <= step_size_limit) {
-      double multiplicative_factor =
-          params_.steering_vector_kappa() * (4 - 2 * lambda) / 2;
-      const double memory_factor = (2 - 2 * lambda) / (4 - 2 * lambda);
-
-      // Calculating the next steering vectors, and the corresponding dual
-      // product
-      VectorXd next_primal_steering(primal_size);
-      VectorXd next_dual_steering(dual_size);
-
-      VectorXd prev_movement(primal_size + dual_size);
-      VectorXd cur_movement(primal_size + dual_size);
-      prev_movement << current_primal_delta_, current_dual_delta_;
-      cur_movement << next_primal_solution.delta, next_dual_solution.delta;
-
-      double similarity = ComputeSimilarity(prev_movement, cur_movement);
-      if (params_.save_similarity()) {
-        step_similarities_.push_back(similarity);
-      }
-      if (params_.absolute_similarity_condition()) {
-        similarity = fabs(similarity);
-      }
-      if (similarity >= params_.similarity_threshold()) {
-        if (params_.similarity_scaling()) {
-          multiplicative_factor *= similarity;
-        }
-        ShardedWorkingQp().PrimalSharder().ParallelForEachShard(
-            [&](const Sharder::Shard& shard) {
-              shard(next_primal_steering) =
-                  multiplicative_factor *
-                  ((shard(p_x_k.value) - shard(current_primal_solution_)) -
-                   memory_factor * shard(current_primal_steering_));
-            });
-        ShardedWorkingQp().DualSharder().ParallelForEachShard(
-            [&](const Sharder::Shard& shard) {
-              shard(next_dual_steering) =
-                  multiplicative_factor *
-                  ((shard(p_y_k.value) - shard(current_dual_solution_)) -
-                   memory_factor * shard(current_dual_steering_));
-            });
-      } else {
-        next_primal_steering = ZeroVector(ShardedWorkingQp().PrimalSharder());
-        next_dual_steering = ZeroVector(ShardedWorkingQp().DualSharder());
-      }
-      current_primal_solution_ = std::move(next_primal_solution.value);
-      current_dual_solution_ = std::move(next_dual_solution.value);
-      current_dual_product_ = std::move(next_dual_product);
-      current_primal_delta_ = std::move(next_primal_solution.delta);
-      current_dual_delta_ = std::move(next_dual_solution.delta);
-      primal_average_.Add(current_primal_solution_, /*weight=*/step_size_);
-      dual_average_.Add(current_dual_solution_, /*weight=*/step_size_);
-      accepted_step = true;
-
-      // Saving the terms from the steering vectors:
-      current_primal_steering_ = std::move(next_primal_steering);
-      current_dual_steering_ = std::move(next_dual_steering);
-    }
-    const double total_steps_attempted =
-        num_rejected_steps_ + inner_iterations + iterations_completed_ + 1;
-    // Our step sizes are a factor 1 - (`total_steps_attempted` + 1)^(-
-    // `step_size_reduction_exponent`) smaller than they could be as a margin
-    // to reduce rejected steps. The std::isinf() test protects against NAN if
-    // std::pow() == 1.0.
-    const double first_term =
-        std::isinf(step_size_limit)
-            ? step_size_limit
-            : (1 - std::pow(total_steps_attempted + 1.0,
-                            -params_.adaptive_linesearch_parameters()
-                                 .step_size_reduction_exponent())) *
-                  step_size_limit;
-    const double second_term =
-        (1 + std::pow(total_steps_attempted + 1.0,
-                      -params_.adaptive_linesearch_parameters()
-                           .step_size_growth_exponent())) *
-        step_size_;
-    // From the first term when we have to reject a step, `step_size_`
-    // decreases by a factor of at least 1 - (`total_steps_attempted` + 1)^(-
-    // `step_size_reduction_exponent`). From the second term we increase
-    // `step_size_` by a factor of at most 1 + (`total_steps_attempted` +
-    // 1)^(-`step_size_growth_exponent`) Therefore if more than order
-    // (`total_steps_attempted` + 1)^(`step_size_reduction_exponent`
-    // - `step_size_growth_exponent`) fraction of the time we have a rejected
-    // step, we overall decrease `step_size_`. When `step_size_` is
-    // sufficiently small we stop having rejected steps.
-    step_size_ = std::min(first_term, second_term);
-  }
-  // `inner_iterations` is incremented for the accepted step.
-  num_rejected_steps_ += inner_iterations - 1;
-  return outcome;
-}
-
 InnerStepOutcome Solver::TakeConstantSizeStepPolyakMomentum() {
   const double primal_step_size = step_size_ / primal_weight_;
   const double dual_step_size = step_size_ * primal_weight_;
@@ -3718,9 +3531,301 @@ InnerStepOutcome Solver::TakeAdaptiveStepNesterovMomentum() {
             shard(next_dual_delta_product) =
                 shard(next_dual_product) - shard(current_dual_product_);
           });
+  
       // Saving the momentum related information:
       current_dual_steering_product_ = std::move(next_dual_delta_product);
 
+      current_primal_solution_ = std::move(next_primal_solution.value);
+      current_dual_solution_ = std::move(next_dual_solution.value);
+      current_dual_product_ = std::move(next_dual_product);
+      current_primal_delta_ = std::move(next_primal_solution.delta);
+      current_dual_delta_ = std::move(next_dual_solution.delta);
+      primal_average_.Add(current_primal_solution_, /*weight=*/step_size_);
+      dual_average_.Add(current_dual_solution_, /*weight=*/step_size_);
+      accepted_step = true;
+    }
+    const double total_steps_attempted =
+        num_rejected_steps_ + inner_iterations + iterations_completed_ + 1;
+    // Our step sizes are a factor 1 - (`total_steps_attempted` + 1)^(-
+    // `step_size_reduction_exponent`) smaller than they could be as a margin
+    // to reduce rejected steps. The std::isinf() test protects against NAN if
+    // std::pow() == 1.0.
+    const double first_term =
+        std::isinf(step_size_limit)
+            ? step_size_limit
+            : (1 - std::pow(total_steps_attempted + 1.0,
+                            -params_.adaptive_linesearch_parameters()
+                                 .step_size_reduction_exponent())) *
+                  step_size_limit;
+    const double second_term =
+        (1 + std::pow(total_steps_attempted + 1.0,
+                      -params_.adaptive_linesearch_parameters()
+                           .step_size_growth_exponent())) *
+        step_size_;
+    // From the first term when we have to reject a step, `step_size_`
+    // decreases by a factor of at least 1 - (`total_steps_attempted` + 1)^(-
+    // `step_size_reduction_exponent`). From the second term we increase
+    // `step_size_` by a factor of at most 1 + (`total_steps_attempted` +
+    // 1)^(-`step_size_growth_exponent`) Therefore if more than order
+    // (`total_steps_attempted` + 1)^(`step_size_reduction_exponent`
+    // - `step_size_growth_exponent`) fraction of the time we have a rejected
+    // step, we overall decrease `step_size_`. When `step_size_` is
+    // sufficiently small we stop having rejected steps.
+    step_size_ = std::min(first_term, second_term);
+  }
+  // `inner_iterations` is incremented for the accepted step.
+  num_rejected_steps_ += inner_iterations - 1;
+  return outcome;
+}
+
+// ################# TIMING EXPERIMENT METHODS ###############
+InnerStepOutcome Solver::TakeAdaptiveStepCalcSimilarity() {
+  InnerStepOutcome outcome = InnerStepOutcome::kSuccessful;
+  int inner_iterations = 0;
+  for (bool accepted_step = false; !accepted_step; ++inner_iterations) {
+    if (inner_iterations >= 60) {
+      LogInnerIterationLimitHit();
+      ResetAverageToCurrent();
+      outcome = InnerStepOutcome::kForceNumericalTermination;
+      break;
+    }
+    const double primal_step_size = step_size_ / primal_weight_;
+    const double dual_step_size = step_size_ * primal_weight_;
+    const int64_t primal_size = ShardedWorkingQp().PrimalSize();
+    const int64_t dual_size = ShardedWorkingQp().DualSize();
+
+    NextSolutionAndDelta next_primal_solution =
+        ComputeNextPrimalSolution(primal_step_size);
+    NextSolutionAndDelta next_dual_solution = ComputeNextDualSolution(
+        dual_step_size, /*extrapolation_factor=*/1.0, next_primal_solution);
+
+    const double movement =
+        ComputeMovement(next_primal_solution.delta, next_dual_solution.delta);
+    if (movement == 0.0) {
+      LogNumericalTermination(next_primal_solution.delta,
+                              next_dual_solution.delta);
+      ResetAverageToCurrent();
+      outcome = InnerStepOutcome::kForceNumericalTermination;
+      break;
+    } else if (movement > kDivergentMovement) {
+      LogNumericalTermination(next_primal_solution.delta,
+                              next_dual_solution.delta);
+      outcome = InnerStepOutcome::kForceNumericalTermination;
+      break;
+    }
+    VectorXd next_dual_product = TransposedMatrixVectorProduct(
+        WorkingQp().constraint_matrix, next_dual_solution.value,
+        ShardedWorkingQp().ConstraintMatrixSharder());
+    const double nonlinearity =
+        ComputeNonlinearity(next_primal_solution.delta, next_dual_product);
+
+    // See equation (5) in https://arxiv.org/pdf/2106.04756.pdf.
+    const double step_size_limit =
+        nonlinearity > 0 ? movement / nonlinearity
+                         : std::numeric_limits<double>::infinity();
+
+    if (step_size_ <= step_size_limit) {
+      // Adding the similarity calculation part: 
+      VectorXd prev_movement(primal_size + dual_size);
+      VectorXd cur_movement(primal_size + dual_size);
+      prev_movement << current_primal_delta_, current_dual_delta_;
+      cur_movement << next_primal_solution.delta, next_dual_solution.delta;
+      prev_similarity_ = ComputeSimilarity(prev_movement, cur_movement);
+      
+      current_primal_solution_ = std::move(next_primal_solution.value);
+      current_dual_solution_ = std::move(next_dual_solution.value);
+      current_dual_product_ = std::move(next_dual_product);
+      current_primal_delta_ = std::move(next_primal_solution.delta);
+      current_dual_delta_ = std::move(next_dual_solution.delta);
+      primal_average_.Add(current_primal_solution_, /*weight=*/step_size_);
+      dual_average_.Add(current_dual_solution_, /*weight=*/step_size_);
+      accepted_step = true;
+    }
+    const double total_steps_attempted =
+        num_rejected_steps_ + inner_iterations + iterations_completed_ + 1;
+    // Our step sizes are a factor 1 - (`total_steps_attempted` + 1)^(-
+    // `step_size_reduction_exponent`) smaller than they could be as a margin
+    // to reduce rejected steps. The std::isinf() test protects against NAN if
+    // std::pow() == 1.0.
+    const double first_term =
+        std::isinf(step_size_limit)
+            ? step_size_limit
+            : (1 - std::pow(total_steps_attempted + 1.0,
+                            -params_.adaptive_linesearch_parameters()
+                                 .step_size_reduction_exponent())) *
+                  step_size_limit;
+    const double second_term =
+        (1 + std::pow(total_steps_attempted + 1.0,
+                      -params_.adaptive_linesearch_parameters()
+                           .step_size_growth_exponent())) *
+        step_size_;
+    // From the first term when we have to reject a step, `step_size_`
+    // decreases by a factor of at least 1 - (`total_steps_attempted` + 1)^(-
+    // `step_size_reduction_exponent`). From the second term we increase
+    // `step_size_` by a factor of at most 1 + (`total_steps_attempted` +
+    // 1)^(-`step_size_growth_exponent`) Therefore if more than order
+    // (`total_steps_attempted` + 1)^(`step_size_reduction_exponent`
+    // - `step_size_growth_exponent`) fraction of the time we have a rejected
+    // step, we overall decrease `step_size_`. When `step_size_` is
+    // sufficiently small we stop having rejected steps.
+    step_size_ = std::min(first_term, second_term);
+  }
+  // `inner_iterations` is incremented for the accepted step.
+  num_rejected_steps_ += inner_iterations - 1;
+  return outcome;
+}
+
+InnerStepOutcome Solver::TakeAdaptiveStepUseInputMethod() {
+  InnerStepOutcome outcome = InnerStepOutcome::kSuccessful;
+  int inner_iterations = 0;
+  for (bool accepted_step = false; !accepted_step; ++inner_iterations) {
+    if (inner_iterations >= 60) {
+      LogInnerIterationLimitHit();
+      ResetAverageToCurrent();
+      outcome = InnerStepOutcome::kForceNumericalTermination;
+      break;
+    }
+    const double primal_step_size = step_size_ / primal_weight_;
+    const double dual_step_size = step_size_ * primal_weight_;
+    
+    VectorXd primal_input = current_primal_solution_;
+    VectorXd dual_product_input = current_dual_product_;
+    VectorXd dual_input = current_dual_solution_;
+    // Calculating the next iterates:
+    NextSolutionAndDelta next_primal_solution =
+        ComputeNextPrimalSolutionFromInput(primal_step_size, primal_input,
+                                          dual_product_input);
+    NextSolutionAndDelta next_dual_solution = ComputeNextDualSolutionFromInput(
+        dual_step_size,
+        /*extrapolation_factor=*/1.0, next_primal_solution, dual_input);
+
+    const double movement =
+        ComputeMovement(next_primal_solution.delta, next_dual_solution.delta);
+    if (movement == 0.0) {
+      LogNumericalTermination(next_primal_solution.delta,
+                              next_dual_solution.delta);
+      ResetAverageToCurrent();
+      outcome = InnerStepOutcome::kForceNumericalTermination;
+      break;
+    } else if (movement > kDivergentMovement) {
+      LogNumericalTermination(next_primal_solution.delta,
+                              next_dual_solution.delta);
+      outcome = InnerStepOutcome::kForceNumericalTermination;
+      break;
+    }
+    VectorXd next_dual_product = TransposedMatrixVectorProduct(
+        WorkingQp().constraint_matrix, next_dual_solution.value,
+        ShardedWorkingQp().ConstraintMatrixSharder());
+    const double nonlinearity =
+        ComputeNonlinearity(next_primal_solution.delta, next_dual_product);
+
+    // See equation (5) in https://arxiv.org/pdf/2106.04756.pdf.
+    const double step_size_limit =
+        nonlinearity > 0 ? movement / nonlinearity
+                         : std::numeric_limits<double>::infinity();
+
+    if (step_size_ <= step_size_limit) {
+      current_primal_solution_ = std::move(next_primal_solution.value);
+      current_dual_solution_ = std::move(next_dual_solution.value);
+      current_dual_product_ = std::move(next_dual_product);
+      current_primal_delta_ = std::move(next_primal_solution.delta);
+      current_dual_delta_ = std::move(next_dual_solution.delta);
+      primal_average_.Add(current_primal_solution_, /*weight=*/step_size_);
+      dual_average_.Add(current_dual_solution_, /*weight=*/step_size_);
+      accepted_step = true;
+    }
+    const double total_steps_attempted =
+        num_rejected_steps_ + inner_iterations + iterations_completed_ + 1;
+    // Our step sizes are a factor 1 - (`total_steps_attempted` + 1)^(-
+    // `step_size_reduction_exponent`) smaller than they could be as a margin
+    // to reduce rejected steps. The std::isinf() test protects against NAN if
+    // std::pow() == 1.0.
+    const double first_term =
+        std::isinf(step_size_limit)
+            ? step_size_limit
+            : (1 - std::pow(total_steps_attempted + 1.0,
+                            -params_.adaptive_linesearch_parameters()
+                                 .step_size_reduction_exponent())) *
+                  step_size_limit;
+    const double second_term =
+        (1 + std::pow(total_steps_attempted + 1.0,
+                      -params_.adaptive_linesearch_parameters()
+                           .step_size_growth_exponent())) *
+        step_size_;
+    // From the first term when we have to reject a step, `step_size_`
+    // decreases by a factor of at least 1 - (`total_steps_attempted` + 1)^(-
+    // `step_size_reduction_exponent`). From the second term we increase
+    // `step_size_` by a factor of at most 1 + (`total_steps_attempted` +
+    // 1)^(-`step_size_growth_exponent`) Therefore if more than order
+    // (`total_steps_attempted` + 1)^(`step_size_reduction_exponent`
+    // - `step_size_growth_exponent`) fraction of the time we have a rejected
+    // step, we overall decrease `step_size_`. When `step_size_` is
+    // sufficiently small we stop having rejected steps.
+    step_size_ = std::min(first_term, second_term);
+  }
+  // `inner_iterations` is incremented for the accepted step.
+  num_rejected_steps_ += inner_iterations - 1;
+  return outcome;
+}
+
+InnerStepOutcome Solver::TakeAdaptiveStepCalcSum() {
+  InnerStepOutcome outcome = InnerStepOutcome::kSuccessful;
+  int inner_iterations = 0;
+  for (bool accepted_step = false; !accepted_step; ++inner_iterations) {
+    if (inner_iterations >= 60) {
+      LogInnerIterationLimitHit();
+      ResetAverageToCurrent();
+      outcome = InnerStepOutcome::kForceNumericalTermination;
+      break;
+    }
+    const double primal_step_size = step_size_ / primal_weight_;
+    const double dual_step_size = step_size_ * primal_weight_;
+    const int64_t primal_size = ShardedWorkingQp().PrimalSize();
+    const int64_t dual_size = ShardedWorkingQp().DualSize();
+    
+    NextSolutionAndDelta next_primal_solution =
+        ComputeNextPrimalSolution(primal_step_size);
+    NextSolutionAndDelta next_dual_solution = ComputeNextDualSolution(
+        dual_step_size, /*extrapolation_factor=*/1.0, next_primal_solution);
+
+    const double movement =
+        ComputeMovement(next_primal_solution.delta, next_dual_solution.delta);
+    if (movement == 0.0) {
+      LogNumericalTermination(next_primal_solution.delta,
+                              next_dual_solution.delta);
+      ResetAverageToCurrent();
+      outcome = InnerStepOutcome::kForceNumericalTermination;
+      break;
+    } else if (movement > kDivergentMovement) {
+      LogNumericalTermination(next_primal_solution.delta,
+                              next_dual_solution.delta);
+      outcome = InnerStepOutcome::kForceNumericalTermination;
+      break;
+    }
+    VectorXd next_dual_product = TransposedMatrixVectorProduct(
+        WorkingQp().constraint_matrix, next_dual_solution.value,
+        ShardedWorkingQp().ConstraintMatrixSharder());
+    const double nonlinearity =
+        ComputeNonlinearity(next_primal_solution.delta, next_dual_product);
+
+    // See equation (5) in https://arxiv.org/pdf/2106.04756.pdf.
+    const double step_size_limit =
+        nonlinearity > 0 ? movement / nonlinearity
+                         : std::numeric_limits<double>::infinity();
+
+    if (step_size_ <= step_size_limit) {
+      
+      // Calculating the next dual product for the momentum term:
+      VectorXd next_dual_delta_product(primal_size);
+      ShardedWorkingQp().PrimalSharder().ParallelForEachShard(
+          [&](const Sharder::Shard& shard) {
+            shard(next_dual_delta_product) =
+                shard(next_dual_product) - shard(current_dual_product_);
+          });
+  
+      // Saving the momentum related information:
+      current_dual_steering_product_ = std::move(next_dual_delta_product);
+      
       current_primal_solution_ = std::move(next_primal_solution.value);
       current_dual_solution_ = std::move(next_dual_solution.value);
       current_dual_product_ = std::move(next_dual_product);
@@ -4150,17 +4255,22 @@ SolverResult Solver::Solve(const IterationType iteration_type,
             outcome = TakeAdaptiveStep();
             break;
           case PrimalDualHybridGradientParams::RESIDUAL_MOMENTUM:
-            if (params_.exact_residual_momentum()) {
-              outcome = TakeAdaptiveStepSteeringResidualExact();
-            } else {
-              outcome = TakeAdaptiveStepSteeringResidual();
-            }
+            outcome = TakeAdaptiveStepSteeringResidual();
             break;
           case PrimalDualHybridGradientParams::POLYAK_MOMENTUM:
             outcome = TakeAdaptiveStepPolyakMomentum();
             break;
           case PrimalDualHybridGradientParams::NESTEROV_MOMENTUM:
             outcome = TakeAdaptiveStepNesterovMomentum();
+            break;
+          case PrimalDualHybridGradientParams::NO_STEERING_VECTORS_CALC_SIMILARITY:
+            outcome = TakeAdaptiveStepCalcSimilarity();
+            break;
+          case PrimalDualHybridGradientParams::NO_STEERING_VECTORS_USE_INPUT_METHOD:
+            outcome = TakeAdaptiveStepUseInputMethod();
+          break;
+            case PrimalDualHybridGradientParams::NO_STEERING_VECTORS_CALC_SUM:
+            outcome = TakeAdaptiveStepCalcSum();
             break;
           default:
             LOG(FATAL) << "Unrecognized steering vector option "
