@@ -1,14 +1,14 @@
 # Select the type of benchmark that we want to run: 
 # Select between "lp_benchmark", "mip_relaxations", "netlib_benchmark"
 benchmark="netlib_benchmark"
-accuracy="1.0e-4"
+accuracy="1.0e-8"
 kkt_matrix_pass_limit=100000
 verbosity=2
 
 # Select between: "NO_STEERING_VECTORS", "NO_STEERING_VECTORS_CALC_SIMILARITY", 
 # "NO_STEERING_VECTORS_USE_INPUT_METHOD", "NO_STEERING_VECTORS_CALC_SUM", 
 # "NO_STEERING_VECTORS_CALC_SIMILARITY_SHARDED", "NESTEROV_MOMENTUM"
-steering_vector_option="NESTEROV_MOMENTUM"    
+steering_vector_option="NO_STEERING_VECTORS"    
 
 similarity_scaling="true"
 momentum_scaling=0.3
@@ -26,7 +26,7 @@ use_feasibility_polishing="true"
 
 # Suitable experiment name:  
 if [ $steering_vector_option == "NO_STEERING_VECTORS" ]; then
-  base_experiment_name="PDLP_5"
+  base_experiment_name="PDLP_1"
 elif [ $steering_vector_option == "NO_STEERING_VECTORS_CALC_SIMILARITY" ]; then 
   base_experiment_name="PDLP+calc_sim"
 elif [ $steering_vector_option == "NO_STEERING_VECTORS_CALC_SIMILARITY_SHARDED" ]; then 
@@ -36,7 +36,7 @@ elif [ $steering_vector_option == "NO_STEERING_VECTORS_USE_INPUT_METHOD" ]; then
 elif [ $steering_vector_option == "NO_STEERING_VECTORS_CALC_SUM" ]; then 
   base_experiment_name="PDLP+calc_dual_sum"
 elif [ $steering_vector_option == "NESTEROV_MOMENTUM" ]; then 
-  base_experiment_name="PDLP+STSN_5"
+  base_experiment_name="PDLP+STSN_1"
 else 
   echo "Please select an appropriate experiment name"
   exit
