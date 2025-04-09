@@ -708,6 +708,7 @@ class Solver {
   InnerStepOutcome TakeAdaptiveStepNesterovMomentum();
 
   // Experimental methods, only for finding slow parts
+  InnerStepOutcome TakeConstantSizeStepCalcSimilarity();
   InnerStepOutcome TakeAdaptiveStepCalcSimilarity();
   InnerStepOutcome TakeAdaptiveStepUseInputMethod();
   InnerStepOutcome TakeAdaptiveStepCalcSum();
@@ -3346,8 +3347,43 @@ InnerStepOutcome Solver::TakeAdaptiveStepPolyakMomentum() {
   return outcome;
 }
 
-// HACK: In this method, we use the current_dual_steering_product_ to store
-// the dual product for the momentum.
+InnerStepOutcome Solver::TakeConstantSizeStepCalcSimilarity() {
+  const double primal_step_size = step_size_ / primal_weight_;
+  const double dual_step_size = step_size_ * primal_weight_;
+  NextSolutionAndDelta next_primal_solution =
+      ComputeNextPrimalSolution(primal_step_size);
+  NextSolutionAndDelta next_dual_solution = ComputeNextDualSolution(
+      dual_step_size, /*extrapolation_factor=*/1.0, next_primal_solution);
+  const double movement =
+      ComputeMovement(next_primal_solution.delta, next_dual_solution.delta);
+  if (movement == 0.0) {
+    LogNumericalTermination(next_primal_solution.delta,
+                            next_dual_solution.delta);
+    ResetAverageToCurrent();
+    return InnerStepOutcome::kForceNumericalTermination;
+  } else if (movement > kDivergentMovement) {
+    LogNumericalTermination(next_primal_solution.delta,
+                            next_dual_solution.delta);
+    return InnerStepOutcome::kForceNumericalTermination;
+  }
+  // Calculating the similarity:
+  prev_similarity_ = ComputeSimilaritySharded(
+      current_primal_delta_, current_dual_delta_, next_primal_solution.delta,
+      next_dual_solution.delta);
+
+  VectorXd next_dual_product = TransposedMatrixVectorProduct(
+      WorkingQp().constraint_matrix, next_dual_solution.value,
+      ShardedWorkingQp().ConstraintMatrixSharder());
+  current_primal_solution_ = std::move(next_primal_solution.value);
+  current_dual_solution_ = std::move(next_dual_solution.value);
+  current_dual_product_ = std::move(next_dual_product);
+  current_primal_delta_ = std::move(next_primal_solution.delta);
+  current_dual_delta_ = std::move(next_dual_solution.delta);
+  primal_average_.Add(current_primal_solution_, /*weight=*/step_size_);
+  dual_average_.Add(current_dual_solution_, /*weight=*/step_size_);
+  return InnerStepOutcome::kSuccessful;
+}
+
 InnerStepOutcome Solver::TakeConstantSizeStepNesterovMomentum() {
   const double primal_step_size = step_size_ / primal_weight_;
   const double dual_step_size = step_size_ * primal_weight_;
@@ -4414,6 +4450,10 @@ SolverResult Solver::Solve(const IterationType iteration_type,
             break;
           case PrimalDualHybridGradientParams::NESTEROV_MOMENTUM:
             outcome = TakeConstantSizeStepNesterovMomentum();
+            break;
+          case PrimalDualHybridGradientParams::
+              NO_STEERING_VECTORS_CALC_SIMILARITY:
+            outcome = TakeConstantSizeStepCalcSimilarity();
             break;
           default:
             LOG(FATAL) << "Unrecognized steering vector option "
