@@ -4,29 +4,12 @@ To recompile basic example of running pdlp with input as mps file:
 
 ##  The timing of different implementations: 
 
-10000 KKT Passes on set-cover (heron 05) 
-- PDLP: 682.9 (6984 Iterations)
-- 
+1000 KKT Passes on netlarge6 on "heron-05":
 
-10000 KKT Passes on netlarge6
-
-# Previously large differences:
-lp_benchmark/netlarge6 <-- The largest instance 
+PDHG*: 
 
 
-
-# 1000 KKT Passes on set-cover
-PDLP:  950 Iters in 178.4 secs
-PLDP+STSN: 960 Iters in 178.6 secs
-
-# On "heron02"
-PDLP:  950 Iters in 75.6 secs
-PDLP+STSN: 950 Iters in ~80 secs
-
-
-# 100 000 KKT Passes on stat96v1
-PDLP: 99999 Iters in 462.7 secs
-
+*With primal weight update and rescaling
 
 
 ## Tuning 

@@ -39,6 +39,7 @@ if [ $steering_vector_option == "NO_STEERING_VECTORS" ]; then
 else 
     experiment_name="${instance}_${accuracy}_PDLP+Steering_R=${steering_vector_restart_option}"
 fi
+solve_folder_name="${base_experiment_name}"
 
 # No settings after this point:
 # The params passed to the solver:
@@ -70,6 +71,13 @@ params="
     momentum_scaling: ${momentum_scaling},
 "
 
+
+base_solve_log_dir="${HOME}/MasterThesisCpp/benchmarking_results/solve_logs/$solve_folder_name"
+
+if [[ ! -e $base_solve_log_dir ]]; then
+  mkdir -p $base_solve_log_dir
+fi
+
 # Running the algorithm:
 cd "$HOME/MasterThesisCpp"
 if [ ! -f $instance_path_zipped ]; then
@@ -77,16 +85,21 @@ if [ ! -f $instance_path_zipped ]; then
 else   
   echo "Unzipping $instance_path_zipped"...
   echo "N" | gunzip -k $instance_path_zipped
-
+  solve_log_file="${base_solve_log_dir}/${INSTANCE}.json"
   instance_path="${instance_path_base}/${instance}.mps"
   
   if [ ! -f $instance_path ]; then
     echo "Did not find unzipped file at $instance_path"
   else 
     echo "Solving ${INSTANCE}..."
-    ./temp_cpp/pdlp_solve/build/bin/pdlp_solve --input $instance_path --params "${params}"
+    ./temp_cpp/pdlp_solve/build/bin/pdlp_solve --input $instance_path --params "${params}" --solve_log_file "${solve_log_file}"
     echo "Solved, deleting unzipped file to save storage... "
     rm $instance_path
+
+    # Saving the results in file:
+    cd "$HOME/MasterThesisCpp/scripts"
+    summary_file="${HOME}/MasterThesisCpp/benchmarking_results/tuning_remote/${solve_folder_name}.csv"
+    python3 parse_log_files.py $base_solve_log_dir $summary_file
   fi
 fi
 
