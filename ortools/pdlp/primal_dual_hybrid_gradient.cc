@@ -3354,11 +3354,6 @@ InnerStepOutcome Solver::TakeConstantSizeStepNesterovMomentum() {
   const int64_t primal_size = ShardedWorkingQp().PrimalSize();
   const int64_t dual_size = ShardedWorkingQp().DualSize();
 
-  // Calculating the terms with added momentum:
-  VectorXd primal_input(primal_size);
-  VectorXd dual_product_input(primal_size);
-  VectorXd dual_input(dual_size);
-
   // If similarity checks pass, we add Nesterov momentum (before evaluating
   // the gradients):
   double similarity = prev_similarity_;
@@ -3371,12 +3366,20 @@ InnerStepOutcome Solver::TakeConstantSizeStepNesterovMomentum() {
     similarity = fabs(similarity);
   }
 
+  NextSolutionAndDelta next_primal_solution;
+  NextSolutionAndDelta next_dual_solution;
+
   // Adding momentum if similarity condition is fulfilled:
   if (similarity >= params_.similarity_threshold()) {
     double momentum_scaling_factor = params_.momentum_scaling();
     if (params_.similarity_scaling()) {
       momentum_scaling_factor *= similarity;
     }
+
+    // Calculating the terms with added momentum:
+    VectorXd primal_input(primal_size);
+    VectorXd dual_product_input(primal_size);
+    VectorXd dual_input(dual_size);
 
     ShardedWorkingQp().PrimalSharder().ParallelForEachShard(
         [&](const Sharder::Shard& shard) {
@@ -3393,19 +3396,20 @@ InnerStepOutcome Solver::TakeConstantSizeStepNesterovMomentum() {
               shard(current_dual_solution_) +
               (momentum_scaling_factor * shard(current_dual_delta_));
         });
-  } else {  // If we don't use momentum, just use regular iterates:
-    primal_input = current_primal_solution_;
-    dual_product_input = current_dual_product_;
-    dual_input = current_dual_solution_;
+    // Calculating the next iterates:
+    next_primal_solution = ComputeNextPrimalSolutionFromInput(
+        primal_step_size, primal_input, dual_product_input);
+    next_dual_solution = ComputeNextDualSolutionFromInput(
+        dual_step_size, /*extrapolation_factor=*/1.0, next_primal_solution,
+        dual_input);
+  } else {
+    // If we don't use momentum, just use regular iterates:
+    next_primal_solution = ComputeNextPrimalSolutionFromInput(
+        primal_step_size, current_primal_solution_, current_dual_product_);
+    next_dual_solution = ComputeNextDualSolutionFromInput(
+        dual_step_size, /*extrapolation_factor=*/1.0, next_primal_solution,
+        current_dual_solution_);
   }
-  // Calculating the next iterates:
-  NextSolutionAndDelta next_primal_solution =
-      ComputeNextPrimalSolutionFromInput(primal_step_size, primal_input,
-                                         dual_product_input);
-  NextSolutionAndDelta next_dual_solution = ComputeNextDualSolutionFromInput(
-      dual_step_size, /*extrapolation_factor=*/1.0, next_primal_solution,
-      dual_input);
-
   const double movement =
       ComputeMovement(next_primal_solution.delta, next_dual_solution.delta);
   if (movement == 0.0) {
@@ -3420,12 +3424,9 @@ InnerStepOutcome Solver::TakeConstantSizeStepNesterovMomentum() {
   }
   // Calculating the similarity for the next iteration to decide whether to
   // use momentum or not:
-  VectorXd prev_movement(primal_size + dual_size);
-  VectorXd cur_movement(primal_size + dual_size);
-  prev_movement << current_primal_delta_, current_dual_delta_;
-  cur_movement << next_primal_solution.delta, next_dual_solution.delta;
-
-  prev_similarity_ = ComputeSimilarity(prev_movement, cur_movement);
+  prev_similarity_ = ComputeSimilaritySharded(
+      current_primal_delta_, current_dual_delta_, next_primal_solution.delta,
+      next_dual_solution.delta);
 
   // Calculating the next dual product:
   VectorXd next_dual_product = TransposedMatrixVectorProduct(
@@ -3433,14 +3434,11 @@ InnerStepOutcome Solver::TakeConstantSizeStepNesterovMomentum() {
       ShardedWorkingQp().ConstraintMatrixSharder());
 
   // Calculating the next dual product for the momentum term:
-  VectorXd next_dual_delta_product(primal_size);
   ShardedWorkingQp().PrimalSharder().ParallelForEachShard(
       [&](const Sharder::Shard& shard) {
-        shard(next_dual_delta_product) =
+        shard(current_dual_steering_product_) =
             shard(next_dual_product) - shard(current_dual_product_);
       });
-  // Saving the momentum related information:
-  current_dual_steering_product_ = std::move(next_dual_delta_product);
 
   current_primal_solution_ = std::move(next_primal_solution.value);
   current_dual_solution_ = std::move(next_dual_solution.value);

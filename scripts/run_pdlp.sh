@@ -24,13 +24,13 @@ similarity_scaling="true"
 similarity_threshold="0.8"
 momentum_scaling="0.3"
 # Select between: "NO_STEERING_VECTORS", "RESIDUAL_MOMENTUM", "POLYAK_MOMENTUM", "NESTEROV_MOMENTUM"
-steering_vector_option="NO_STEERING_VECTORS_CALC_SIMILARITY"        
+steering_vector_option="NESTEROV_MOMENTUM"        
 
 steering_vector_restart_option="STEERING_VECTOR_EVERY_MAJOR_ITERATION"    # Select between: "STEERING_VECTOR_NO_RESTARTS",  
                                                                 # "STEERING_VECTOR_EVERY_MAJOR_ITERATION", "STEERING_VECTOR_EVERY_PDLP_RESTART"
 use_feasibility_polishing="true"
-restart_policy="ADAPTIVE_HEURISTIC"                        # Select between: "NO_RESTARTS", "ADAPTIVE_HEURISTIC" 
-step_size_rule="ADAPTIVE_LINESEARCH_RULE"            # Select between: "CONSTANT_STEP_SIZE_RULE", "ADAPTIVE_LINESEARCH_RULE"
+restart_policy="NO_RESTARTS"                        # Select between: "NO_RESTARTS", "ADAPTIVE_HEURISTIC" 
+step_size_rule="CONSTANT_STEP_SIZE_RULE"            # Select between: "CONSTANT_STEP_SIZE_RULE", "ADAPTIVE_LINESEARCH_RULE"
 
 # Suitable experiment name:  
 if [ $steering_vector_option == "NO_STEERING_VECTORS" ]; then

@@ -4,6 +4,17 @@ To recompile basic example of running pdlp with input as mps file:
 
 ##  The timing of different implementations: 
 
+10000 KKT Passes on set-cover (heron 05) 
+- PDLP: 682.9 (6984 Iterations)
+- 
+
+10000 KKT Passes on netlarge6
+
+# Previously large differences:
+lp_benchmark/netlarge6 <-- The largest instance 
+
+
+
 # 1000 KKT Passes on set-cover
 PDLP:  950 Iters in 178.4 secs
 PLDP+STSN: 960 Iters in 178.6 secs
