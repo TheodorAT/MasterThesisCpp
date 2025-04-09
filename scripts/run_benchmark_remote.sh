@@ -1,6 +1,6 @@
 # Select the type of benchmark that we want to run: 
 # Select between "lp_benchmark", "mip_relaxations", "netlib_benchmark"
-benchmark="slow_lp_benchmark"
+benchmark="netlib_benchmark"
 
 accuracy="1.0e-4"
 kkt_matrix_pass_limit=100000
@@ -16,7 +16,7 @@ similarity_threshold=0.8
 
 # Select between: "STEERING_VECTOR_NO_RESTARTS", "STEERING_VECTOR_EVERY_MAJOR_ITERATION", 
 # "STEERING_VECTOR_EVERY_PDLP_RESTART"
-steering_vector_restart_option="STEERING_VECTOR_EVERY_MAJOR_ITERATION"    
+steering_vector_restart_option="STEERING_VECTOR_NO_RESTARTS"    
 
 steering_vector_kappa=0.8 # Test in range [0, 1]: {0, 0.2, 0.4, 0.6, 0.8, 1}
 # results: Seems to be the best at close to 0 (i.e no steering vectors), or around 0.7 without curve-breaking.
@@ -43,7 +43,7 @@ elif [ $steering_vector_option == "NESTEROV_MOMENTUM" ]; then
 else 
   base_experiment_name="PDLP+Steering_kappa=${steering_vector_kappa}_lambda=${steering_vector_lambda}_threshold=${similarity_threshold}_sim_scaling=${similarity_scaling}"
 fi
-solve_folder_name="${benchmark}_${accuracy}_${base_experiment_name}"
+solve_folder_name="${benchmark}_${accuracy}_${base_experiment_name}_no_mom_restarts"
 
 # No settings after this point:
 # The params passed to the solver:
@@ -135,7 +135,7 @@ done
 echo "All runs complete, creating summary file..."
 
 cd "$HOME/MasterThesisCpp/scripts"
-summary_file="${HOME}/MasterThesisCpp/benchmarking_results/remote_benchmark_results_tuning/${solve_folder_name}.csv"
+summary_file="${HOME}/MasterThesisCpp/benchmarking_results/csv_results/${solve_folder_name}.csv"
 python3 parse_log_files.py $base_solve_log_dir $summary_file
 
 echo "Done"
