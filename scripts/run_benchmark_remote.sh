@@ -16,7 +16,7 @@ similarity_threshold=0.8
 
 # Select between: "STEERING_VECTOR_NO_RESTARTS", "STEERING_VECTOR_EVERY_MAJOR_ITERATION", 
 # "STEERING_VECTOR_EVERY_PDLP_RESTART"
-steering_vector_restart_option="STEERING_VECTOR_NO_RESTARTS"    
+steering_vector_restart_option="STEERING_VECTOR_EVERY_MAJOR_ITERATION"    
 
 steering_vector_kappa=0.8 # Test in range [0, 1]: {0, 0.2, 0.4, 0.6, 0.8, 1}
 # results: Seems to be the best at close to 0 (i.e no steering vectors), or around 0.7 without curve-breaking.
@@ -43,7 +43,7 @@ elif [ $steering_vector_option == "NESTEROV_MOMENTUM" ]; then
 else 
   base_experiment_name="PDLP+Steering_kappa=${steering_vector_kappa}_lambda=${steering_vector_lambda}_threshold=${similarity_threshold}_sim_scaling=${similarity_scaling}"
 fi
-solve_folder_name="${benchmark}_${accuracy}_${base_experiment_name}_no_mom_restarts"
+solve_folder_name="${benchmark}_${accuracy}_${base_experiment_name}_freq_restarts"
 
 # No settings after this point:
 # The params passed to the solver:
