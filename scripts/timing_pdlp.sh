@@ -35,11 +35,11 @@ step_size_rule="CONSTANT_STEP_SIZE_RULE"            # Select between: "CONSTANT_
 
 # Suitable experiment name:  
 if [ $steering_vector_option == "NO_STEERING_VECTORS" ]; then
-    experiment_name="${instance}_${accuracy}_PDLP"
+    experiment_name="${instance}_${accuracy}_PDHG"
 else 
-    experiment_name="${instance}_${accuracy}_PDLP+Steering_R=${steering_vector_restart_option}"
+    experiment_name="${instance}_${accuracy}_PDHG_${steering_vector_option}"
 fi
-solve_folder_name="${base_experiment_name}"
+solve_folder_name="${experiment_name}"
 
 # No settings after this point:
 # The params passed to the solver:
@@ -98,7 +98,7 @@ else
 
     # Saving the results in file:
     cd "$HOME/MasterThesisCpp/scripts"
-    summary_file="${HOME}/MasterThesisCpp/benchmarking_results/tuning_remote/${solve_folder_name}.csv"
+    summary_file="${HOME}/MasterThesisCpp/benchmarking_results/csv_results/${solve_folder_name}.csv"
     python3 parse_log_files.py $base_solve_log_dir $summary_file
   fi
 fi

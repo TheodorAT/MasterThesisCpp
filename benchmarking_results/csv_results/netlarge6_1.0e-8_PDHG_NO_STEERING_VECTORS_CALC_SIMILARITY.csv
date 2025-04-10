@@ -1,0 +1,2 @@
+instance,termination_reason,iteration_count,solve_time_sec,cumulative_kkt_matrix_passes,preprocessing_time_sec,cumulative_rejected_steps
+,TERMINATION_REASON_KKT_MATRIX_PASS_LIMIT,1000,401.000257176,1000,10.825247844000002,0
