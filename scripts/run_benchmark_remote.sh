@@ -8,7 +8,7 @@ major_iteration_frequency=40
 verbosity=2
 
 # Select between: "NO_STEERING_VECTORS", "RESIDUAL_MOMENTUM", "POLYAK_MOMENTUM", "NESTEROV_MOMENTUM"
-steering_vector_option="NESTEROV_MOMENTUM"   
+steering_vector_option="NO_STEERING_VECTORS"   
 similarity_scaling="true" 
 
 momentum_scaling=0.3
@@ -25,8 +25,8 @@ steering_vector_lambda=1  # Test in range [0, 1]: {0, 0.2, 0.4, 0.6, 0.8, 1}
 # TODO: For the future, test increasing lambda with iterations, 
 # this requires some more implementation. 
 
-restart_policy="ADAPTIVE_HEURISTIC"         # Select between: "NO_RESTARTS", "ADAPTIVE_HEURISTIC" 
-step_size_rule="ADAPTIVE_LINESEARCH_RULE"   # Select between: "CONSTANT_STEP_SIZE_RULE", "ADAPTIVE_LINESEARCH_RULE"
+restart_policy="NO_RESTARTS"         # Select between: "NO_RESTARTS", "ADAPTIVE_HEURISTIC" 
+step_size_rule="CONSTANT_STEP_SIZE_RULE"   # Select between: "CONSTANT_STEP_SIZE_RULE", "ADAPTIVE_LINESEARCH_RULE"
 use_feasibility_polishing="true"
 
 absolute_similarity_condition=false # This was not as good as I had hoped, the regular one was better in most cases.
@@ -43,7 +43,7 @@ elif [ $steering_vector_option == "NESTEROV_MOMENTUM" ]; then
 else 
   base_experiment_name="PDLP+Steering_kappa=${steering_vector_kappa}_lambda=${steering_vector_lambda}_threshold=${similarity_threshold}_sim_scaling=${similarity_scaling}"
 fi
-solve_folder_name="${benchmark}_${accuracy}_${base_experiment_name}_freq_restarts"
+solve_folder_name="${benchmark}_${accuracy}_${base_experiment_name}_no_restarts_const_stepsize"
 
 # No settings after this point:
 # The params passed to the solver:
