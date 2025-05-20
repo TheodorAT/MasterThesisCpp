@@ -10,7 +10,7 @@
 # Very affected fast instances: (in netlib)
 # forplan   (large improvement)
 # bnl2      (large deterioration)
-instance="self"
+instance="neos3"
 instance_path="${HOME}/lp_benchmark/${instance}.mps" # We need to have already extracted it from mps.gz
 
 accuracy="1.0e-4"
@@ -18,7 +18,7 @@ save_similarity="false"
 similarity_file_name="'./similarity_logs/${instance}_PDLP'"
 kkt_matrix_pass_limit=100000
 major_iteration_frequency=40
-verbosity=1
+verbosity=2
 
 similarity_scaling="true"
 similarity_threshold="0.8"
@@ -45,7 +45,7 @@ params="
     verbosity_level: ${verbosity}, 
     handle_some_primal_gradients_on_finite_bounds_as_residuals: false,
     presolve_options {
-        use_glop: false
+        use_glop: true
     },
     termination_check_frequency: ${major_iteration_frequency},
     major_iteration_frequency: ${major_iteration_frequency},

@@ -17,7 +17,7 @@ instance_path_zipped="${instance_path_base}/${instance}.mps.gz"
 accuracy="1.0e-8"
 save_similarity="false"
 similarity_file_name="'./similarity_logs/${instance}_PDLP'"
-kkt_matrix_pass_limit=1000
+kkt_matrix_pass_limit=2
 major_iteration_frequency=40
 verbosity=2
 

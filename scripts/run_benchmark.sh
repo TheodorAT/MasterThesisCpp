@@ -8,11 +8,13 @@ major_iteration_frequency=40
 verbosity=2
 
 # Select between: "NO_STEERING_VECTORS", "RESIDUAL_MOMENTUM", "POLYAK_MOMENTUM", "NESTEROV_MOMENTUM"
-steering_vector_option="POLYAK_MOMENTUM"    
-similarity_scaling="false"
 
-momentum_scaling=0.005
-similarity_threshold=-1.1 # Test in range [-1, 1], 
+# Comparing "NESTEROV_MOMENTUM" and "NESTEROV_MOMENTUM_WEIGHTED_SIMILARITY" 
+steering_vector_option="NESTEROV_MOMENTUM_WEIGHTED_SIMILARITY"    
+similarity_scaling="true"
+
+momentum_scaling=0.3
+similarity_threshold=0.8 # Test in range [-1, 1], 
 # but its probably not very interesting below 0...
 # Select between "COSINE_SIMILARITY" and "RANDOM_SIMILARITY"
 similarity_option="COSINE_SIMILARITY"
@@ -43,6 +45,8 @@ elif [ $steering_vector_option == "POLYAK_MOMENTUM" ]; then
   base_experiment_name="PDLP+Polyak_scaling=${momentum_scaling}_threshold=${similarity_threshold}_similarity_scaling=${similarity_scaling}"
 elif [ $steering_vector_option == "NESTEROV_MOMENTUM" ]; then 
   base_experiment_name="PDLP+Nesterov_scaling=${momentum_scaling}_threshold=${similarity_threshold}_similarity_scaling=${similarity_scaling}"
+elif [ $steering_vector_option == "NESTEROV_MOMENTUM_WEIGHTED_SIMILARITY" ]; then 
+  base_experiment_name="PDLP+NesterovWeightedSim_scaling=${momentum_scaling}_threshold=${similarity_threshold}_similarity_scaling=${similarity_scaling}"
 else 
   base_experiment_name="PDLP+Steering_kappa=${steering_vector_kappa}_lambda=${steering_vector_lambda}_threshold=${similarity_threshold}"
 fi
