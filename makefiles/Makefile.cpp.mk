@@ -37,7 +37,7 @@ USE_COINOR ?= ON
 USE_GLPK ?= OFF
 USE_HIGHS ?= OFF
 USE_PDLP := ON # OFF not supported
-USE_SCIP ?= ON
+USE_SCIP ?= OFF # Not needed for PDLP experiments
 USE_CPLEX ?= OFF
 
 USE_DOTNET_CORE_31 ?= OFF

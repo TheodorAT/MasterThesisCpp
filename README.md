@@ -1,3 +1,13 @@
+# Using Similarity to Accelerate the Primal-Dual Hybrid Gradient Algorithm for Linear Programming
+
+This is a stable version of the code which is discussed in my Master's Thesis, in a fork from the OR-Tools repository.
+
+## To run the code: 
+
+Compile using: `make build SOURCE=examples/cpp/pdlp_solve.cc`
+
+Then run the experiments by modifying and running the script: `scripts/run_benchmark.sh`
+
 # OR-Tools - Google Optimization Tools
 
 [![PyPI version](https://img.shields.io/pypi/v/ortools.svg)](https://pypi.org/project/ortools/)

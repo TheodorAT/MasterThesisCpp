@@ -276,6 +276,31 @@ message PrimalDualHybridGradientParams {
     CONSTANT_STEP_SIZE_RULE = 3;
   }
 
+  enum AccelerationScheme {
+    // No acceleration scheme is applied
+    NO_ACCELERATION = 0;
+    // Applies residual momentum steering vectors to PDLP 
+    RESIDUAL_MOMENTUM = 1;
+    // Applies Polyak momentum to PDLP
+    POLYAK_MOMENTUM = 2;
+    // Applies Nesterov momentum to PDLP
+    NESTEROV_MOMENTUM = 3;
+  }
+
+  enum AccelerationRestartOption {
+    // No restarting of the acceleration terms
+    NO_ACCELERATION_RESTARTS = 0;
+    // Resets the acceleration terms to 0 every major iteration
+    ACCELERATION_RESTARTS_EVERY_MAJOR_ITERATION = 1;
+    // Resets the acceleration terms to 0 every time PDLP resets the iterates to the average
+    ACCELERATION_RESTARTS_EVERY_PDLP_RESTART = 2;
+  }
+
+  enum SimilarityOption { 
+    COSINE_SIMILARITY = 0;
+    MULTITHREADED_COSINE_SIMILARITY = 1;
+  }
+
   optional TerminationCriteria termination_criteria = 1;
 
   // The number of threads to use. Must be positive.
@@ -479,6 +504,17 @@ message PrimalDualHybridGradientParams {
   // termination criteria.
   //
   optional bool use_feasibility_polishing = 30 [default = false];
+
+  // Acceleration scheme parameters:
+  optional AccelerationScheme acceleration_scheme = 33 [default = NO_ACCELERATION];
+  optional AccelerationRestartOption acceleration_restart_option = 34 [default = NO_ACCELERATION_RESTARTS];
+  optional double steering_vector_lambda = 35 [default = 1.0];  
+  optional double momentum_scaling = 36 [default = 0.3];
+
+  // Similarity condition parameters:
+  optional double similarity_threshold = 37 [default = 0.8];
+  optional bool similarity_scaling = 38 [default = false];
+  optional SimilarityOption similarity_option = 39 [default = COSINE_SIMILARITY];
 
   reserved 13, 14, 15, 20, 21;
 }

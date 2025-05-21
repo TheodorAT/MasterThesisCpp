@@ -111,3 +111,8 @@ build/
 
 # Ignore Bzlmod lock file until it is more stable
 MODULE.bazel.lock
+
+# Ignore solve logs
+benchmarking_results/solve_logs/*
+benchmarking_results/solve_logs_remote/*
+similarity_logs/*
