@@ -25,23 +25,26 @@ acceleration_scheme="NESTEROV_MOMENTUM"     # Select between: "NO_ACCELERATION",
 momentum_scaling=0.3                        # The kappa in the algorithms
 steering_vector_lambda=1                    # The lambda_0 in the algorithm with Steering Vectors in a Residual Momentum direction 
 similarity_threshold=0.8                    # The Gamma in the algorithms, Select in range: [-1, 1]
-similarity_scaling="false"                   # Select between: "false", "true"
-similarity_option="COSINE_SIMILARITY"       # Select between "COSINE_SIMILARITY" and "MULTITHREADED_COSINE_SIMILARITY"
+similarity_scaling="true"                   # Select between: "false", "true"
+similarity_option="MULTITHREADED_COSINE_SIMILARITY_FAST"       # Select between "COSINE_SIMILARITY", "MULTITHREADED_COSINE_SIMILARITY", 
+                                                          # "MULTITHREADED_COSINE_SIMILARITY_FAST" 
 acceleration_restart_option="ACCELERATION_RESTARTS_EVERY_MAJOR_ITERATION"  # Select between: "NO_ACCELERATION_RESTARTS", 
                                                                            # "ACCELERATION_RESTARTS_EVERY_PDLP_RESTART", 
                                                                            # "ACCELERATION_RESTARTS_EVERY_MAJOR_ITERATION"
 
 # Suitable experiment name:  
 if [ $acceleration_scheme == "NO_ACCELERATION" ]; then
-  base_experiment_name="PDLP_similarity_option=${similarity_option}"
+  base_experiment_name="PDLP"
+elif [ $acceleration_scheme == "RESIDUAL_MOMENTUM" ]; then 
+  base_experiment_name="PDLP+SVRM_kappa=${momentum_scaling}_lambda=${steering_vector_lambda}_threshold=${similarity_threshold}_similarity_scaling=${similarity_scaling}_similarity_option=${similarity_option}"
 elif [ $acceleration_scheme == "POLYAK_MOMENTUM" ]; then 
   base_experiment_name="PDLP+Polyak_kappa=${momentum_scaling}_threshold=${similarity_threshold}_similarity_scaling=${similarity_scaling}_similarity_option=${similarity_option}"
 elif [ $acceleration_scheme == "NESTEROV_MOMENTUM" ]; then 
   base_experiment_name="PDLP+Nesterov_kappa=${momentum_scaling}_threshold=${similarity_threshold}_similarity_scaling=${similarity_scaling}_similarity_option=${similarity_option}"
-elif [ $acceleration_scheme == "RESIDUAL_MOMENTUM" ]; then 
-  base_experiment_name="PDLP+SVRM_kappa=${momentum_scaling}_lambda=${steering_vector_lambda}_threshold=${similarity_threshold}_similarity_scaling=${similarity_scaling}_similarity_option=${similarity_option}"
+elif [ $acceleration_scheme == "NESTEROV_NEW_VERSION" ]; then 
+  base_experiment_name="PDLP+NesterovStepSize_kappa=${momentum_scaling}_threshold=${similarity_threshold}_similarity_scaling=${similarity_scaling}_similarity_option=${similarity_option}"
 else 
-  echo "Unknown acceleration scheme: $acceleration_scheme"
+  echo "Unknown acceleration scheme: $acceleration_scheme, please select another or add a suitable name for this one."
   exit 1
 fi
 solve_folder_name="${benchmark}_${accuracy}_${base_experiment_name}"

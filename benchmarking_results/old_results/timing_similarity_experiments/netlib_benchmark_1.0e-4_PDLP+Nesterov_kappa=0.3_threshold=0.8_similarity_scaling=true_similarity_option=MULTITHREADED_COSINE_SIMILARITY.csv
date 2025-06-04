@@ -1,0 +1,114 @@
+instance, termination_reason                      , iteration_count, solve_time_sec         , cumulative_kkt_matrix_passes, preprocessing_time_sec, cumulative_rejected_steps, contraint_matrix_density
+cre-d   , TERMINATION_REASON_OPTIMAL              ,            2680,  5.678270804           ,                         2718, 0.021080438           ,                        38, 0.00038845643103945003
+boeing1 , TERMINATION_REASON_OPTIMAL              ,            5680,  0.105752551           ,                         5697, 0.000585849           ,                        17, 0.025856184710351376
+scfxm1  , TERMINATION_REASON_OPTIMAL              ,            4480,  0.080289015           ,                         4537, 0.0005610400000000001 ,                        57, 0.017167296598368808
+scfxm2  , TERMINATION_REASON_OPTIMAL              ,            4960,  0.156069826           ,                         5026, 0.000847669           ,                        66, 0.008591936874212586
+beaconfd, TERMINATION_REASON_OPTIMAL              ,            3400,  0.044533887           ,                         3402, 0.0005112700000000001 ,                         2, 0.07446057450469928
+osa-14  , TERMINATION_REASON_OPTIMAL              ,             880,  1.7569957640000002    ,                          906, 0.019725785000000003  ,                        26, 0.0025673940949935813
+capri   , TERMINATION_REASON_KKT_MATRIX_PASS_LIMIT,           99339,  1.336403071           ,                       100000, 0.000445437           ,                       661, 0.018471091226493
+gfrd-pnc, TERMINATION_REASON_OPTIMAL              ,           40280,  0.9712156970000001    ,                        40294, 0.000715521           ,                        14, 0.003533668712240141
+qap15   , TERMINATION_REASON_OPTIMAL              ,               0,  0.000368548           ,                            0, 0.000363979           ,                         0, 0
+ship12l , TERMINATION_REASON_OPTIMAL              ,            5600,  0.5677246930000001    ,                         5702, 0.0019957390000000003 ,                       102, 0.0025886591754039918
+pilot.ja, TERMINATION_REASON_KKT_MATRIX_PASS_LIMIT,           99305,  5.936719824           ,                       100000, 0.001057233           ,                       695, 0.007865276766984888
+pds-10  , TERMINATION_REASON_OPTIMAL              ,            4297,  6.5486604             ,                         4297, 0.01369263            ,                         0, 0.00013182271441606176
+agg3    , TERMINATION_REASON_OPTIMAL              ,            4240,  0.079460144           ,                         4263, 0.000652848           ,                        23, 0.02759381898454746
+recipe  , TERMINATION_REASON_OPTIMAL              ,             800,  0.005993053           ,                          801, 0.0005979700000000001 ,                         1, 0.04047619047619048
+vtp.base, TERMINATION_REASON_OPTIMAL              ,           58400,  0.523549807           ,                        58441, 0.00046332700000000003,                        41, 0.02259043638353983
+osa-30  , TERMINATION_REASON_OPTIMAL              ,            1200,  3.0393054740000003    ,                         1246, 0.041100867           ,                        46, 0.0013792965550336884
+pds-20  , TERMINATION_REASON_OPTIMAL              ,            5600, 18.741283002000003     ,                         5603, 0.031916618           ,                         3, 6.427599660385068e-05
+adlittle, TERMINATION_REASON_OPTIMAL              ,            2360,  0.015894101           ,                         2360, 0.000358264           ,                         0, 0.0705081001472754
+cre-b   , TERMINATION_REASON_OPTIMAL              ,            5640, 11.256701731000001     ,                         5650, 0.024136639           ,                        10, 0.0003663898199177618
+etamacro, TERMINATION_REASON_OPTIMAL              ,            4560,  0.088763536           ,                         4561, 0.000517585           ,                         1, 0.008753633720930232
+sc105   , TERMINATION_REASON_OPTIMAL              ,            2360,  0.016773014000000003  ,                         2362, 0.000330876           ,                         2, 0.025889967637540454
+scrs8   , TERMINATION_REASON_OPTIMAL              ,           15520,  0.396345193           ,                        15636, 0.001480732           ,                       116, 0.005555070616783925
+grow7   , TERMINATION_REASON_OPTIMAL              ,            3240,  0.041985869           ,                         3241, 0.000398274           ,                         1, 0.061983863312766965
+fit2p   , TERMINATION_REASON_OPTIMAL              ,            4920,  0.024428959           ,                         4925, 0.004017195           ,                         5, 0.0012392852741836106
+forplan , TERMINATION_REASON_OPTIMAL              ,           22800,  0.36089117800000003   ,                        23028, 0.000593359           ,                       228, 0.06731975037252327
+osa-07  , TERMINATION_REASON_OPTIMAL              ,             560,  0.494306334           ,                          588, 0.008258383000000001  ,                        28, 0.005366726296958855
+pilot.we, TERMINATION_REASON_KKT_MATRIX_PASS_LIMIT,           99697,  5.342547785           ,                       100000, 0.0011089910000000001 ,                       303, 0.00453205062627318
+nesm    , TERMINATION_REASON_OPTIMAL              ,            3800,  0.258649768           ,                         3802, 0.001075914           ,                         2, 0.006867091191539545
+maros   , TERMINATION_REASON_KKT_MATRIX_PASS_LIMIT,           99818,  4.13485344            ,                       100000, 0.001659155           ,                       182, 0.007875305747646173
+seba    , TERMINATION_REASON_OPTIMAL              ,            7880,  0.206668387           ,                         7899, 0.000732653           ,                        19, 0.008220316572853312
+grow15  , TERMINATION_REASON_OPTIMAL              ,            6560,  0.147526198           ,                         6560, 0.0006010750000000001 ,                         0, 0.029043927648578813
+boeing2 , TERMINATION_REASON_OPTIMAL              ,            2960,  0.027215208000000005  ,                         2984, 0.000534478           ,                        24, 0.050383351588170866
+share2b , TERMINATION_REASON_OPTIMAL              ,           25040,  0.152349337           ,                        25350, 0.00038884600000000004,                       310, 0.09150843881856541
+grow22  , TERMINATION_REASON_OPTIMAL              ,            3600,  0.124247394           ,                         3600, 0.0006682000000000001 ,                         0, 0.019825100903325003
+czprob  , TERMINATION_REASON_OPTIMAL              ,            7600,  0.5292702229999999    ,                         7605, 0.001217006           ,                         5, 0.0032598330454613644
+ganges  , TERMINATION_REASON_OPTIMAL              ,            3600,  0.152808504           ,                         3600, 0.0010530160000000002 ,                         0, 0.003141205646717072
+cre-a   , TERMINATION_REASON_OPTIMAL              ,            6680,  0.704477888           ,                         6689, 0.002300307           ,                         9, 0.0010480733269499255
+greenbea, TERMINATION_REASON_KKT_MATRIX_PASS_LIMIT,           99333, 13.379266346000001     ,                       100000, 0.002234221           ,                       667, 0.0023882414090755804
+wood1p  , TERMINATION_REASON_OPTIMAL              ,            3480,  0.5955927599999999    ,                         3502, 0.002851447           ,                        22, 0.11093538683215996
+fit1d   , TERMINATION_REASON_OPTIMAL              ,             890,  0.059219401000000005  ,                          928, 0.000985917           ,                        38, 0.5443469785575049
+sc50a   , TERMINATION_REASON_OPTIMAL              ,             480,  0.0027071960000000003 ,                          480, 0.00041674800000000004,                         0, 0.05416666666666667
+scagr7  , TERMINATION_REASON_OPTIMAL              ,            6720,  0.042405384000000004  ,                         6720, 0.00036015300000000005,                         0, 0.023255813953488372
+bnl2    , TERMINATION_REASON_OPTIMAL              ,           13360,  1.207673084           ,                        13401, 0.001570063           ,                        41, 0.0017264735147443971
+qap8    , TERMINATION_REASON_OPTIMAL              ,               0,  0.000274342           ,                            0, 0.000269698           ,                         0, 0
+ken-13  , TERMINATION_REASON_OPTIMAL              ,            9560, 14.693859151000002     ,                         9561, 0.013441731           ,                         1, 7.961765657008741e-05
+d2q06c  , TERMINATION_REASON_OPTIMAL              ,           28160,  4.924842054           ,                        28726, 0.003174782           ,                       566, 0.0028898449100815803
+scagr25 , TERMINATION_REASON_OPTIMAL              ,           18240,  0.267144268           ,                        18240, 0.0006704500000000001 ,                         0, 0.006598726114649681
+dfl001  , TERMINATION_REASON_OPTIMAL              ,            9360,  3.891280361           ,                         9469, 0.005375845000000001  ,                       109, 0.00047990304967128553
+d6cube  , TERMINATION_REASON_OPTIMAL              ,            3720,  0.612001258           ,                         3790, 0.004591478           ,                        70, 0.014691625492916036
+qap12   , TERMINATION_REASON_OPTIMAL              ,               0,  0.00043111900000000004,                            0, 0.00042682500000000003,                         0, 0
+agg     , TERMINATION_REASON_OPTIMAL              ,            7040,  0.10182279300000001   ,                         7068, 0.000586632           ,                        28, 0.030297696872171376
+scsd1   , TERMINATION_REASON_OPTIMAL              ,             520,  0.012907008000000001  ,                          522, 0.000521606           ,                         2, 0.04080656185919344
+sctap3  , TERMINATION_REASON_OPTIMAL              ,             480,  0.032920303000000005  ,                          495, 0.001237762           ,                        15, 0.002417720139494333
+shell   , TERMINATION_REASON_OPTIMAL              ,            6780,  0.23541899800000002   ,                         6783, 0.000823073           ,                         3, 0.0037376497792726508
+kb2     , TERMINATION_REASON_OPTIMAL              ,           13360,  0.057057818           ,                        13585, 0.000399983           ,                       225, 0.16222348269994327
+ship12s , TERMINATION_REASON_OPTIMAL              ,            6720,  0.38387158400000004   ,                         6784, 0.001155536           ,                        64, 0.002571525869493647
+stocfor3, TERMINATION_REASON_OPTIMAL              ,               0,  0.0007141380000000001 ,                            0, 0.0006793140000000001 ,                         0, 0
+sc205   , TERMINATION_REASON_OPTIMAL              ,            8640,  0.07430955100000002   ,                         8642, 0.00038885600000000003,                         2, 0.0132404181184669
+standgub, TERMINATION_REASON_OPTIMAL              ,            1800,  0.049300277           ,                         1813, 0.0009094490000000001 ,                        13, 0.007343995657707569
+ship04l , TERMINATION_REASON_OPTIMAL              ,            4400,  0.16889679300000002   ,                         4479, 0.0009647670000000001 ,                        79, 0.007436847866428011
+fffff800, TERMINATION_REASON_KKT_MATRIX_PASS_LIMIT,           99685,  2.65160849            ,                       100000, 0.000819485           ,                       315, 0.013915208180631782
+degen2  , TERMINATION_REASON_OPTIMAL              ,            1228,  0.036892838000000004  ,                         1260, 0.0011988740000000002 ,                        32, 0.016778013969025205
+ship08l , TERMINATION_REASON_OPTIMAL              ,            6360,  0.46296131500000004   ,                         6437, 0.0013878520000000002 ,                        77, 0.003841936225419201
+modszk1 , TERMINATION_REASON_OPTIMAL              ,           80600,  2.4312398080000004    ,                        80601, 0.00069424            ,                         1, 0.00284651463690765
+share1b , TERMINATION_REASON_OPTIMAL              ,           29040,  0.252950628           ,                        29326, 0.000626073           ,                       286, 0.04372269705603039
+pilot4  , TERMINATION_REASON_KKT_MATRIX_PASS_LIMIT,           99787,  2.4248593220000005    ,                       100000, 0.000685638           ,                       213, 0.012539024390243902
+standata, TERMINATION_REASON_OPTIMAL              ,            1600,  0.044677584000000006  ,                         1614, 0.000806092           ,                        14, 0.007853857614821533
+israel  , TERMINATION_REASON_OPTIMAL              ,            2440,  0.025220295           ,                         2465, 0.000377613           ,                        25, 0.0918326048243484
+scsd8   , TERMINATION_REASON_OPTIMAL              ,            8760,  0.419542887           ,                         8788, 0.001008477           ,                        28, 0.007862605907945958
+pds-02  , TERMINATION_REASON_OPTIMAL              ,            1213,  0.198019188           ,                         1219, 0.0027901650000000003 ,                         6, 0.000736600908144878
+sc50b   , TERMINATION_REASON_OPTIMAL              ,             440,  0.0029715             ,                          440, 0.0005453890000000001 ,                         0, 0.049166666666666664
+fit1p   , TERMINATION_REASON_OPTIMAL              ,            6640,  0.37621052200000005   ,                         6648, 0.0012082050000000002 ,                         8, 0.00938487596994329
+scfxm3  , TERMINATION_REASON_OPTIMAL              ,            6520,  0.29345498200000003   ,                         6582, 0.0008909050000000001 ,                        62, 0.005729799821703542
+stocfor2, TERMINATION_REASON_OPTIMAL              ,           33040,  1.9436875080000002    ,                        33144, 0.001165971           ,                       104, 0.0019044175502246474
+pds-06  , TERMINATION_REASON_OPTIMAL              ,            2973,  2.216209316           ,                         2975, 0.007816726000000001  ,                         2, 0.00022082357792859792
+scorpion, TERMINATION_REASON_OPTIMAL              ,            4825,  0.06130236            ,                         4826, 0.00044058400000000005,                         1, 0.010266083050164142
+agg2    , TERMINATION_REASON_OPTIMAL              ,            5080,  0.10213733100000001   ,                         5129, 0.0006870540000000001 ,                        49, 0.027491144309256123
+pilot   , TERMINATION_REASON_OPTIMAL              ,           49480,  6.74945483            ,                        49573, 0.0020697140000000003 ,                        93, 0.008202705465733985
+sctap1  , TERMINATION_REASON_OPTIMAL              ,            1956,  0.030624422999999998  ,                         1963, 0.000501731           ,                         7, 0.01175
+bandm   , TERMINATION_REASON_OPTIMAL              ,           12280,  0.19821898500000001   ,                        12280, 0.000733715           ,                         0, 0.017324256737982772
+greenbeb, TERMINATION_REASON_KKT_MATRIX_PASS_LIMIT,           99011, 13.635282151           ,                       100000, 0.00244912            ,                       989, 0.0023882414090755804
+ken-07  , TERMINATION_REASON_OPTIMAL              ,            2840,  0.277915354           ,                         2842, 0.001419106           ,                         2, 0.0009617264018844528
+stocfor1, TERMINATION_REASON_OPTIMAL              ,            7560,  0.047251001           ,                         7619, 0.000345949           ,                        59, 0.03441903441903442
+ship04s , TERMINATION_REASON_OPTIMAL              ,            4680,  0.133492786           ,                         4753, 0.0006397390000000001 ,                        73, 0.007425151335230569
+afiro   , TERMINATION_REASON_OPTIMAL              ,             200,  0.0016187140000000003 ,                          200, 0.00043259900000000004,                         0, 0.09606481481481481
+scsd6   , TERMINATION_REASON_OPTIMAL              ,            1280,  0.034843887000000004  ,                         1292, 0.0007054790000000001 ,                        12, 0.021748551272360795
+osa-60  , TERMINATION_REASON_OPTIMAL              ,            1920, 17.564444674           ,                         1981, 0.088860888           ,                        61, 0.0005836563348817521
+ken-18  , TERMINATION_REASON_OPTIMAL              ,           13760, 90.794410213           ,                        13761, 0.06546777000000001   ,                         1, 2.2023616799327026e-05
+bore3d  , TERMINATION_REASON_KKT_MATRIX_PASS_LIMIT,           99958,  1.095188737           ,                       100000, 0.00045495500000000005,                        42, 0.019469991143810886
+cre-c   , TERMINATION_REASON_OPTIMAL              ,            2280,  0.22763669800000003   ,                         2305, 0.001727117           ,                        25, 0.0011736864530847997
+fit2d   , TERMINATION_REASON_OPTIMAL              ,            1780,  0.974135238           ,                         1834, 0.006040246           ,                        54, 0.49149714285714285
+finnis  , TERMINATION_REASON_OPTIMAL              ,            8120,  0.185339857           ,                         8154, 0.0005797             ,                        34, 0.007569849061797495
+tuff    , TERMINATION_REASON_OPTIMAL              ,           76880,  1.6180958360000002    ,                        77209, 0.0009689820000000001 ,                       329, 0.023123634707961794
+sierra  , TERMINATION_REASON_OPTIMAL              ,            4920,  0.257873641           ,                         4922, 0.001528051           ,                         2, 0.0029229372517184564
+brandy  , TERMINATION_REASON_OPTIMAL              ,            6440,  0.07797169500000001   ,                         6442, 0.0005351970000000001 ,                         2, 0.03921139101861994
+sctap2  , TERMINATION_REASON_OPTIMAL              ,             702,  0.045792993000000004  ,                          716, 0.0009260410000000001 ,                        14, 0.003276400546554753
+stair   , TERMINATION_REASON_OPTIMAL              ,           17920,  0.325842264           ,                        17929, 0.0005756240000000001 ,                         9, 0.023193705940379665
+perold  , TERMINATION_REASON_KKT_MATRIX_PASS_LIMIT,           99548,  3.282246815           ,                       100000, 0.0015475670000000001 ,                       452, 0.0069976744186046515
+25fv47  , TERMINATION_REASON_OPTIMAL              ,            2920,  0.15801140700000002   ,                         2926, 0.0010133920000000001 ,                         6, 0.008063321887034411
+80bau3b , TERMINATION_REASON_OPTIMAL              ,           35720,  6.173217027000001     ,                        35798, 0.002672961           ,                        78, 0.0009475154405495644
+degen3  , TERMINATION_REASON_OPTIMAL              ,            3360,  0.31886984300000004   ,                         3447, 0.001523662           ,                        87, 0.009019730981747543
+woodw   , TERMINATION_REASON_OPTIMAL              ,            6920,  1.183130945           ,                         6928, 0.003271266           ,                         8, 0.004060597983029011
+lotfi   , TERMINATION_REASON_OPTIMAL              ,           73040,  0.703948306           ,                        73626, 0.000435084           ,                       586, 0.02287581699346405
+ken-11  , TERMINATION_REASON_OPTIMAL              ,            6200,  2.330231413           ,                         6203, 0.0073151050000000006 ,                         3, 0.00015638398156498777
+ship08s , TERMINATION_REASON_OPTIMAL              ,            5280,  0.252245009           ,                         5352, 0.001258334           ,                        72, 0.0038307326639692506
+maros-r7, TERMINATION_REASON_OPTIMAL              ,             696,  0.42642091400000004   ,                          697, 0.007455576           ,                         1, 0.00490952120644176
+blend   , TERMINATION_REASON_OPTIMAL              ,            1440,  0.008283312000000001  ,                         1446, 0.00039740500000000003,                         6, 0.07994138717030283
+cycle   , TERMINATION_REASON_OPTIMAL              ,           26640,  2.27962507            ,                        26778, 0.0015274260000000001 ,                       138, 0.0038110155639153476
+e226    , TERMINATION_REASON_OPTIMAL              ,           10120,  0.18117833000000003   ,                        10174, 0.000563255           ,                        54, 0.040994816016283436
+pilot87 , TERMINATION_REASON_OPTIMAL              ,           36120,  7.055090095000001     ,                        36805, 0.003105272           ,                       685, 0.007379780458794914
+pilotnov, TERMINATION_REASON_OPTIMAL              ,           24880,  1.531704137           ,                        25065, 0.0010708620000000001 ,                       185, 0.006165651414270199
+standmps, TERMINATION_REASON_OPTIMAL              ,            4680,  0.130260403           ,                         4749, 0.0010723080000000001 ,                        69, 0.007328320302773766
+bnl1    , TERMINATION_REASON_KKT_MATRIX_PASS_LIMIT,           98784,  3.298349774           ,                       100000, 0.00068857            ,                      1216, 0.006778068230700506

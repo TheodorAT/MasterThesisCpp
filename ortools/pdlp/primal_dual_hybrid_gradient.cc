@@ -603,18 +603,23 @@ class Solver {
   double ComputeNonlinearity(const VectorXd& delta_primal,
                              const VectorXd& next_dual_product) const;
 
-  double CalculateSimilarity(const VectorXd& vec1_primal,
-                             const VectorXd& vec1_dual,
-                             const VectorXd& vec2_primal,
-                             const VectorXd& vec2_dual) const;
+  double CalculateSimilarity(const VectorXd& prev_step_primal,
+                             const VectorXd& prev_step_dual,
+                             const VectorXd& cur_step_primal,
+                             const VectorXd& cur_step_dual);
 
-  double CalculateSimilaritySingleThreaded(const VectorXd& vec1,
-                                           const VectorXd& vec2) const;
+  double CalculateSimilaritySingleThreaded(const VectorXd& prev_step,
+                                           const VectorXd& cur_step) const;
 
-  double CalculateSimilaritySharded(const VectorXd& vec1_primal,
-                                    const VectorXd& vec1_dual,
-                                    const VectorXd& vec2_primal,
-                                    const VectorXd& vec2_dual) const;
+  double CalculateSimilaritySharded(const VectorXd& prev_step_primal,
+                                    const VectorXd& prev_step_dual,
+                                    const VectorXd& cur_step_primal,
+                                    const VectorXd& cur_step_dual) const;
+
+  double CalculateSimilarityShardedFast(const VectorXd& prev_step_primal,
+                                        const VectorXd& prev_step_dual,
+                                        const VectorXd& cur_step_primal,
+                                        const VectorXd& cur_step_dual);
 
   // Creates all the simple-to-compute statistics in stats.
   IterationStats CreateSimpleIterationStats(RestartChoice restart_used) const;
@@ -708,6 +713,8 @@ class Solver {
 
   InnerStepOutcome TakeAdaptiveStepNesterovMomentum();
 
+  InnerStepOutcome TakeAdaptiveStepNesterovNewVersion();
+
   const PrimalDualHybridGradientParams params_;
 
   VectorXd current_primal_solution_;
@@ -730,6 +737,8 @@ class Solver {
 
   // For Nesterov momentum with similarity thresholding:
   double prev_similarity_;
+  // For faster calculations of similarity, we store the norm of the last step:
+  double prev_step_norm_;
 
   // For Malitsky-Pock linesearch only: `step_size_` / previous_step_size
   double ratio_last_two_step_sizes_;
@@ -1834,7 +1843,6 @@ Solver::Solver(const PrimalDualHybridGradientParams& params,
   ResetAccelerationTerms();
   current_primal_delta_ = ZeroVector(ShardedWorkingQp().PrimalSharder());
   current_dual_delta_ = ZeroVector(ShardedWorkingQp().DualSharder());
-  prev_similarity_ = 0;
 }
 
 void Solver::ResetAccelerationTerms() {
@@ -1844,6 +1852,7 @@ void Solver::ResetAccelerationTerms() {
   current_dual_steering_product_ =
       ZeroVector(ShardedWorkingQp().PrimalSharder());
   prev_similarity_ = 0;
+  prev_step_norm_ = 0;
 }
 
 Solver::NextSolutionAndDelta Solver::ComputeNextPrimalSolution(
@@ -2054,25 +2063,33 @@ double Solver::ComputeNonlinearity(const VectorXd& delta_primal,
 
 // Calculates the similarity using the appropriate function based on the
 // SimilarityOption parameter
-double Solver::CalculateSimilarity(const VectorXd& vec1_primal,
-                                   const VectorXd& vec1_dual,
-                                   const VectorXd& vec2_primal,
-                                   const VectorXd& vec2_dual) const {
+// TODO: Add option for faster version of multithreaded cosine similarity, where
+// we cache the computed norms of the most recent step, to save for the next
+// similarity calculation.
+double Solver::CalculateSimilarity(const VectorXd& prev_step_primal,
+                                   const VectorXd& prev_step_dual,
+                                   const VectorXd& cur_step_primal,
+                                   const VectorXd& cur_step_dual) {
   double similarity;
   switch (params_.similarity_option()) {
     case PrimalDualHybridGradientParams::COSINE_SIMILARITY: {
       const int64_t total_size =
           ShardedWorkingQp().PrimalSize() + ShardedWorkingQp().DualSize();
-      VectorXd vec1(total_size);
-      VectorXd vec2(total_size);
-      vec1 << vec1_primal, vec1_dual;
-      vec2 << vec2_primal, vec2_dual;
-      similarity = CalculateSimilaritySingleThreaded(vec1, vec2);
+      VectorXd prev_step(total_size);
+      VectorXd cur_step(total_size);
+      prev_step << prev_step_primal, prev_step_dual;
+      cur_step << cur_step_primal, cur_step_dual;
+      similarity = CalculateSimilaritySingleThreaded(prev_step, cur_step);
       break;
     }
     case PrimalDualHybridGradientParams::MULTITHREADED_COSINE_SIMILARITY: {
-      similarity = CalculateSimilaritySharded(vec1_primal, vec1_dual,
-                                              vec2_primal, vec2_dual);
+      similarity = CalculateSimilaritySharded(prev_step_primal, prev_step_dual,
+                                              cur_step_primal, cur_step_dual);
+      break;
+    }
+    case PrimalDualHybridGradientParams::MULTITHREADED_COSINE_SIMILARITY_FAST: {
+      similarity = CalculateSimilarityShardedFast(
+          prev_step_primal, prev_step_dual, cur_step_primal, cur_step_dual);
       break;
     }
     default: {
@@ -2091,28 +2108,63 @@ double Solver::CalculateSimilaritySingleThreaded(const VectorXd& vec1,
   return vec1.dot(vec2) / (norm_1 * norm_2);
 }
 
-// Calculates the similarity using shards.
-double Solver::CalculateSimilaritySharded(const VectorXd& vec1_primal,
-                                          const VectorXd& vec1_dual,
-                                          const VectorXd& vec2_primal,
-                                          const VectorXd& vec2_dual) const {
+// Calculates the similarity using shards
+double Solver::CalculateSimilaritySharded(const VectorXd& prev_step_primal,
+                                          const VectorXd& prev_step_dual,
+                                          const VectorXd& cur_step_primal,
+                                          const VectorXd& cur_step_dual) const {
   const double primal_dot_product =
       ShardedWorkingQp().PrimalSharder().ParallelSumOverShards(
           [&](const Sharder::Shard& shard) {
-            return shard(vec1_primal).dot(shard(vec2_primal));
+            return shard(prev_step_primal).dot(shard(cur_step_primal));
           });
   const double dual_dot_product =
       ShardedWorkingQp().DualSharder().ParallelSumOverShards(
           [&](const Sharder::Shard& shard) {
-            return shard(vec1_dual).dot(shard(vec2_dual));
+            return shard(prev_step_dual).dot(shard(cur_step_dual));
           });
-  const double norm_1 =
-      std::sqrt(SquaredNorm(vec1_primal, ShardedWorkingQp().PrimalSharder()) +
-                SquaredNorm(vec1_dual, ShardedWorkingQp().DualSharder()));
-  const double norm_2 =
-      std::sqrt(SquaredNorm(vec2_primal, ShardedWorkingQp().PrimalSharder()) +
-                SquaredNorm(vec2_dual, ShardedWorkingQp().DualSharder()));
-  return (primal_dot_product + dual_dot_product) / (norm_1 * norm_2);
+  const double prev_step_norm = std::sqrt(
+      SquaredNorm(prev_step_primal, ShardedWorkingQp().PrimalSharder()) +
+      SquaredNorm(prev_step_dual, ShardedWorkingQp().DualSharder()));
+  const double cur_step_norm = std::sqrt(
+      SquaredNorm(cur_step_primal, ShardedWorkingQp().PrimalSharder()) +
+      SquaredNorm(cur_step_dual, ShardedWorkingQp().DualSharder()));
+  const double similarity = (primal_dot_product + dual_dot_product) /
+                            (prev_step_norm * cur_step_norm);
+  return similarity;
+}
+
+// Calculates the similarity using shards with a caching of the norm of the
+// latest step.
+double Solver::CalculateSimilarityShardedFast(const VectorXd& prev_step_primal,
+                                              const VectorXd& prev_step_dual,
+                                              const VectorXd& cur_step_primal,
+                                              const VectorXd& cur_step_dual) {
+  if (prev_step_norm_ == 0) {
+    prev_step_norm_ = std::sqrt(
+        SquaredNorm(cur_step_primal, ShardedWorkingQp().PrimalSharder()) +
+        SquaredNorm(cur_step_dual, ShardedWorkingQp().DualSharder()));
+    return -2.0;  // We should not use any momentum when this is the case.
+  } else {
+    const double primal_dot_product =
+        ShardedWorkingQp().PrimalSharder().ParallelSumOverShards(
+            [&](const Sharder::Shard& shard) {
+              return shard(prev_step_primal).dot(shard(cur_step_primal));
+            });
+    const double dual_dot_product =
+        ShardedWorkingQp().DualSharder().ParallelSumOverShards(
+            [&](const Sharder::Shard& shard) {
+              return shard(prev_step_dual).dot(shard(cur_step_dual));
+            });
+    const double cur_step_norm = std::sqrt(
+        SquaredNorm(cur_step_primal, ShardedWorkingQp().PrimalSharder()) +
+        SquaredNorm(cur_step_dual, ShardedWorkingQp().DualSharder()));
+    const double similarity = (primal_dot_product + dual_dot_product) /
+                              (prev_step_norm_ * cur_step_norm);
+    // Update the previous step norm for the next similarity calculation.
+    prev_step_norm_ = cur_step_norm;
+    return similarity;
+  }
 }
 
 IterationStats Solver::CreateSimpleIterationStats(
@@ -3524,6 +3576,131 @@ InnerStepOutcome Solver::TakeAdaptiveStepNesterovMomentum() {
   return outcome;
 }
 
+// IDEA: Make a version of applie momentum where the similarity
+// condition is instead used to make the step size larger.
+InnerStepOutcome Solver::TakeAdaptiveStepNesterovNewVersion() {
+  InnerStepOutcome outcome = InnerStepOutcome::kSuccessful;
+  int inner_iterations = 0;
+  for (bool accepted_step = false; !accepted_step; ++inner_iterations) {
+    if (inner_iterations >= 60) {
+      LogInnerIterationLimitHit();
+      ResetAverageToCurrent();
+      outcome = InnerStepOutcome::kForceNumericalTermination;
+      break;
+    }
+    double primal_step_size = step_size_ / primal_weight_;
+    double dual_step_size = step_size_ * primal_weight_;
+    const int64_t primal_size = ShardedWorkingQp().PrimalSize();
+    const int64_t dual_size = ShardedWorkingQp().DualSize();
+
+    NextSolutionAndDelta next_primal_solution;
+    NextSolutionAndDelta next_dual_solution;
+    // Adding "momentum" if similarity condition is fulfilled:
+    double momentum_scaling_factor = 0;
+    if (prev_similarity_ >= params_.similarity_threshold()) {
+      momentum_scaling_factor = params_.momentum_scaling();
+      if (params_.similarity_scaling()) {
+        momentum_scaling_factor *= prev_similarity_;
+      }
+      // Temporarily making the step sizes larger:
+      primal_step_size *= (1.0 + momentum_scaling_factor);
+      dual_step_size *= (1.0 + momentum_scaling_factor);
+    }
+    next_primal_solution = ComputeNextPrimalSolutionFromInput(
+        primal_step_size, current_primal_solution_, current_dual_product_);
+    next_dual_solution = ComputeNextDualSolutionFromInput(
+        dual_step_size,
+        /*extrapolation_factor=*/1.0, next_primal_solution,
+        current_dual_solution_);
+
+    const double movement =
+        ComputeMovement(next_primal_solution.delta, next_dual_solution.delta);
+    if (movement == 0.0) {
+      LogNumericalTermination(next_primal_solution.delta,
+                              next_dual_solution.delta);
+      ResetAverageToCurrent();
+      outcome = InnerStepOutcome::kForceNumericalTermination;
+      break;
+    } else if (movement > kDivergentMovement) {
+      LogNumericalTermination(next_primal_solution.delta,
+                              next_dual_solution.delta);
+      outcome = InnerStepOutcome::kForceNumericalTermination;
+      break;
+    }
+    VectorXd next_dual_product = TransposedMatrixVectorProduct(
+        WorkingQp().constraint_matrix, next_dual_solution.value,
+        ShardedWorkingQp().ConstraintMatrixSharder());
+    const double nonlinearity =
+        ComputeNonlinearity(next_primal_solution.delta, next_dual_product);
+
+    // See equation (5) in https://arxiv.org/pdf/2106.04756.pdf.
+    double step_size_limit = nonlinearity > 0
+                                 ? movement / nonlinearity
+                                 : std::numeric_limits<double>::infinity();
+
+    // If we are using momentum, we need to scale the step size limit
+    // accordingly:
+    double step_size_limit_temp = step_size_limit;
+    if (prev_similarity_ >= params_.similarity_threshold()) {
+      step_size_limit_temp *= (1.0 + momentum_scaling_factor);
+    }
+    if (step_size_ <= step_size_limit_temp) {
+      // Calculating the similarity for the next iteration to decide whether
+      // to use momentum or not:
+      prev_similarity_ = CalculateSimilarity(
+          current_primal_delta_, current_dual_delta_,
+          next_primal_solution.delta, next_dual_solution.delta);
+
+      // Calculating the next dual product for the momentum term:
+      ShardedWorkingQp().PrimalSharder().ParallelForEachShard(
+          [&](const Sharder::Shard& shard) {
+            shard(current_dual_steering_product_) =
+                shard(next_dual_product) - shard(current_dual_product_);
+          });
+
+      current_primal_solution_ = std::move(next_primal_solution.value);
+      current_dual_solution_ = std::move(next_dual_solution.value);
+      current_dual_product_ = std::move(next_dual_product);
+      current_primal_delta_ = std::move(next_primal_solution.delta);
+      current_dual_delta_ = std::move(next_dual_solution.delta);
+      primal_average_.Add(current_primal_solution_, /*weight=*/step_size_);
+      dual_average_.Add(current_dual_solution_, /*weight=*/step_size_);
+      accepted_step = true;
+    }
+    const double total_steps_attempted =
+        num_rejected_steps_ + inner_iterations + iterations_completed_ + 1;
+    // Our step sizes are a factor 1 - (`total_steps_attempted` + 1)^(-
+    // `step_size_reduction_exponent`) smaller than they could be as a margin
+    // to reduce rejected steps. The std::isinf() test protects against NAN if
+    // std::pow() == 1.0.
+    const double first_term =
+        std::isinf(step_size_limit)
+            ? step_size_limit
+            : (1 - std::pow(total_steps_attempted + 1.0,
+                            -params_.adaptive_linesearch_parameters()
+                                 .step_size_reduction_exponent())) *
+                  step_size_limit;
+    const double second_term =
+        (1 + std::pow(total_steps_attempted + 1.0,
+                      -params_.adaptive_linesearch_parameters()
+                           .step_size_growth_exponent())) *
+        step_size_;
+    // From the first term when we have to reject a step, `step_size_`
+    // decreases by a factor of at least 1 - (`total_steps_attempted` + 1)^(-
+    // `step_size_reduction_exponent`). From the second term we increase
+    // `step_size_` by a factor of at most 1 + (`total_steps_attempted` +
+    // 1)^(-`step_size_growth_exponent`) Therefore if more than order
+    // (`total_steps_attempted` + 1)^(`step_size_reduction_exponent`
+    // - `step_size_growth_exponent`) fraction of the time we have a rejected
+    // step, we overall decrease `step_size_`. When `step_size_` is
+    // sufficiently small we stop having rejected steps.
+    step_size_ = std::min(first_term, second_term);
+  }
+  // `inner_iterations` is incremented for the accepted step.
+  num_rejected_steps_ += inner_iterations - 1;
+  return outcome;
+}
+
 IterationStats Solver::TotalWorkSoFar(const SolveLog& solve_log) const {
   IterationStats stats = CreateSimpleIterationStats(RESTART_CHOICE_NO_RESTART);
   IterationStats full_stats =
@@ -3902,6 +4079,9 @@ SolverResult Solver::Solve(const IterationType iteration_type,
           case PrimalDualHybridGradientParams::NESTEROV_MOMENTUM:
             outcome = TakeAdaptiveStepNesterovMomentum();
             break;
+          case PrimalDualHybridGradientParams::NESTEROV_NEW_VERSION:
+            outcome = TakeAdaptiveStepNesterovNewVersion();
+            break;
           default:
             LOG(FATAL) << "Unrecognized acceleration scheme "
                        << params_.acceleration_scheme();
@@ -3921,6 +4101,10 @@ SolverResult Solver::Solve(const IterationType iteration_type,
             break;
           case PrimalDualHybridGradientParams::NESTEROV_MOMENTUM:
             outcome = TakeConstantSizeStepNesterovMomentum();
+            break;
+          case PrimalDualHybridGradientParams::NESTEROV_NEW_VERSION:
+            LOG(FATAL) << "NESTEROV_NEW_VERSION not implemented with constant "
+                          "step sizes yet.";
             break;
           default:
             LOG(FATAL) << "Unrecognized acceleration scheme "

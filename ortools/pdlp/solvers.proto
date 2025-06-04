@@ -285,6 +285,8 @@ message PrimalDualHybridGradientParams {
     POLYAK_MOMENTUM = 2;
     // Applies Nesterov momentum to PDLP
     NESTEROV_MOMENTUM = 3;
+    // A new version of the Nesterov momentum scheme which uses less linear calculations:
+    NESTEROV_NEW_VERSION = 4;
   }
 
   enum AccelerationRestartOption {
@@ -299,6 +301,7 @@ message PrimalDualHybridGradientParams {
   enum SimilarityOption { 
     COSINE_SIMILARITY = 0;
     MULTITHREADED_COSINE_SIMILARITY = 1;
+    MULTITHREADED_COSINE_SIMILARITY_FAST = 2;
   }
 
   optional TerminationCriteria termination_criteria = 1;
